@@ -1,0 +1,8 @@
+Imágenes incluidas en /img:
+logo.png              logo (extraído del storyboard)
+evento-musica.svg     portada abstracta de "Encuentro de música" (recreada del storyboard)
+evento-menchaca.jpg   foto de "Menchaca's Tour" (extraída del storyboard)
+evento-urogallo.jpg   foto de "Urogallo festival" (extraída del storyboard)
+evento-bailey.jpg     foto de "Bailey Fest" (extraída del storyboard)
+qr-ticket-1.svg       QR visual de relleno, ticket General (no es funcional)
+qr-ticket-2.svg       QR visual de relleno, ticket VIP (no es funcional)
