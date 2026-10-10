@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Estadísticas y asistentes - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" href="panel-organizador.html">
+            <img src="img/logo.png" alt="Logo">
+            EventYunks
+        </a>
+        <nav>
+            <a href="panel-organizador.html">Catálogo</a>
+            <a href="index.html">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+<main class="contenedor organizador">
+    <h1>Estadísticas y Asistentes</h1>
+    <h2>Encuentro de música</h2>
+
+    <h2>Boletos vendidos por tipo</h2>
+    <dl class="metricas">
+        <div class="caja">
+            <dt>General</dt>
+            <dd>1</dd>
+        </div>
+        <div class="caja">
+            <dt>VIP</dt>
+            <dd>1</dd>
+        </div>
+    </dl>
+
+    <section class="tarjeta">
+        <div class="info">
+            <h3>Capacidad restante</h3>
+            <p class="cifra">58 de 60</p>
+            <meter min="0" max="60" value="58" aria-label="Capacidad restante">58 de 60</meter>
+            <p><small>49 General · 9 VIP disponibles</small></p>
+        </div>
+    </section>
+
+    <dl class="metricas">
+        <div class="caja completa">
+            <dt>Ingresos totales generados</dt>
+            <dd>$700</dd>
+        </div>
+    </dl>
+
+    <h2>Asistentes Confirmados</h2>
+    <div class="tarjeta">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Nombre del asistente</th>
+                <th scope="col">Tipo de boleto adquirido</th>
+                <th scope="col">Estado del ticket</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Ana López</td>
+                <td>General</td>
+                <td><span class="etiqueta vigente">Válido / No escaneado</span></td>
+            </tr>
+            <tr>
+                <td>Ana López</td>
+                <td>VIP</td>
+                <td><span class="etiqueta vigente">Válido / No escaneado</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="boton secundario" href="panel-organizador.html">Volver al Panel</a>
+</main>
+</body>
+</html>

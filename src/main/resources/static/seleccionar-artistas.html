@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seleccionar artistas - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" href="panel-organizador.html"> <img src="img/logo.png" alt="Logo">EventYunks</a>
+        <nav>
+            <a href="catalogo.html">Catálogo</a>
+            <a href="index.html">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor organizador">
+    <h1>Seleccionar artistas</h1>
+    <form action="panel-organizador.html">
+        <h2>Catálogo de artistas</h2>
+        <div class="campo">
+            <label for="buscar">Buscar</label>
+            <input id="buscar" type="search" placeholder="Buscar artistas...">
+        </div>
+        <ul class="rejilla">
+            <li>
+                <label class="tarjeta fila">
+                    <input type="checkbox" name="artistas" value="the-weeknd" checked>
+                    <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                    <span>
+                        <strong>The Weeknd</strong>
+                        <small>Electropop</small>
+                    </span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+            <li>
+                <label class="tarjeta fila">
+                    <input type="checkbox" name="artistas" value="Erick" checked>
+                    <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                    <span>
+                        <strong>Kurt Cobain</strong>
+                        <small>Rock</small>
+                    </span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+            <li>
+                <label class="tarjeta fila">
+                    <input type="checkbox" name="artistas" value="Julian Menchaca" checked>
+                    <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                    <span>
+                        <strong>Angela Aguilar</strong>
+                        <small>Regional Mexicano</small>
+                    </span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+            <li>
+                <label class="tarjeta fila">
+                    <input type="checkbox" name="artistas" value="artista">
+                    <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                    <span>
+                        <strong>The Weeknd</strong>
+                        <small>Electropop</small>
+                    </span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+            <li>
+                <label class="tarjeta fila">
+                    <input type="checkbox" name="artistas" value="artista-2">
+                    <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                    <span>
+                        <strong>Kurt Cobain</strong>
+                        <small>Rock</small>
+                    </span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+        </ul>
+
+        <div class="acciones">
+            <a class="boton secundario" href="asignar-asientos.html">Cancelar</a>
+            <button class="boton" type="submit">Guardar selección</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

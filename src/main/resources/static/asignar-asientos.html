@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asignar asientos - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" href="panel-organizador.html">
+            <img src="img/logo.png" alt="Logo">
+            EventYunks
+        </a>
+        <nav>
+            <a href="panel-organizador.html">Catálogo</a>
+            <a href="index.html">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor organizador">
+    <h1>Asignar asientos</h1>
+    <form action="seleccionar-artistas.html">
+        <h2>Croquis del recinto</h2>
+        <figure class="tarjeta">
+            <img src="img/croquis-recinto.jpg" alt="Croquis del recinto: escenario al frente, sección 1 con 2 filas de 5 asientos y sección 2 con 5 filas de 10 asientos">
+        </figure>
+        <div class="rejilla">
+            <details open>
+                <summary>Sección 1</summary>
+                <div class="campo">
+                    <label for="boleto-1">Nombre del boleto</label>
+                    <input id="boleto-1" name="boleto-1" type="text" placeholder="Ej. VIP">
+                </div>
+                <div class="campo">
+                    <label for="precio-1">Precio ($)</label>
+                    <input id="precio-1" name="precio-1" type="number" min="0" placeholder="Ej. 500">
+                </div>
+                <div class="campo">
+                    <label for="capacidad-1">Capacidad máxima de ese tipo</label>
+                    <input id="capacidad-1" name="capacidad-1" type="number" min="0" placeholder="Ej. 10">
+                </div>
+                <div class="campo">
+                    <label for="beneficios-1">Descripción de beneficios</label>
+                    <textarea id="beneficios-1" name="beneficios-1" placeholder="Descripción de beneficios"></textarea>
+                </div>
+            </details>
+            <details>
+                <summary>Sección 2</summary>
+                <div class="campo">
+                    <label for="boleto-2">Nombre del boleto</label>
+                    <input id="boleto-2" name="boleto-2" type="text" placeholder="Ej. VIP">
+                </div>
+                <div class="campo">
+                    <label for="precio-2">Precio ($)</label>
+                    <input id="precio-2" name="precio-2" type="number" min="0" placeholder="Ej. 500">
+                </div>
+                <div class="campo">
+                    <label for="capacidad-2">Capacidad máxima de ese tipo</label>
+                    <input id="capacidad-2" name="capacidad-2" type="number" min="0" placeholder="Ej. 10">
+                </div>
+                <div class="campo">
+                    <label for="beneficios-2">Descripción de beneficios</label>
+                    <textarea id="beneficios-2" name="beneficios-2" placeholder="Descripción de beneficios"></textarea>
+                </div>
+            </details>
+        </div>
+        <div class="acciones">
+            <a class="boton secundario" href="seleccionar-recinto.html">Cancelar</a>
+            <button class="boton" type="submit">Guardar asignación</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

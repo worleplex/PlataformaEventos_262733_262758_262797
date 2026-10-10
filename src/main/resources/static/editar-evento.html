@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar evento - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" href="panel-organizador.html">
+            <img src="img/logo.png" alt="Logo">
+            EventYunks
+        </a>
+        <nav>
+            <a href="panel-organizador.html">Catálogo</a>
+            <a href="index.html">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor organizador">
+    <h1>Editar evento</h1>
+
+    <form action="panel-organizador.html">
+        <div class="rejilla">
+            <div class="campo">
+                <label for="nombre">Nombre del evento</label>
+                <input id="nombre" name="nombre" type="text" placeholder="Nombre del evento" value="Encuentro de música">
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento">Encuentro de música en vivo en el Foro Centro, organizado por Producciones Centro. El evento se realizará el 20 de noviembre de 2026 a las 19:00 h.</textarea>
+            </div>
+
+            <div class="campo">
+                <label for="categoria">Categoría</label>
+                <select id="categoria" name="categoria">
+                    <option value="">Selecciona una categoría</option>
+                    <option selected>Música</option>
+                    <option>Teatro</option>
+                    <option>Deportes</option>
+                </select>
+            </div>
+            <div class="campo">
+                <span>Recinto</span>
+                <a class="boton secundario" href="seleccionar-recinto.html">Cambiar recinto · Foro Centro</a>
+            </div>
+
+            <div class="campo">
+                <label for="fecha">Fecha del evento</label>
+                <input id="fecha" name="fecha" type="date" value="2026-11-20">
+            </div>
+
+            <div class="campo">
+                <label for="hora">Hora de inicio</label>
+                <input id="hora" name="hora" type="time" value="19:00">
+            </div>
+
+            <div class="campo">
+                <label for="portada">URL de la imagen de portada</label>
+                <input id="portada" name="portada" type="url" placeholder="https://ejemplo.com/portada.svg">
+            </div>
+        </div>
+        <div class="acciones">
+            <button class="boton secundario" type="submit">Guardar como Borrador</button>
+            <button class="boton" type="submit">Publicar Evento</button>
+            <a class="boton secundario" href="panel-organizador.html">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

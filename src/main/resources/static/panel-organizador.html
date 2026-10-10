@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel del organizador - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" href="panel-organizador.html">
+            <img src="img/logo.png" alt="Logo">
+            EventYunks
+        </a>
+        <nav>
+            <a href="panel-organizador.html">Catálogo</a>
+            <a href="index.html">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor organizador">
+    <h1>Panel de Control del Organizador</h1>
+    <dl class="metricas">
+        <div class="caja completa">
+            <dt>Total de Eventos</dt>
+            <dd>1</dd>
+        </div>
+        <div class="caja">
+            <dt>Boletos Vendidos</dt>
+            <dd>2</dd>
+        </div>
+        <div class="caja">
+            <dt>Ingresos Totales</dt>
+            <dd>$700</dd>
+        </div>
+    </dl>
+
+    <a class="boton" href="crear-evento.html">+ Crear Nuevo Evento</a>
+
+    <h2>Mis Eventos Creados</h2>
+    <section class="rejilla">
+        <article class="tarjeta">
+            <div class="portada">
+                <img src="img/evento-bailey.jpg" alt="Bailey Fest">
+            </div>
+            <div class="info">
+                <h3>Bailey Fest</h3>
+                <p><time datetime="2026-11-20T19:00">20 nov 2026 · 19:00 h</time></p>
+                <p>67 de Capacidad</p>
+                <p>La casa de la Noelia</p>
+                <p><span class="etiqueta">Borrador</span></p>
+                <div class="acciones">
+                    <a class="boton" href="editar-evento.html">editar</a>
+                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
+                </div>
+            </div>
+        </article>
+        <article class="tarjeta">
+            <div class="portada">
+                <img src="img/evento-musica.svg" alt="Urogallo festival">
+            </div>
+            <div class="info">
+                <h3>Urogallo festival</h3>
+                <p><time datetime="2026-11-20T19:00">20 nov 2026 · 19:00 h</time></p>
+                <p>60 de Capacidad</p>
+                <p>Foro Centro</p>
+                <p><span class="etiqueta">Pausado</span></p>
+                <div class="acciones">
+                    <a class="boton" href="editar-evento.html">editar</a>
+                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
+                </div>
+            </div>
+        </article>
+        <article class="tarjeta">
+            <div class="portada">
+                <img src="img/evento-menchaca.jpg" alt="Menchaca’s Tour">
+            </div>
+            <div class="info">
+                <h3>Menchaca’s Tour</h3>
+                <p><time datetime="2026-08-24T18:07">24 agosto 2026 · 18:07 h</time></p>
+                <p>67 de Capacidad</p>
+                <p>La casa del Tolano</p>
+                <p><span class="etiqueta">publicado</span></p>
+                <div class="acciones">
+                    <a class="boton" href="editar-evento.html">editar</a>
+                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
+                </div>
+            </div>
+        </article>
+    </section>
+</main>
+</body>
+</html>
