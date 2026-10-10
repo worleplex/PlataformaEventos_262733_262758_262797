@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis tickets - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="catalogo.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+            <nav>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="mis-tickets.html">Mis tickets</a>
+                <a href="index.html">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <h1>Noelia Encinas</h1>
+        <p>noeliaen@gmail.com</p>
+
+        <div class="tabs">
+            <button id="btn-activos" class="activa" onclick="mostrar('activos')">Mis Tickets Activos</button>
+            <button id="btn-historial" onclick="mostrar('historial')">Historial de Compras</button>
+        </div>
+
+        <section id="activos" class="rejilla">
+            <article class="tarjeta ticket">
+                <span class="etiqueta">GENERAL</span>
+                <span class="etiqueta vigente">Vigente</span>
+                <h3>Encuentro de música</h3>
+                <p>20 nov 2026 · 19:00 h</p>
+                <p>Foro Centro · Calle Reforma 123</p>
+                <div class="caja">
+                    Fila A · Asiento 1 <span class="precio">$200</span>
+                    <br><small>ID: EY-2026-G-A1</small>
+                </div>
+                <img class="qr" src="img/qr-ticket-1.svg" alt="Código QR ilustrativo">
+                <a class="boton" href="#">Presentar ticket en acceso</a>
+            </article>
+
+            <article class="tarjeta ticket ticket-vip">
+                <span class="etiqueta">VIP</span>
+                <span class="etiqueta vigente">Vigente</span>
+                <h3>Encuentro de música</h3>
+                <p>20 nov 2026 · 19:00 h</p>
+                <p>Foro Centro · Calle Reforma 123</p>
+                <div class="caja">
+                    Fila A · Asiento 3 <span class="precio">$500</span>
+                    <br><small>ID: EY-2026-V-A3</small>
+                </div>
+                <img class="qr" src="img/qr-ticket-2.svg" alt="Código QR ilustrativo">
+                <a class="boton" href="#">Presentar ticket en acceso</a>
+            </article>
+        </section>
+
+        <section id="historial" class="oculto">
+            <h2>Historial de Compras</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Evento</th>
+                        <th>Fecha de Compra</th>
+                        <th>Tipo de Boleto</th>
+                        <th>Precio Pagado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Encuentro de música</td>
+                        <td>03 oct 2026</td>
+                        <td>General A-1</td>
+                        <td>$200</td>
+                        <td><span class="etiqueta usado">usado</span></td>
+                    </tr>
+                    <tr>
+                        <td>Menchaca's Tour</td>
+                        <td>03 oct 2026</td>
+                        <td>VIP</td>
+                        <td>$500</td>
+                        <td><span class="etiqueta usado">usado</span></td>
+                    </tr>
+                    <tr>
+                        <td>Encuentro de música</td>
+                        <td>03 oct 2026</td>
+                        <td>VIP A-3</td>
+                        <td>$500</td>
+                        <td><span class="etiqueta usado">usado</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        function mostrar(seccion) {
+            var esActivos = seccion === "activos";
+
+            document.getElementById("activos").classList.toggle("oculto", !esActivos);
+            document.getElementById("historial").classList.toggle("oculto", esActivos);
+            document.getElementById("btn-activos").classList.toggle("activa", esActivos);
+            document.getElementById("btn-historial").classList.toggle("activa", !esActivos);
+        }
+    </script>
+</body>
+</html>

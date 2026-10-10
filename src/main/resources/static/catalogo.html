@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Catálogo - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="catalogo.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+            <nav>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="mis-tickets.html">Mis tickets</a>
+                <a href="index.html">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <a class="volver" href="mis-tickets.html">Mis Boletos</a>
+
+        <div class="campo">
+            <label for="buscar">Buscar</label>
+            <input id="buscar" type="search" placeholder="Buscar eventos...">
+        </div>
+
+        <h1>Catálogo de eventos</h1>
+
+        <h2>Filtros</h2>
+        <section class="rejilla">
+            <div>
+                <label for="precio">Rango de Precio</label>
+                <select id="precio">
+                    <option>Todos los precios</option>
+                </select>
+            </div>
+            <div>
+                <label for="categoria">Categoría</label>
+                <select id="categoria">
+                    <option>Todas las categorías</option>
+                </select>
+            </div>
+            <div>
+                <label for="fecha">Fecha</label>
+                <select id="fecha">
+                    <option>Todas las fechas</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="rejilla">
+            <a class="tarjeta" href="evento.html">
+                <div class="portada">
+                    <img src="img/evento-musica.svg" alt="Encuentro de música">
+                    <span class="etiqueta">En Venta</span>
+                </div>
+                <div class="info">
+                    <h3>Encuentro de música</h3>
+                    <p>20 nov 2026 · 19:00 h</p>
+                    <p>Foro Centro</p>
+                    <p><small>Organiza: Producciones Centro</small></p>
+                    <p class="precio">Desde $200</p>
+                </div>
+            </a>
+
+            <a class="tarjeta" href="evento.html">
+                <div class="portada cancelado-img">
+                    <img src="img/evento-menchaca.jpg" alt="Menchaca's Tour">
+                    <span class="etiqueta cancelado">Cancelado</span>
+                </div>
+                <div class="info">
+                    <h3>Menchaca's Tour</h3>
+                    <p>20 nov 2026 · 19:00 h</p>
+                    <p>Foro Centro</p>
+                    <p><small>Organiza: Producciones Centro</small></p>
+                    <p class="precio">Venta suspendida</p>
+                </div>
+            </a>
+
+            <a class="tarjeta" href="evento.html">
+                <div class="portada">
+                    <img src="img/evento-bailey.jpg" alt="Bailey Fest">
+                    <span class="etiqueta finalizado">Finalizado</span>
+                </div>
+                <div class="info">
+                    <h3>Bailey Fest</h3>
+                    <p>20 nov 2026 · 19:00 h</p>
+                    <p>Foro Centro</p>
+                    <p><small>Organiza: Producciones Centro</small></p>
+                    <p class="precio">Ya ocurrió · sin venta de boletos</p>
+                </div>
+            </a>
+        </section>
+    </main>
+</body>
+</html>

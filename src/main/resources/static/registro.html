@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="index.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <div class="formulario">
+            <h1>Crear una cuenta</h1>
+
+            <div class="tabs">
+                <a href="index.html">Iniciar Sesión</a>
+                <a class="activa" href="registro.html">Registrarse</a>
+            </div>
+
+            <form id="registro">
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" type="text" placeholder="Nombre completo" required>
+                </div>
+
+                <div class="campo">
+                    <label for="correo">Correo</label>
+                    <input id="correo" type="email" placeholder="nombre@correo.com">
+                    <p id="error-correo" class="error oculto">correo electrónico incorrecto</p>
+                </div>
+
+                <div class="campo">
+                    <label for="pass">Contraseña</label>
+                    <input id="pass" type="password" placeholder="Crea una contraseña">
+                    <p id="error-pass" class="error oculto">contraseña con caracteres insuficientes, mínimo 8</p>
+                </div>
+
+                <div class="campo">
+                    <label for="tel">Teléfono</label>
+                    <input id="tel" type="tel" placeholder="Ej. 55 1234 5678">
+                </div>
+
+                <button class="boton" type="submit">Crear cuenta</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        var form = document.getElementById("registro");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            var correoOk = form.correo.value.includes("@") && form.correo.value.includes(".");
+            var passOk = form.pass.value.length >= 8;
+
+            document.getElementById("error-correo").classList.toggle("oculto", correoOk);
+            document.getElementById("error-pass").classList.toggle("oculto", passOk);
+
+            if (correoOk && passOk) {
+                window.location = "catalogo.html";
+            }
+        });
+    </script>
+</body>
+</html>
