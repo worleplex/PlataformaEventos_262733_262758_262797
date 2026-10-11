@@ -26,17 +26,15 @@
     <main class="contenedor admin">
         <h1>Panel de Administrador</h1>
         <p><strong>Selección de categoría</strong></p>
-        <nav class="tabs vertical" aria-label="Categorías de gestión">
+        <nav class="tabs" aria-label="Categorías de gestión">
             <a href="gestion-organizadores.html">Gestión de Organizadores</a>
             <a href="gestion-artistas.html">Gestión de Artistas</a>
             <a class="activa" href="gestion-recintos.html">Gestión de Recintos</a>
         </nav>
-
-        <section class="formulario">
+        <section>
             <h2>Editar recinto</h2>
             <p class="descripcion">Configura el espacio, su dirección y las zonas de acceso.</p>
-
-            <form>
+            <form class="formulario-crear-editar">
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input id="nombre" type="text" placeholder="Nombre del recinto" value="Foro Centro">
@@ -45,39 +43,40 @@
                     <label for="capacidad">Capacidad (número)</label>
                     <input id="capacidad" type="number" placeholder="Ej. 1200" value="1200">
                 </div>
-                <div class="caja">
-                    <h3>Dirección</h3>
-                <div class="campo">
-                    <label for="lugar">Nombre del lugar</label>
-                    <input id="lugar" type="text" placeholder="Nombre del lugar" value="Foro Centro">
-                </div>
-                <div class="campo">
-                    <label for="calle">Calle</label>
-                    <input id="calle" type="text" placeholder="Nombre de la calle" value="República de Cuba">
-                </div>
-                <div class="campo">
-                    <label for="numero">Número</label>
-                    <input id="numero" type="text" placeholder="Número exterior" value="45">
-                </div>
-                <div class="campo">
-                    <label for="colonia">Colonia</label>
-                    <input id="colonia" type="text" placeholder="Nombre de la colonia" value="Centro">
-                </div>
-                <div class="campo">
-                    <label for="cp">Código postal</label>
-                    <input id="cp" type="text" placeholder="Ej. 06010" value="06010">
-                </div>
-                <div class="campo">
-                    <label for="ciudad">Ciudad</label>
-                    <input id="ciudad" type="text" placeholder="Ciudad de México, Guadalajara..." value="Ciudad de México">
-                </div>
-                </div>
-
-                <div class="acciones horizontal">
-                    <a class="boton secundario" href="gestion-recintos.html">Cancelar</a>
-                    <a class="boton" href="gestion-recintos.html">Guardar</a>
-                </div>
             </form>
+            <div class="caja">
+                <h3>Dirección</h3>
+                <form class="formulario-crear-editar">
+                    <div class="campo">
+                        <label for="lugar">Nombre del lugar</label>
+                        <input id="lugar" type="text" placeholder="Nombre del lugar" value="Foro Centro">
+                    </div>
+                    <div class="campo">
+                        <label for="calle">Calle</label>
+                        <input id="calle" type="text" placeholder="Nombre de la calle" value="República de Cuba">
+                    </div>
+                    <div class="campo">
+                        <label for="numero">Número</label>
+                        <input id="numero" type="text" placeholder="Número exterior" value="45">
+                    </div>
+                    <div class="campo">
+                        <label for="colonia">Colonia</label>
+                        <input id="colonia" type="text" placeholder="Nombre de la colonia" value="Centro">
+                    </div>
+                    <div class="campo">
+                        <label for="cp">Código postal</label>
+                        <input id="cp" type="text" placeholder="Ej. 06010" value="06010">
+                    </div>
+                    <div class="campo">
+                        <label for="ciudad">Ciudad</label>
+                        <input id="ciudad" type="text" placeholder="Ciudad de México, Guadalajara..." value="Ciudad de México">
+                    </div>
+                </form>
+            </div>
+            <div class="acciones horizontal">
+                <a class="boton secundario" href="gestion-recintos.html">Cancelar</a>
+                <a class="boton" href="gestion-recintos.html">Guardar</a>
+            </div>
         </section>
     </main>
 </body>

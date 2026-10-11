@@ -26,17 +26,16 @@
     <main class="contenedor admin">
         <h1>Panel de Administrador</h1>
         <p><strong>Selección de categoría</strong></p>
-        <nav class="tabs vertical" aria-label="Categorías de gestión">
+        <nav class="tabs" aria-label="Categorías de gestión">
             <a href="gestion-organizadores.html">Gestión de Organizadores</a>
             <a class="activa" href="gestion-artistas.html">Gestión de Artistas</a>
             <a href="gestion-recintos.html">Gestión de Recintos</a>
         </nav>
 
-        <section class="formulario">
+        <section>
             <h2>Nuevo artista</h2>
             <p class="descripcion">Información artística para el catálogo de eventos.</p>
-
-            <form>
+            <form class="formulario-crear-editar">
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input id="nombre" type="text" placeholder="Nombre del artista o agrupación">
@@ -64,12 +63,11 @@
                     </div>
                     <a class="boton secundario" href="#">Subir imagen</a>
                 </div>
-
-                <div class="acciones horizontal">
-                    <a class="boton secundario" href="gestion-artistas.html">Cancelar</a>
-                    <a class="boton" href="gestion-artistas.html">Guardar</a>
-                </div>
             </form>
+            <div class="acciones horizontal">
+                <a class="boton secundario" href="gestion-artistas.html">Cancelar</a>
+                <a class="boton" href="gestion-artistas.html">Guardar</a>
+            </div>
         </section>
     </main>
 </body>

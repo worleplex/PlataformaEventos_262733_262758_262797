@@ -26,17 +26,15 @@
     <main class="contenedor admin">
         <h1>Panel de Administrador</h1>
         <p><strong>Selección de categoría</strong></p>
-        <nav class="tabs vertical" aria-label="Categorías de gestión">
+        <nav class="tabs" aria-label="Categorías de gestión">
             <a class="activa" href="gestion-organizadores.html">Gestión de Organizadores</a>
             <a href="gestion-artistas.html">Gestión de Artistas</a>
             <a href="gestion-recintos.html">Gestión de Recintos</a>
         </nav>
-
-        <section class="formulario">
+        <section>
             <h2>Nuevo organizador</h2>
             <p class="descripcion">Datos de acceso y contacto del organizador. Todos los campos son obligatorios.</p>
-
-            <form>
+            <form class="formulario-crear-editar">
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input id="nombre" type="text" placeholder="Nombre del organizador">
@@ -54,12 +52,11 @@
                     <label for="clave">Contraseña</label>
                     <input id="clave" type="password" placeholder="Crea una contraseña segura">
                 </div>
-
-                <div class="acciones horizontal">
-                    <a class="boton secundario" href="gestion-organizadores.html">Cancelar</a>
-                    <a class="boton" href="gestion-organizadores.html">Guardar</a>
-                </div>
             </form>
+            <div class="acciones horizontal">
+                <a class="boton secundario" href="gestion-organizadores.html">Cancelar</a>
+                <a class="boton" href="gestion-organizadores.html">Guardar</a>
+            </div>
         </section>
     </main>
 </body>

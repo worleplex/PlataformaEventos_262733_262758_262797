@@ -101,6 +101,7 @@ nav a {
     background: var(--seccion);
     border: 1px solid var(--borde);
     border-radius: 8px;
+    flex-direction: column;
 }
 
 .tabs a,
@@ -144,6 +145,11 @@ textarea {
     font-size: 14px;
     border: 1px solid var(--borde);
     border-radius: 8px;
+}
+
+textarea {
+    resize: vertical;
+    height: 90%;
 }
 
 .error {
@@ -192,7 +198,7 @@ a.tarjeta:focus-visible,
 }
 .caja {
     padding: 12px;
-    margin-bottom: 10px;
+    gab: 10px;
     background: var(--seccion);
     border: 1px solid var(--borde);
     border-radius: 8px;
@@ -245,7 +251,7 @@ a.tarjeta:focus-visible,
     color: var(--acento);
 }
 
-.rejilla, .campos  {
+.rejilla, .formulario-crear-editar  {
     display: grid;
     gap: 14px;
     margin: 14px 0 20px;
@@ -288,6 +294,24 @@ a.tarjeta:focus-visible,
     display: flex;
     justify-content: space-between;
     padding: 14px;
+}
+
+.zona-imagen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 130px;
+    margin-bottom: 10px;
+    padding: 16px;
+    text-align: center;
+    background: var(--seccion);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+.zona-imagen small {
+    color: var(--texto-suave);
 }
 
 /* Mis tickets */
@@ -340,11 +364,6 @@ main.organizador h2 {
     margin: 24px 0 12px;
 }
 
-textarea {
-    min-height: 115px;
-    resize: vertical;
-}
-
 figure {
     margin-bottom: 14px;
 }
@@ -360,7 +379,7 @@ figure img {
     font-weight: bold;
 }
 
-.campos > .campo {
+.formulario-crear-editar > .campo {
     margin-bottom: 0;
 }
 
@@ -385,12 +404,12 @@ ul.rejilla {
     flex: 1;
 }
 
-form .acciones {
+form .acciones, .horizontal {
     flex-direction: column;
     margin-top: 20px;
 }
 
-form .acciones .boton {
+form .acciones .boton, .horizontal .boton {
     flex: none;
 }
 
@@ -549,7 +568,7 @@ details[open] summary::after {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .campos {
+    .formulario-crear-editar {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -563,4 +582,14 @@ details[open] summary::after {
     .rejilla {
         grid-template-columns: repeat(3, 1fr);
     }
+
+    .tabs {
+        flex-direction: row;
+    }
+}
+
+.item-cabecera {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
