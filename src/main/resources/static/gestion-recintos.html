@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de recintos - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="panel-administrador.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+            <nav>
+                <a href="panel-administrador.html">Catálogo de Eventos</a>
+                <a href="gestion-organizadores.html">Gestión General</a>
+                <a href="index.html">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor admin">
+        <h1>Panel de Administrador</h1>
+        <p><strong>Selección de categoría</strong></p>
+        <nav class="tabs vertical" aria-label="Categorías de gestión">
+            <a href="gestion-organizadores.html">Gestión de Organizadores</a>
+            <a href="gestion-artistas.html">Gestión de Artistas</a>
+            <a class="activa" href="gestion-recintos.html">Gestión de Recintos</a>
+        </nav>
+
+        <div class="titulo-lista">
+            <h2>Recintos</h2>
+            <small>3 registros</small>
+        </div>
+
+        <div class="campo">
+            <label for="buscar">Buscar</label>
+            <input id="buscar" type="search" placeholder="Buscar recintos...">
+        </div>
+        <a class="boton" href="crear-recinto.html">+ Nuevo</a>
+
+        <section class="rejilla">
+            <article class="tarjeta">
+                <div class="info">
+                    <h3>Foro Centro</h3>
+                    <p>Ciudad de México</p>
+                    <p>1,200 de capacidad</p>
+                    <p>Zona 1: General</p>
+                    <p>Zona 2: Vip</p>
+                    <p>Zona 3: Balcon</p>
+                <div class="acciones envolver">
+                    <a class="boton secundario" href="editar-recinto.html">Editar</a>
+                    <a class="boton secundario peligro" href="#">Eliminar</a>
+                </div>
+                </div>
+            </article>
+            <article class="tarjeta">
+                <div class="info">
+                    <h3>La casa de la Noelia</h3>
+                    <p>Guadalajara</p>
+                    <p>67 de capacidad</p>
+                    <p>Zona 1: General</p>
+                    <p>Zona 2: Vip</p>
+                    <p>Zona 3: Balcon</p>
+                <div class="acciones envolver">
+                    <a class="boton secundario" href="editar-recinto.html">Editar</a>
+                    <a class="boton secundario peligro" href="#">Eliminar</a>
+                </div>
+                </div>
+            </article>
+            <article class="tarjeta">
+                <div class="info">
+                    <h3>La casa del Tolano</h3>
+                    <p>Monterrey</p>
+                    <p>67 de capacidad</p>
+                    <p>Zona 1: General</p>
+                    <p>Zona 2: Vip</p>
+                    <p>Zona 3: Balcon</p>
+                <div class="acciones envolver">
+                    <a class="boton secundario" href="editar-recinto.html">Editar</a>
+                    <a class="boton secundario peligro" href="#">Eliminar</a>
+                </div>
+                </div>
+            </article>
+        </section>
+        <p class="pie-lista">Mostrando 3 de 3 recintos · México</p>
+    </main>
+</body>
+</html>

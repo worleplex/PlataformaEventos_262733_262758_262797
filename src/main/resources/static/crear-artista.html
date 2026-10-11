@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nuevo artista - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="panel-administrador.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+            <nav>
+                <a href="panel-administrador.html">Catálogo de Eventos</a>
+                <a href="gestion-organizadores.html">Gestión General</a>
+                <a href="index.html">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor admin">
+        <h1>Panel de Administrador</h1>
+        <p><strong>Selección de categoría</strong></p>
+        <nav class="tabs vertical" aria-label="Categorías de gestión">
+            <a href="gestion-organizadores.html">Gestión de Organizadores</a>
+            <a class="activa" href="gestion-artistas.html">Gestión de Artistas</a>
+            <a href="gestion-recintos.html">Gestión de Recintos</a>
+        </nav>
+
+        <section class="formulario">
+            <h2>Nuevo artista</h2>
+            <p class="descripcion">Información artística para el catálogo de eventos.</p>
+
+            <form>
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" type="text" placeholder="Nombre del artista o agrupación">
+                </div>
+                <div class="campo">
+                    <label for="genero">Género musical</label>
+                    <select id="genero">
+                    <option>Selecciona un género</option>
+                    <option>Pop</option>
+                    <option>Indie pop</option>
+                    <option>R&amp;B</option>
+                    <option>Rock</option>
+                    <option>Electrónica</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="bio">Biografía</label>
+                    <textarea id="bio" placeholder="Describe la trayectoria y propuesta musical del artista..."></textarea>
+                </div>
+                <div class="campo">
+                    <span>Imagen</span>
+                    <div class="zona-imagen">
+                        <strong>Sin archivo seleccionado</strong>
+                        <small>La vista previa aparecerá aquí · JPG o PNG</small>
+                    </div>
+                    <a class="boton secundario" href="#">Subir imagen</a>
+                </div>
+
+                <div class="acciones horizontal">
+                    <a class="boton secundario" href="gestion-artistas.html">Cancelar</a>
+                    <a class="boton" href="gestion-artistas.html">Guardar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
