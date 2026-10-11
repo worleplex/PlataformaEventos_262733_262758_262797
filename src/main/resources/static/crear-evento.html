@@ -25,18 +25,13 @@
     <h1>Crear evento</h1>
 
     <form action="panel-organizador.html">
-        <div class="rejilla">
-            <div class="campo">
+        <div class="campos">
+            <div class="campo" id="campo1">
                 <label for="nombre">Nombre del evento</label>
                 <input id="nombre" name="nombre" type="text" placeholder="Nombre del evento">
             </div>
 
-            <div class="campo">
-                <label for="descripcion">Descripción</label>
-                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento"></textarea>
-            </div>
-
-            <div class="campo">
+            <div class="campo" id="campo2">
                 <label for="categoria">Categoría</label>
                 <select id="categoria" name="categoria">
                     <option value="" selected>Selecciona una categoría</option>
@@ -45,22 +40,28 @@
                     <option>Deportes</option>
                 </select>
             </div>
-            <div class="campo">
+
+            <div class="campo" id="campo3">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento"></textarea>
+            </div>
+
+            <div class="campo" id="campo4">
                 <span>Recinto</span>
                 <a class="boton secundario" href="seleccionar-recinto.html">Seleccionar recinto</a>
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo5">
                 <label for="fecha">Fecha del evento</label>
                 <input id="fecha" name="fecha" type="date">
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo6">
                 <label for="hora">Hora de inicio</label>
                 <input id="hora" name="hora" type="time">
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo7">
                 <label for="portada">URL de la imagen de portada</label>
                 <input id="portada" name="portada" type="url" placeholder="https://ejemplo.com/portada.svg">
             </div>

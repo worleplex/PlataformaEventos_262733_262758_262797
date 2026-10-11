@@ -25,18 +25,13 @@
     <h1>Editar evento</h1>
 
     <form action="panel-organizador.html">
-        <div class="rejilla">
-            <div class="campo">
+        <div class="campos">
+            <div class="campo" id="campo1">
                 <label for="nombre">Nombre del evento</label>
                 <input id="nombre" name="nombre" type="text" placeholder="Nombre del evento" value="Encuentro de música">
             </div>
 
-            <div class="campo">
-                <label for="descripcion">Descripción</label>
-                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento">Encuentro de música en vivo en el Foro Centro, organizado por Producciones Centro. El evento se realizará el 20 de noviembre de 2026 a las 19:00 h.</textarea>
-            </div>
-
-            <div class="campo">
+            <div class="campo" id="campo2">
                 <label for="categoria">Categoría</label>
                 <select id="categoria" name="categoria">
                     <option value="">Selecciona una categoría</option>
@@ -45,22 +40,28 @@
                     <option>Deportes</option>
                 </select>
             </div>
-            <div class="campo">
+
+            <div class="campo" id="campo3">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento">Encuentro de música en vivo en el Foro Centro, organizado por Producciones Centro. El evento se realizará el 20 de noviembre de 2026 a las 19:00 h.</textarea>
+            </div>
+
+            <div class="campo" id="campo4">
                 <span>Recinto</span>
                 <a class="boton secundario" href="seleccionar-recinto.html">Cambiar recinto · Foro Centro</a>
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo5">
                 <label for="fecha">Fecha del evento</label>
                 <input id="fecha" name="fecha" type="date" value="2026-11-20">
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo6">
                 <label for="hora">Hora de inicio</label>
                 <input id="hora" name="hora" type="time" value="19:00">
             </div>
 
-            <div class="campo">
+            <div class="campo" id="campo7">
                 <label for="portada">URL de la imagen de portada</label>
                 <input id="portada" name="portada" type="url" placeholder="https://ejemplo.com/portada.svg">
             </div>
