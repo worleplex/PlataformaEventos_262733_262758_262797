@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Selección de asientos - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" href="catalogo.html">
+                <img src="img/logo.png" alt="Logo">
+                EventYunks
+            </a>
+            <nav>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="mis-tickets.html">Mis tickets</a>
+                <a href="index.html">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor detalle">
+        <a class="volver" href="evento.html">← Regresar</a>
+        <h1>Selección de asientos</h1>
+        <p>Encuentro de música · 20 nov 2026 · 19:00 h</p>
+        <h2>Foro Centro</h2>
+        <p>Calle Reforma 123, Ciudad de México</p>
+        <p><small>Capacidad total: 60 lugares</small></p>
+        <p>Toca un asiento disponible para añadir un boleto. Tócalo de nuevo para quitarlo. Apartados y vendidos están bloqueados.</p>
+
+        <form action="resumen-compra.html">
+            <h3 class="titulo-seccion">Asientos · Solo los disponibles se pueden elegir</h3>
+            <ul class="leyenda">
+                <li class="item-cabecera"><span class="cuadro"></span> Disponible</li>
+                <li class="item-cabecera"><span class="cuadro seleccionado"></span> Seleccionado</li>
+                <li class="item-cabecera"><span class="cuadro apartado"></span> Apartado</li>
+                <li class="item-cabecera"><span class="cuadro vendido"></span> Vendido</li>
+            </ul>
+
+            <div class="asientos-columnas">
+            <section class="caja blanca">
+                <p class="caja escenario centrado suave">ESCENARIO</p>
+
+                <h4 class="zona-titulo vip">VIP · 10 asientos · $500</h4>
+                <div class="fila-asientos">
+                    <span class="letra">A</span>
+                    <span class="asiento vendido" title="Vendido">1</span>
+                    <span class="asiento vendido" title="Vendido">2</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-A3" checked aria-label="VIP · Fila A · Asiento 3"><span>3</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-A4" aria-label="VIP · Fila A · Asiento 4"><span>4</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-A5" aria-label="VIP · Fila A · Asiento 5"><span>5</span></label>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">B</span>
+                    <span class="asiento apartado" title="Apartado">1</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-B2" aria-label="VIP · Fila B · Asiento 2"><span>2</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-B3" aria-label="VIP · Fila B · Asiento 3"><span>3</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-B4" aria-label="VIP · Fila B · Asiento 4"><span>4</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="VIP-B5" aria-label="VIP · Fila B · Asiento 5"><span>5</span></label>
+                </div>
+
+                <h4 class="zona-titulo">General · 50 asientos · $200</h4>
+                <div class="fila-asientos">
+                    <span class="letra">A</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A1" checked aria-label="General · Fila A · Asiento 1"><span>1</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A2" aria-label="General · Fila A · Asiento 2"><span>2</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A3" aria-label="General · Fila A · Asiento 3"><span>3</span></label>
+                    <span class="asiento vendido" title="Vendido">4</span>
+                    <span class="asiento vendido" title="Vendido">5</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A6" aria-label="General · Fila A · Asiento 6"><span>6</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A7" aria-label="General · Fila A · Asiento 7"><span>7</span></label>
+                    <span class="asiento apartado" title="Apartado">8</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A9" aria-label="General · Fila A · Asiento 9"><span>9</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-A10" aria-label="General · Fila A · Asiento 10"><span>10</span></label>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">B</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B1" aria-label="General · Fila B · Asiento 1"><span>1</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B2" aria-label="General · Fila B · Asiento 2"><span>2</span></label>
+                    <span class="asiento vendido" title="Vendido">3</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B4" aria-label="General · Fila B · Asiento 4"><span>4</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B5" aria-label="General · Fila B · Asiento 5"><span>5</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B6" aria-label="General · Fila B · Asiento 6"><span>6</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B7" aria-label="General · Fila B · Asiento 7"><span>7</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B8" aria-label="General · Fila B · Asiento 8"><span>8</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B9" aria-label="General · Fila B · Asiento 9"><span>9</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-B10" aria-label="General · Fila B · Asiento 10"><span>10</span></label>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">C</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C1" aria-label="General · Fila C · Asiento 1"><span>1</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C2" aria-label="General · Fila C · Asiento 2"><span>2</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C3" aria-label="General · Fila C · Asiento 3"><span>3</span></label>
+                    <span class="asiento apartado" title="Apartado">4</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C5" aria-label="General · Fila C · Asiento 5"><span>5</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C6" aria-label="General · Fila C · Asiento 6"><span>6</span></label>
+                    <span class="asiento vendido" title="Vendido">7</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C8" aria-label="General · Fila C · Asiento 8"><span>8</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C9" aria-label="General · Fila C · Asiento 9"><span>9</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-C10" aria-label="General · Fila C · Asiento 10"><span>10</span></label>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">D</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D1" aria-label="General · Fila D · Asiento 1"><span>1</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D2" aria-label="General · Fila D · Asiento 2"><span>2</span></label>
+                    <span class="asiento vendido" title="Vendido">3</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D4" aria-label="General · Fila D · Asiento 4"><span>4</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D5" aria-label="General · Fila D · Asiento 5"><span>5</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D6" aria-label="General · Fila D · Asiento 6"><span>6</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D7" aria-label="General · Fila D · Asiento 7"><span>7</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D8" aria-label="General · Fila D · Asiento 8"><span>8</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D9" aria-label="General · Fila D · Asiento 9"><span>9</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-D10" aria-label="General · Fila D · Asiento 10"><span>10</span></label>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">E</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E1" aria-label="General · Fila E · Asiento 1"><span>1</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E2" aria-label="General · Fila E · Asiento 2"><span>2</span></label>
+                    <span class="asiento vendido" title="Vendido">3</span>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E4" aria-label="General · Fila E · Asiento 4"><span>4</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E5" aria-label="General · Fila E · Asiento 5"><span>5</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E6" aria-label="General · Fila E · Asiento 6"><span>6</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E7" aria-label="General · Fila E · Asiento 7"><span>7</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E8" aria-label="General · Fila E · Asiento 8"><span>8</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E9" aria-label="General · Fila E · Asiento 9"><span>9</span></label>
+                    <label class="asiento"><input type="checkbox" name="asiento" value="General-E10" aria-label="General · Fila E · Asiento 10"><span>10</span></label>
+                </div>
+            </section>
+
+            <div>
+            <section class="caja">
+                <h3 class="titulo-seccion">Boletos seleccionados (2)</h3>
+                <div class="boleto">
+                    <p class="linea"><strong class="vip">VIP · Fila A · Asiento 3</strong> <strong>$500</strong></p>
+                    <small>Cantidad: 1 · Quitar desde el croquis</small>
+                </div>
+                <div class="boleto">
+                    <p class="linea"><strong>General · Fila A · Asiento 1</strong> <strong>$200</strong></p>
+                    <small>Cantidad: 1 · Quitar desde el croquis</small>
+                </div>
+                <p class="linea total"><span class="suave">Total · 2 boletos</span> <strong>$700</strong></p>
+            </section>
+
+            <div class="acciones">
+                <button class="boton" type="submit">Comprar boletos · $700</button>
+                <a class="boton secundario" href="evento.html">Cancelar</a>
+            </div>
+            </div>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

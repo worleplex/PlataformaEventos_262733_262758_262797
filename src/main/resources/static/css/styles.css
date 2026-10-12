@@ -1,5 +1,3 @@
-/* EventYunks - Acceso, registro y asistente */
-
 :root {
     --borde: #D9D2EC;
     --base: #FFFFFF;
@@ -592,4 +590,319 @@ details[open] summary::after {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+/* cosos faltantes y ultimo */
+.detalle h1,
+.detalle h2 {
+    margin: 14px 0 6px;
+}
+
+.detalle p {
+    margin-bottom: 6px;
+}
+
+.detalle .caja {
+    margin-bottom: 14px;
+}
+
+.detalle .rejilla .caja {
+    margin-bottom: 0;
+}
+
+.detalle .caja > :first-child {
+    margin-top: 0;
+}
+
+.suave {
+    color: var(--texto-suave);
+}
+
+.centrado {
+    text-align: center;
+}
+
+.vip {
+    color: var(--acento);
+}
+
+.verde {
+    color: var(--exito);
+}
+
+.blanca {
+    background: var(--base);
+}
+
+.titulo-seccion {
+    margin: 16px 0 8px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--texto-suave);
+}
+
+.linea {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.total {
+    align-items: center;
+    margin-top: 12px;
+}
+
+.total strong {
+    font-size: 20px;
+}
+
+hr {
+    margin: 12px 0;
+    border: none;
+    border-top: 1px solid var(--borde);
+}
+
+.boleto {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: var(--base);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.boleto small {
+    color: var(--texto-suave);
+}
+
+.metodo-pago {
+    border-color: var(--acento);
+}
+
+.marca {
+    font-size: 11px;
+    background: #1A1F71;
+}
+
+/* croquis de asientos */
+.leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 0;
+    margin-bottom: 12px;
+    font-size: 12px;
+    list-style: none;
+}
+
+.leyenda li {
+    gap: 6px;
+}
+
+.cuadro,
+.asiento > span,
+span.asiento {
+    background: var(--seccion);
+    border: 1px solid var(--borde);
+    border-radius: 5px;
+}
+
+.cuadro {
+    width: 16px;
+    height: 16px;
+}
+
+.cuadro.seleccionado,
+label.asiento input:checked + span {
+    font-weight: bold;
+    color: white;
+    background: var(--acento);
+    border-color: var(--acento);
+}
+
+.cuadro.apartado,
+span.asiento.apartado {
+    color: white;
+    background: var(--warning);
+    border-color: var(--warning);
+}
+
+.cuadro.vendido,
+span.asiento.vendido {
+    font-weight: bold;
+    color: white;
+    background: var(--texto-suave);
+    border-color: var(--texto-suave);
+}
+
+.escenario {
+    padding: 8px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.zona-titulo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 14px 0 8px;
+    font-size: 12px;
+    color: var(--texto-suave);
+}
+
+.zona-titulo::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    border-radius: 2px;
+}
+
+.zona-titulo.vip {
+    color: var(--acento);
+}
+
+.fila-asientos {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.letra {
+    flex: none;
+    width: 16px;
+    font-size: 12px;
+    color: var(--texto-suave);
+}
+
+.asiento {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 34px;
+    margin: 0;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.asiento input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    opacity: 0;
+}
+
+.asiento > span,
+span.asiento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    color: var(--texto-suave);
+}
+
+label.asiento span {
+    cursor: pointer;
+}
+
+label.asiento:hover span,
+label.asiento input:focus-visible + span {
+    border-color: var(--acento);
+}
+
+@media (min-width: 768px) {
+    .asientos-columnas {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    .fila-asientos {
+        gap: 8px;
+    }
+
+    .asiento {
+        max-width: 44px;
+    }
+}
+
+/* estado del pago y avisos */
+.aviso {
+    --color: var(--warning);
+    --fondo: #FEF3C7;
+    padding: 14px;
+    margin: 14px 0;
+    color: var(--color);
+    background: var(--fondo);
+    border: 1px solid var(--color);
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(17, 12, 29, 0.08);
+}
+
+.aviso.fallo {
+    --color: var(--error);
+    --fondo: #FEF2F2;
+}
+
+.aviso.exito {
+    --color: var(--exito);
+    --fondo: #F0FDF4;
+}
+
+.aviso h1,
+.aviso h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
+.aviso .etiqueta {
+    color: var(--color);
+    background: none;
+    border-color: var(--color);
+}
+
+.icono {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background: var(--color);
+    border-radius: 50%;
+}
+
+.aviso.estado {
+    padding: 20px 16px;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+.estado h1 {
+    flex-direction: column;
+    font-size: 18px;
+    color: var(--texto);
+}
+
+.estado .icono {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+}
+
+.aviso.espera .icono {
+    color: var(--color);
+    background: none;
+    border: 1px solid var(--color);
 }
