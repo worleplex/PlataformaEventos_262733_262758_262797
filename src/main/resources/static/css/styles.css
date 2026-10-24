@@ -681,7 +681,11 @@ hr {
 }
 
 .marca {
+    width: auto;
+    min-width: 48px;
+    padding: 0 10px;
     font-size: 11px;
+    white-space: nowrap;
     background: #1A1F71;
 }
 
@@ -817,8 +821,8 @@ label.asiento input:focus-visible + span {
 @media (min-width: 768px) {
     .asientos-columnas {
         display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 16px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 24px;
         align-items: start;
     }
 
@@ -905,4 +909,102 @@ label.asiento input:focus-visible + span {
     color: var(--color);
     background: none;
     border: 1px solid var(--color);
+}
+
+/* evento + seleccion de asientos */
+.asientos-columnas > div > .portada img {
+    height: 190px;
+    border-radius: 12px;
+}
+
+.asientos-columnas {
+    margin-bottom: 20px;
+}
+
+.croquis {
+    margin-top: 12px;
+    padding: 14px;
+}
+
+.asientos-columnas > div:last-child {
+    margin-top: 16px;
+}
+
+@media (min-width: 768px) {
+    .asientos-columnas > div:last-child {
+        margin-top: 0;
+    }
+}
+
+.asientos-columnas h1 {
+    margin-top: 0;
+}
+
+.etiqueta.espera {
+    color: var(--warning);
+    background: #FEF3C7;
+    border-color: var(--warning);
+}
+
+.tickets-estado {
+    display: grid;
+    gap: 14px;
+    margin: 14px 0 20px;
+}
+
+/* resumen de compra */
+.resumen-superior > div > :first-child {
+    margin-top: 0;
+}
+
+@media (min-width: 420px) {
+    .resumen-superior {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 20px;
+    }
+}
+
+/* seleccionar recinto y asientos */
+.lista-vertical {
+    display: grid;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.recinto-columnas > div > h2 {
+    margin-top: 0;
+}
+
+.croquis {
+    margin-top: 0;
+}
+
+.recinto-columnas {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .recinto-columnas {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+    }
+}
+
+.croquis .asiento {
+    flex: 0 1 30px;
+    max-width: 30px;
+}
+
+.recinto-columnas > div:last-child {
+    margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+    .recinto-columnas > div:last-child {
+        margin-top: 0;
+    }
 }

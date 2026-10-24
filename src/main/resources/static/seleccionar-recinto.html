@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Seleccionar recinto - EventYunks</title>
+    <title>Seleccionar recinto y asientos - EventYunks</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -19,30 +19,192 @@
 </header>
 
 <main class="contenedor organizador">
-    <h1>Seleccionar recinto</h1>
-    <h2>Recintos disponibles</h2>
-    <ul class="rejilla">
-        <li>
-            <a class="tarjeta fila seleccionada" href="asignar-asientos.html">
-                <span class="avatar">FC</span>
-                <span>
+    <h1>Seleccionar recinto y asientos</h1>
+    <form action="seleccionar-artistas.html">
+        <div class="recinto-columnas">
+            <div>
+                <h2>Recintos disponibles</h2>
+                <ul class="lista-vertical">
+            <li>
+                <label class="tarjeta fila">
+                    <input type="radio" name="recinto" value="foro-centro" checked>
+                    <span class="avatar">FC</span>
+                    <span>
                         <strong>Foro Centro</strong>
                         <small>Calle Reforma 123, Ciudad de México</small>
                     </span>
-                <span class="etiqueta">Seleccionado</span>
-            </a>
-        </li>
-        <li>
-            <a class="tarjeta fila" href="asignar-asientos.html">
-                <span class="avatar">PA</span>
-                <span>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+            <li>
+                <label class="tarjeta fila">
+                    <input type="radio" name="recinto" value="parque-alameda">
+                    <span class="avatar">PA</span>
+                    <span>
                         <strong>Parque Alameda</strong>
                         <small>Av. Juárez 50, Ciudad de México</small>
                     </span>
-            </a>
-        </li>
-    </ul>
-    <a class="boton secundario" href="editar-evento.html">Cancelar</a>
+                    <span class="etiqueta">Seleccionado</span>
+                </label>
+            </li>
+                </ul>
+            </div>
+            <div>
+                <h2>Croquis del recinto</h2>
+            <section class="caja blanca croquis">
+                <p class="caja escenario centrado suave">ESCENARIO</p>
+                <h4 class="zona-titulo vip">Sección 1</h4>
+                <div class="fila-asientos">
+                    <span class="letra">A</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">B</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                </div>
+                <h4 class="zona-titulo">Sección 2</h4>
+                <div class="fila-asientos">
+                    <span class="letra">A</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                    <span class="asiento">6</span>
+                    <span class="asiento">7</span>
+                    <span class="asiento">8</span>
+                    <span class="asiento">9</span>
+                    <span class="asiento">10</span>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">B</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                    <span class="asiento">6</span>
+                    <span class="asiento">7</span>
+                    <span class="asiento">8</span>
+                    <span class="asiento">9</span>
+                    <span class="asiento">10</span>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">C</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                    <span class="asiento">6</span>
+                    <span class="asiento">7</span>
+                    <span class="asiento">8</span>
+                    <span class="asiento">9</span>
+                    <span class="asiento">10</span>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">D</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                    <span class="asiento">6</span>
+                    <span class="asiento">7</span>
+                    <span class="asiento">8</span>
+                    <span class="asiento">9</span>
+                    <span class="asiento">10</span>
+                </div>
+                <div class="fila-asientos">
+                    <span class="letra">E</span>
+                    <span class="asiento">1</span>
+                    <span class="asiento">2</span>
+                    <span class="asiento">3</span>
+                    <span class="asiento">4</span>
+                    <span class="asiento">5</span>
+                    <span class="asiento">6</span>
+                    <span class="asiento">7</span>
+                    <span class="asiento">8</span>
+                    <span class="asiento">9</span>
+                    <span class="asiento">10</span>
+                </div>
+            </section>
+            </div>
+        </div>
+
+        <div class="rejilla">
+            <details open>
+                <summary>Sección 1</summary>
+                <div class="campo">
+                    <label for="boleto-1">Nombre del boleto</label>
+                    <input id="boleto-1" name="boleto-1" type="text" placeholder="Ej. VIP">
+                </div>
+                <div class="campo">
+                    <label for="precio-1">Precio ($)</label>
+                    <input id="precio-1" name="precio-1" type="number" min="0" placeholder="Ej. 500">
+                </div>
+                <div class="campo">
+                    <label for="capacidad-1">Capacidad máxima de ese tipo</label>
+                    <input id="capacidad-1" name="capacidad-1" type="number" min="0" placeholder="Ej. 10">
+                </div>
+                <div class="campo">
+                    <label for="beneficios-1">Descripción de beneficios</label>
+                    <textarea id="beneficios-1" name="beneficios-1" placeholder="Descripción de beneficios"></textarea>
+                </div>
+            </details>
+            <details>
+                <summary>Sección 2</summary>
+                <div class="campo">
+                    <label for="boleto-2">Nombre del boleto</label>
+                    <input id="boleto-2" name="boleto-2" type="text" placeholder="Ej. VIP">
+                </div>
+                <div class="campo">
+                    <label for="precio-2">Precio ($)</label>
+                    <input id="precio-2" name="precio-2" type="number" min="0" placeholder="Ej. 500">
+                </div>
+                <div class="campo">
+                    <label for="capacidad-2">Capacidad máxima de ese tipo</label>
+                    <input id="capacidad-2" name="capacidad-2" type="number" min="0" placeholder="Ej. 10">
+                </div>
+                <div class="campo">
+                    <label for="beneficios-2">Descripción de beneficios</label>
+                    <textarea id="beneficios-2" name="beneficios-2" placeholder="Descripción de beneficios"></textarea>
+                </div>
+            </details>
+            <details>
+                <summary>En caso de haber sección 3</summary>
+                <div class="campo">
+                    <label for="boleto-3">Nombre del boleto</label>
+                    <input id="boleto-3" name="boleto-3" type="text" placeholder="Ej. VIP">
+                </div>
+                <div class="campo">
+                    <label for="precio-3">Precio ($)</label>
+                    <input id="precio-3" name="precio-3" type="number" min="0" placeholder="Ej. 500">
+                </div>
+                <div class="campo">
+                    <label for="capacidad-3">Capacidad máxima de ese tipo</label>
+                    <input id="capacidad-3" name="capacidad-3" type="number" min="0" placeholder="Ej. 10">
+                </div>
+                <div class="campo">
+                    <label for="beneficios-3">Descripción de beneficios</label>
+                    <textarea id="beneficios-3" name="beneficios-3" placeholder="Descripción de beneficios"></textarea>
+                </div>
+            </details>
+        </div>
+
+        <div class="acciones">
+            <button class="boton" type="submit">Continuar con los artistas</button>
+            <a class="boton secundario" href="editar-evento.html">Cancelar</a>
+        </div>
+    </form>
 </main>
 </body>
 </html>
