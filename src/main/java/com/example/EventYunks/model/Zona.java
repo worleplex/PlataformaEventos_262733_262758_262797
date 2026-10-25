@@ -1,4 +1,4 @@
-package com.example.EventYunks.Dominio;
+package com.example.EventYunks.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "artistas")
+@Table(name = "zonas")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Artista {
+public class Zona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +24,15 @@ public class Artista {
     @Column(nullable = false)
     private String nombre;
 
-    private String generoMusical;
-
-    @Column(length = 2000)
-    private String biografia;
-
-    @Column(length = 500)
-    private String urlImagen;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "administrador_id", nullable = false)
-    private Administrador administrador;
+    @JoinColumn(name = "recinto_id", nullable = false)
+    private Recinto recinto;
 
-    @ManyToMany(mappedBy = "artistas")
-    private List<Evento> eventos = new ArrayList<>();
+    @OneToMany(mappedBy = "zona", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Asiento> asientos = new ArrayList<>();
+
+    public void agregarAsiento(Asiento asiento) {
+        asientos.add(asiento);
+        asiento.setZona(this);
+    }
 }

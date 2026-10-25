@@ -1,6 +1,6 @@
-package com.example.EventYunks.Dominio;
+package com.example.EventYunks.model;
 
-import com.example.EventYunks.Dominio.enums.EstadoTicket;
+import com.example.EventYunks.model.enums.EstadoTicket;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

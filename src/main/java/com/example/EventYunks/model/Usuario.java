@@ -1,4 +1,4 @@
-package com.example.EventYunks.Dominio;
+package com.example.EventYunks.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

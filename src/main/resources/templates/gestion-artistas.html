@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base th:href="@{/}" href="/">
+    <title>Gestión de artistas - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" th:href="@{/}">
+            <img th:src="@{/img/logo.png}" alt="Logo">
+            EventYunks
+        </a>
+        <nav>
+            <a th:href="@{/admin/artistas}">Gestión de Artistas</a>
+            <a th:href="@{/}">Inicio</a>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor admin">
+    <h1>Panel de Administrador</h1>
+    <p><strong>Selección de categoría</strong></p>
+    <nav class="tabs" aria-label="Categorías de gestión">
+        <!-- Este todavía no sirve-->
+        <a th:href="@{/admin/organizadores}">Gestión de Organizadores</a>
+        <a class="activa" th:href="@{/admin/artistas}">Gestión de Artistas</a>
+        <!-- Este tampocop -->
+        <a th:href="@{/admin/recintos}">Gestión de Recintos</a>
+    </nav>
+
+    <div class="titulo-lista">
+        <h2>Artistas</h2>
+        <small th:text="${#lists.size(artistas)} + ' registros'"> registros</small>
+    </div>
+    <p class="error" th:if="${param.error != null}"> No se puede eliminar el artista porque está asignado a uno o más eventos.</p>
+    <form th:action="@{/admin/artistas}" method="get">
+        <div class="campo">
+            <label for="buscar">Buscar</label>
+            <input id="buscar" name="buscar" type="search" placeholder="Buscar artistas..." th:value="${busquedaActual}">
+        </div>
+    </form>
+    <a class="boton" th:href="@{/admin/artistas/nuevo}">+ Nuevo</a>
+    <p th:if="${#lists.isEmpty(artistas)}">No se encontraron artistas.</p>
+    <section class="rejilla" th:unless="${#lists.isEmpty(artistas)}">
+        <article class="tarjeta" th:each="artista : ${artistas}">
+            <div class="info">
+                <div class="item-cabecera">
+                        <span class="avatar grande" aria-hidden="true">
+                            <img th:src="${artista.urlImagen != null and !#strings.isEmpty(artista.urlImagen)}? ${artista.urlImagen}: @{/img/avatar-artista.jpg}" alt="">
+                        </span>
+                    <div>
+                        <h3 th:text="${artista.nombre}"></h3>
+                        <p th:text="${artista.generoMusical != null ? artista.generoMusical : 'Sin género'}">R&amp;B</p>
+                    </div>
+                </div>
+                <div class="acciones envolver">
+                    <a class="boton secundario" th:href="@{/admin/artistas/editar/{id}(id=${artista.id})}">Editar</a>
+                    <form th:action="@{/admin/artistas/eliminar/{id}(id=${artista.id})}" method="post" style="flex: 1;"
+                          onsubmit="return confirm('¿Estás seguro de que deseas eliminar este artista?');">
+                        <button type="submit" class="boton secundario peligro">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </article>
+    </section>
+    <p class="pie-lista" th:text="'Mostrando ' + ${#lists.size(artistas)} + ' artistas · México'"></p>
+</main>
+</body>
+</html>

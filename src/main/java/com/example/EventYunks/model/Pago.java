@@ -1,6 +1,6 @@
-package com.example.EventYunks.Dominio;
+package com.example.EventYunks.model;
 
-import com.example.EventYunks.Dominio.enums.EstadoPago;
+import com.example.EventYunks.model.enums.EstadoPago;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

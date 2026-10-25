@@ -1,4 +1,4 @@
-package com.example.EventYunks.Dominio.enums;
+package com.example.EventYunks.model.enums;
 
 public enum EstadoEvento {
     BORRADOR, PUBLICADO, PAUSADO, CANCELADO, FINALIZADO;
