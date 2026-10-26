@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Editar recinto - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <header>
         <div class="contenedor barra">
             <a class="logo" href="panel-administrador.html">
-                <img src="img/logo.png" alt="Logo">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
+                    <img src="img/logo.png" alt="Logo de EventYunks">
+                </picture>
                 EventYunks
             </a>
             <nav>

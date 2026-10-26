@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Asignar asientos - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <header>
     <div class="contenedor barra">
         <a class="logo" href="panel-organizador.html">
-            <img src="img/logo.png" alt="Logo">
+            <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
+                    <img src="img/logo.png" alt="Logo de EventYunks">
+                </picture>
             EventYunks
         </a>
         <nav>
@@ -26,7 +30,10 @@
     <form action="seleccionar-artistas.html">
         <h2>Croquis del recinto</h2>
         <figure class="tarjeta">
-            <img src="img/croquis-recinto.jpg" alt="Croquis del recinto: escenario al frente, sección 1 con 2 filas de 5 asientos y sección 2 con 5 filas de 10 asientos">
+            <picture>
+                <source media="(prefers-color-scheme: dark)" srcset="img/croquis-recinto-oscuro.png">
+                <img src="img/croquis-recinto.png" alt="Croquis del recinto: escenario al frente, sección 1 con 2 filas de 5 asientos y sección 2 con 5 filas de 10 asientos">
+            </picture>
         </figure>
         <div class="rejilla">
             <details open>

@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Selección de asientos - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header>
         <div class="contenedor barra">
             <a class="logo" href="catalogo.html">
-                <img src="img/logo.png" alt="Logo">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
+                    <img src="img/logo.png" alt="Logo de EventYunks">
+                </picture>
                 EventYunks
             </a>
             <nav>
@@ -29,7 +33,10 @@
                 <div>
                     <h1>Encuentro de música</h1>
                     <div class="portada">
-                        <img src="img/evento-musica.svg" alt="Encuentro de música">
+                        <picture>
+                            <source media="(prefers-color-scheme: dark)" srcset="img/evento-musica-oscuro.jpg">
+                            <img src="img/evento-musica.jpg" alt="Encuentro de música">
+                        </picture>
                         <span class="etiqueta">En venta</span>
                     </div>
 
@@ -158,21 +165,30 @@
             <h2>Artistas en el evento</h2>
             <section class="rejilla">
             <div class="tarjeta fila">
-                <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
+                    <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
+                </picture>
                 <div>
                     <strong>The Weeknd</strong>
                     <small>R&amp;B · 20:00 h</small>
                 </div>
             </div>
             <div class="tarjeta fila">
-                <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
+                    <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
+                </picture>
                 <div>
                     <strong>The Weeknd</strong>
                     <small>R&amp;B · 20:00 h</small>
                 </div>
             </div>
             <div class="tarjeta fila">
-                <img class="avatar" src="img/avatar-artista.jpg" alt="Foto de artista">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
+                    <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
+                </picture>
                 <div>
                     <strong>The Weeknd</strong>
                     <small>R&amp;B · 20:00 h</small>
