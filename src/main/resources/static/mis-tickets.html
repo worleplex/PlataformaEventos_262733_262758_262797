@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Mis tickets - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header>
         <div class="contenedor barra">
             <a class="logo" href="catalogo.html">
-                <img src="img/logo.png" alt="Logo">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
+                    <img src="img/logo.png" alt="Logo de EventYunks">
+                </picture>
                 EventYunks
             </a>
             <nav>
@@ -42,7 +46,7 @@
                     Fila A · Asiento 1 <span class="precio">$200</span>
                     <br><small>ID: EY-2026-G-A1</small>
                 </div>
-                <img class="qr" src="img/qr-ticket-1.svg" alt="Código QR ilustrativo">
+                <img class="qr" src="img/qr-ticket-1.png" alt="Código QR ilustrativo">
                 <a class="boton" href="#">Presentar ticket en acceso</a>
             </article>
 
@@ -56,7 +60,7 @@
                     Fila A · Asiento 3 <span class="precio">$500</span>
                     <br><small>ID: EY-2026-V-A3</small>
                 </div>
-                <img class="qr" src="img/qr-ticket-2.svg" alt="Código QR ilustrativo">
+                <img class="qr" src="img/qr-ticket-2.png" alt="Código QR ilustrativo">
                 <a class="boton" href="#">Presentar ticket en acceso</a>
             </article>
         </section>

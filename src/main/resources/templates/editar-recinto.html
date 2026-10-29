@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar recinto - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <div class="contenedor barra">
+        <a class="logo" th:href="@{/}"><img th:src="@{/img/logo.png}" alt="Logo">EventYunks</a>
+        <nav>
+            <a th:href="@{/admin/recintos}">Gestión de Recintos</a>
+            <a th:href="@{/}">Inicio</a>
+        </nav>
+    </div>
+</header>
+<main class="contenedor admin">
+    <h1>Panel de Administrador</h1>
+    <p><strong>Selección de categoría</strong></p>
+    <nav class="tabs" aria-label="Categorías de gestión">
+        <a th:href="@{/admin/organizadores}">Gestión de Organizadores</a>
+        <a th:href="@{/admin/artistas}">Gestión de Artistas</a>
+        <a class="activa" th:href="@{/admin/recintos}">Gestión de Recintos</a>
+    </nav>
+
+    <section>
+        <h2>Editar recinto</h2>
+        <p class="descripcion">Actualiza los datos del espacio y su dirección.</p>
+        <form id="form-recinto" class="formulario-crear-editar"
+              th:action="@{/admin/recintos/editar/{id}(id=${recintoForm.id})}"
+              th:object="${recintoForm}" method="post">
+            <div class="campo">
+                <label for="nombre">Nombre del recinto</label>
+                <input id="nombre" type="text" th:field="*{nombre}" maxlength="255" required placeholder="Nombre del recinto">
+                <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+            </div>
+            <div class="campo">
+                <label for="capacidad">Capacidad (personas)</label>
+                <input id="capacidad" type="number" th:field="*{capacidad}" min="1" required placeholder="Ej. 1200">
+                <small class="error" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></small>
+            </div>
+            <div class="caja">
+                <h3>Dirección</h3>
+                <div class="campo">
+                    <label for="nombreLugar">Nombre del lugar (opcional)</label>
+                    <input id="nombreLugar" type="text" th:field="*{nombreLugar}" maxlength="255" placeholder="Nombre del lugar">
+                    <small class="error" th:if="${#fields.hasErrors('nombreLugar')}" th:errors="*{nombreLugar}"></small>
+                </div>
+                <div class="campo">
+                    <label for="calle">Calle</label>
+                    <input id="calle" type="text" th:field="*{calle}" maxlength="255" required placeholder="Nombre de la calle">
+                    <small class="error" th:if="${#fields.hasErrors('calle')}" th:errors="*{calle}"></small>
+                </div>
+                <div class="campo">
+                    <label for="numero">Número</label>
+                    <input id="numero" type="text" th:field="*{numero}" maxlength="255" required placeholder="Número exterior">
+                    <small class="error" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></small>
+                </div>
+                <div class="campo">
+                    <label for="colonia">Colonia</label>
+                    <input id="colonia" type="text" th:field="*{colonia}" maxlength="255" required placeholder="Nombre de la colonia">
+                    <small class="error" th:if="${#fields.hasErrors('colonia')}" th:errors="*{colonia}"></small>
+                </div>
+                <div class="campo">
+                    <label for="codigoPostal">Código postal</label>
+                    <input id="codigoPostal" type="text" th:field="*{codigoPostal}" inputmode="numeric"
+                           pattern="[0-9]{5}" maxlength="5" required placeholder="Ej. 85000">
+                    <small class="error" th:if="${#fields.hasErrors('codigoPostal')}" th:errors="*{codigoPostal}"></small>
+                </div>
+                <div class="campo">
+                    <label for="ciudad">Ciudad</label>
+                    <input id="ciudad" type="text" th:field="*{ciudad}" maxlength="255" required placeholder="Ciudad">
+                    <small class="error" th:if="${#fields.hasErrors('ciudad')}" th:errors="*{ciudad}"></small>
+                </div>
+            </div>
+        </form>
+        <div class="acciones horizontal">
+            <a class="boton secundario" th:href="@{/admin/recintos}">Cancelar</a>
+            <button class="boton" type="submit" form="form-recinto">Guardar cambios</button>
+        </div>
+    </section>
+</main>
+</body>
+</html>

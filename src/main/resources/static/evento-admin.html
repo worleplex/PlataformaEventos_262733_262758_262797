@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Detalle de evento (admin) - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
     <header>
         <div class="contenedor barra">
             <a class="logo" href="panel-administrador.html">
-                <img src="img/logo.png" alt="Logo">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
+                    <img src="img/logo.png" alt="Logo de EventYunks">
+                </picture>
                 EventYunks
             </a>
             <nav>
@@ -27,7 +30,10 @@
         <a class="volver" href="panel-administrador.html">← Regresar</a>
 
         <div class="portada">
-            <img src="img/evento-musica.svg" alt="Encuentro de música">
+            <picture>
+                <source media="(prefers-color-scheme: dark)" srcset="img/evento-musica-oscuro.jpg">
+                <img src="img/evento-musica.jpg" alt="Encuentro de música">
+            </picture>
             <span class="etiqueta">En Venta</span>
         </div>
 
