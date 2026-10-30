@@ -13,8 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    // hola tolano esto es pa ti toma, las contraseñas se guardan
-    // y ya se comparan con BCrypt y es para el login
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -25,22 +23,7 @@ public class SecurityConfig {
         http
             .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/login").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll())
-            .formLogin(form -> form
-                .loginPage("/admin/login")
-                .loginProcessingUrl("/admin/login")
-                .usernameParameter("correo")
-                .passwordParameter("contrasenia")
-                .defaultSuccessUrl("/admin/organizadores", false)
-                .failureUrl("/admin/login?error"))
-            .logout(logout -> logout
-                .logoutUrl("/admin/logout")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/admin/login?logout"));
+                .anyRequest().permitAll());
         return http.build();
     }
 }

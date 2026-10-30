@@ -2,18 +2,18 @@ package com.example.EventYunks.service;
 
 import com.example.EventYunks.model.Administrador;
 import com.example.EventYunks.repository.AdministradorRepository;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdministradorService {
 
     private final AdministradorRepository administradorRepository;
+    private final HttpSession session;
 
-    public AdministradorService(AdministradorRepository administradorRepository) {
+    public AdministradorService(AdministradorRepository administradorRepository, HttpSession session) {
         this.administradorRepository = administradorRepository;
+        this.session = session;
     }
 
     /**
@@ -22,14 +22,13 @@ public class AdministradorService {
      * @throws IllegalStateException si no hay sesión de administrador
      */
     public Administrador obtenerAdministradorActual() {
-        Authentication autenticacion = SecurityContextHolder.getContext().getAuthentication();
+        Long id = (Long) session.getAttribute("usuario_id");
 
-        if (autenticacion == null || !autenticacion.isAuthenticated()
-                || autenticacion instanceof AnonymousAuthenticationToken) {
+        if (id == null) {
             throw new IllegalStateException("no hay una sesion de administrador activa");
         }
 
-        return administradorRepository.findByCorreoIgnoreCase(autenticacion.getName())
+        return administradorRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("el administrador de la sesion ya no existe en la BD"));
     }
 }
