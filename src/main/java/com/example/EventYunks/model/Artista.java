@@ -38,4 +38,21 @@ public class Artista {
 
     @ManyToMany(mappedBy = "artistas")
     private List<Evento> eventos = new ArrayList<>();
+
+    /**
+     * Iniciales del artista (primera letra de las dos primeras palabras), para mostrar cuando no tiene imagen
+     * @return las iniciales en mayúsculas
+     */
+    public String getIniciales() {
+        String limpio = nombre == null ? "" : nombre.trim();
+        if (limpio.isEmpty()) {
+            return "?";
+        }
+        String[] palabras = limpio.split("\\s+");
+        String resultado = palabras[0].substring(0, 1);
+        if (palabras.length > 1) {
+            resultado += palabras[1].substring(0, 1);
+        }
+        return resultado.toUpperCase();
+    }
 }

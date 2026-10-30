@@ -1,6 +1,5 @@
 package com.example.EventYunks.service;
 
-import com.example.EventYunks.dto.RecintoForm;
 import com.example.EventYunks.model.Direccion;
 import com.example.EventYunks.model.Recinto;
 import com.example.EventYunks.repository.RecintoRepository;
@@ -67,56 +66,64 @@ public class RecintoService {
     }
 
     /**
-     * Método que guarda un recinto en la BD y si el formulario no trae id crea uno nuevo
-     * si trae id actualiza el recinto existente junto con su dirección
-     * @param form los datos del recinto capturados en el formulario
+     * Método que guarda un recinto nuevo en la BD y le asigna el administrador de la sesión activa
+     * @param recinto el recinto (con su dirección) capturado en el formulario
      * @return el recinto ya persistido
-     * @throws NoSuchElementException si se intenta editar un recinto que ya no existe, va a hacer cambiado estop
      */
-    public Recinto guardar(RecintoForm form) {
-        Recinto recinto;
-        if (form.getId() == null) {
-            recinto = new Recinto();
-            recinto.setDireccion(new Direccion());
-            recinto.setAdministrador(administradorService.obtenerAdministradorActual());
-        } else {
-            recinto = recintoRepository.findById(form.getId())
-                    .orElseThrow(() -> new NoSuchElementException("No existe el recinto con id " + form.getId()));
-            if (recinto.getDireccion() == null) {
-                recinto.setDireccion(new Direccion());
-            }
-        }
+    public Recinto crear(Recinto recinto) {
+        recinto.setId(null);
+        limpiarDatos(recinto);
+        recinto.setAdministrador(administradorService.obtenerAdministradorActual());
+        return recintoRepository.save(recinto);
+    }
 
-        recinto.setNombre(form.getNombre().trim());
-        recinto.setCapacidad(form.getCapacidad());
+    /**
+     * Método que actualiza un recinto existente con los datos capturados en el formulario. Solo se copian
+     * los datos del formulario (nombre, capacidad y dirección) para no perder zonas, croquis ni administrador
+     * @param id el id del recinto a actualizar
+     * @param datos el recinto (con su dirección) capturado en el formulario
+     * @return el recinto ya persistido
+     * @throws NoSuchElementException si se intenta editar un recinto que ya no existe
+     */
+    public Recinto actualizar(Long id, Recinto datos) {
+        Recinto recinto = recintoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No existe el recinto con id " + id));
+        if (recinto.getDireccion() == null) {
+            recinto.setDireccion(new Direccion());
+        }
+        limpiarDatos(datos);
+
+        recinto.setNombre(datos.getNombre());
+        recinto.setCapacidad(datos.getCapacidad());
 
         Direccion direccion = recinto.getDireccion();
-        direccion.setNombreLugar(limpiarOpcional(form.getNombreLugar()));
-        direccion.setCalle(form.getCalle().trim());
-        direccion.setNumero(form.getNumero().trim());
-        direccion.setColonia(form.getColonia().trim());
-        direccion.setCodigoPostal(form.getCodigoPostal().trim());
-        direccion.setCiudad(form.getCiudad().trim());
+        Direccion nueva = datos.getDireccion();
+        direccion.setNombreLugar(nueva.getNombreLugar());
+        direccion.setCalle(nueva.getCalle());
+        direccion.setNumero(nueva.getNumero());
+        direccion.setColonia(nueva.getColonia());
+        direccion.setCodigoPostal(nueva.getCodigoPostal());
+        direccion.setCiudad(nueva.getCiudad());
 
         return recintoRepository.save(recinto);
     }
 
     /**
      * Método que revisa si ya existe otro recinto con el mismo nombre en la misma ciudad
-     * Al editar se excluye el propio recinto de la comparación
-     * @param form los datos del recinto capturados en el formulario
+     * Al editar (cuando el recinto trae id) se excluye el propio recinto de la comparación
+     * @param recinto el recinto capturado en el formulario
      * @return true si ya existe un recinto igual, false en caso contrario
      */
-    public boolean existeDuplicado(RecintoForm form) {
-        if (form.getNombre() == null || form.getCiudad() == null) {
+    public boolean existeDuplicado(Recinto recinto) {
+        if (recinto.getNombre() == null || recinto.getDireccion() == null || recinto.getDireccion().getCiudad() == null) {
             return false;
         }
-        String nombre = form.getNombre().trim();
-        String ciudad = form.getCiudad().trim();
-        if (form.getId() == null) {
+        String nombre = recinto.getNombre().trim();
+        String ciudad = recinto.getDireccion().getCiudad().trim();
+        if (recinto.getId() == null) {
             return recintoRepository.existsByNombreIgnoreCaseAndDireccion_CiudadIgnoreCase(nombre, ciudad);
         }
-        return recintoRepository.existsByNombreIgnoreCaseAndDireccion_CiudadIgnoreCaseAndIdNot(nombre, ciudad, form.getId());
+        return recintoRepository.existsByNombreIgnoreCaseAndDireccion_CiudadIgnoreCaseAndIdNot(nombre, ciudad, recinto.getId());
     }
 
     /**
@@ -132,6 +139,21 @@ public class RecintoService {
         recintoRepository.delete(recinto.get());
         recintoRepository.flush();
         return true;
+    }
+
+    /**
+     * Método que quita los espacios en los extremos de los textos capturados en el formulario
+     * @param recinto el recinto (con su dirección) a limpiar
+     */
+    private void limpiarDatos(Recinto recinto) {
+        recinto.setNombre(recinto.getNombre().trim());
+        Direccion d = recinto.getDireccion();
+        d.setNombreLugar(limpiarOpcional(d.getNombreLugar()));
+        d.setCalle(d.getCalle().trim());
+        d.setNumero(d.getNumero().trim());
+        d.setColonia(d.getColonia().trim());
+        d.setCodigoPostal(d.getCodigoPostal().trim());
+        d.setCiudad(d.getCiudad().trim());
     }
 
     /**

@@ -87,20 +87,26 @@
 
         <section class="rejilla" th:unless="${#lists.isEmpty(eventos)}">
             <a class="tarjeta" th:each="e : ${eventos}" th:href="@{/admin/eventos/{id}(id=${e.id})}">
-                <div class="portada" th:classappend="${e.cancelado} ? 'cancelado-img'">
-                    <picture th:if="${e.imagen == null}">
+                <div class="portada" th:classappend="${e.estado.name() == 'CANCELADO'} ? 'cancelado-img'">
+                    <picture th:if="${#strings.isEmpty(e.urlImagen)}">
                         <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/evento-musica-oscuro.jpg}">
                         <img th:src="@{/img/evento-musica.jpg}" th:alt="${e.nombre}">
                     </picture>
-                    <img th:unless="${e.imagen == null}" th:src="${e.imagen}" th:alt="${e.nombre}">
-                    <span class="etiqueta" th:classappend="${e.claseEtiqueta}" th:text="${e.etiqueta}"></span>
+                    <img th:unless="${#strings.isEmpty(e.urlImagen)}" th:src="${e.urlImagen}" th:alt="${e.nombre}">
+                    <span class="etiqueta" th:classappend="${e.estado.claseEtiqueta}" th:text="${e.estado.etiqueta}"></span>
                 </div>
                 <div class="info">
                     <h3 th:text="${e.nombre}"></h3>
-                    <p th:text="${e.fecha}"></p>
-                    <p th:text="${e.recinto}"></p>
-                    <p><small th:text="'Organiza: ' + ${e.organizador}"></small></p>
-                    <p class="precio" th:text="${e.precio}"></p>
+                    <p th:text="${#temporals.format(e.fecha, 'd MMM yyyy · HH:mm') + ' h'}"></p>
+                    <p th:text="${e.recinto.nombre}"></p>
+                    <p><small th:text="'Organiza: ' + ${e.organizador.nombre}"></small></p>
+                    <p class="precio" th:switch="${e.estado.name()}">
+                        <span th:case="'PUBLICADO'" th:text="${e.precioDesde == null} ? 'Sin boletos registrados' : 'Desde $' + ${#numbers.formatDecimal(e.precioDesde, 1, 'COMMA', (e.precioDesde.stripTrailingZeros().scale() <= 0 ? 0 : 2), 'POINT')}"></span>
+                        <span th:case="'PAUSADO'">Venta pausada</span>
+                        <span th:case="'CANCELADO'">Venta suspendida</span>
+                        <span th:case="'FINALIZADO'">Ya ocurrió · sin venta de boletos</span>
+                        <span th:case="*">Borrador</span>
+                    </p>
                 </div>
             </a>
         </section>

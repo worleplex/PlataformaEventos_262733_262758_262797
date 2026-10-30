@@ -1,6 +1,6 @@
 package com.example.EventYunks.controller;
 
-import com.example.EventYunks.dto.RecintoForm;
+import com.example.EventYunks.model.Direccion;
 import com.example.EventYunks.model.Recinto;
 import com.example.EventYunks.service.RecintoService;
 import jakarta.validation.Valid;
@@ -8,7 +8,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,17 @@ public class RecintoController {
         this.recintoService = recintoService;
     }
 
+    /**
+     * Limita los campos que se pueden llenar desde el formulario, así nadie puede mandar por la petición
+     * datos como el administrador, las zonas o el id del recinto
+     */
+    @InitBinder("recinto")
+    public void limitarCampos(WebDataBinder binder) {
+        binder.setAllowedFields("nombre", "capacidad",
+                "direccion.nombreLugar", "direccion.calle", "direccion.numero",
+                "direccion.colonia", "direccion.codigoPostal", "direccion.ciudad");
+    }
+
     @GetMapping
     public String listar(@RequestParam(name = "buscar", required = false) String buscar, Model model) {
         model.addAttribute("recintos", recintoService.buscar(buscar));
@@ -43,20 +56,21 @@ public class RecintoController {
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("recintoForm", new RecintoForm());
+        Recinto recinto = new Recinto();
+        recinto.setDireccion(new Direccion());
+        model.addAttribute("recinto", recinto);
         return VISTA_CREAR;
     }
 
     @PostMapping
-    public String crear(@Valid @ModelAttribute("recintoForm") RecintoForm form,
+    public String crear(@Valid @ModelAttribute("recinto") Recinto recinto,
                         BindingResult resultado,
                         RedirectAttributes flash) {
-        form.setId(null);
-        validarDuplicado(form, resultado);
+        validarDuplicado(recinto, resultado);
         if (resultado.hasErrors()) {
             return VISTA_CREAR;
         }
-        Recinto guardado = recintoService.guardar(form);
+        Recinto guardado = recintoService.crear(recinto);
         flash.addFlashAttribute("mensajeBien", "El recinto " + guardado.getNombre() + " se creó correctamente");
         return REDIRECT_LISTA;
     }
@@ -68,25 +82,29 @@ public class RecintoController {
             flash.addFlashAttribute("mensajeError", "El recinto que intentas editar ya no existe");
             return REDIRECT_LISTA;
         }
-        model.addAttribute("recintoForm", RecintoForm.desde(recinto.get()));
+        Recinto existente = recinto.get();
+        if (existente.getDireccion() == null) {
+            existente.setDireccion(new Direccion());
+        }
+        model.addAttribute("recinto", existente);
         return VISTA_EDITAR;
     }
 
     @PostMapping("/editar/{id}")
     public String actualizar(@PathVariable Long id,
-                             @Valid @ModelAttribute("recintoForm") RecintoForm form,
+                             @Valid @ModelAttribute("recinto") Recinto recinto,
                              BindingResult resultado,
                              RedirectAttributes flash) {
-        form.setId(id);
+        recinto.setId(id);
         if (recintoService.buscarPorId(id).isEmpty()) {
             flash.addFlashAttribute("mensajeError", "El recinto que intentas editar ya no existe");
             return REDIRECT_LISTA;
         }
-        validarDuplicado(form, resultado);
+        validarDuplicado(recinto, resultado);
         if (resultado.hasErrors()) {
             return VISTA_EDITAR;
         }
-        Recinto guardado = recintoService.guardar(form);
+        Recinto guardado = recintoService.actualizar(id, recinto);
         flash.addFlashAttribute("mensajeBien", "El recinto " + guardado.getNombre() + " se actualizó correctamente");
         return REDIRECT_LISTA;
     }
@@ -113,9 +131,9 @@ public class RecintoController {
         return REDIRECT_LISTA;
     }
 
-    private void validarDuplicado(RecintoForm form, BindingResult resultado) {
-        if (!resultado.hasFieldErrors("nombre") && !resultado.hasFieldErrors("ciudad")
-                && recintoService.existeDuplicado(form)) {
+    private void validarDuplicado(Recinto recinto, BindingResult resultado) {
+        if (!resultado.hasFieldErrors("nombre") && !resultado.hasFieldErrors("direccion.ciudad")
+                && recintoService.existeDuplicado(recinto)) {
             resultado.rejectValue("nombre", "recinto.duplicado",
                     "Ya existe un recinto con ese nombre en esa ciudad");
         }

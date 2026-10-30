@@ -502,6 +502,14 @@ figure img {
     margin-bottom: 0;
 }
 
+.formulario-crear-editar > .caja {
+    grid-column: 1 / -1;
+}
+
+.caja > .campos {
+    margin: 10px 0 0;
+}
+
 ul.rejilla {
     padding: 0;
     list-style: none;

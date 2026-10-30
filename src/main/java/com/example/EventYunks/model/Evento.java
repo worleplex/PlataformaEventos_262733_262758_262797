@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "eventos")
@@ -63,6 +66,18 @@ public class Evento {
 
     @OneToMany(mappedBy = "evento")
     private List<CambioEvento> cambios = new ArrayList<>();
+
+    /**
+     * Precio más bajo entre los boletos del evento, se usa para mostrar "Desde $X" en el catálogo
+     * @return el precio mínimo, o null si el evento no tiene boletos con precio
+     */
+    public BigDecimal getPrecioDesde() {
+        return boletos.stream()
+                .map(Boleto::getPrecio)
+                .filter(Objects::nonNull)
+                .min(Comparator.naturalOrder())
+                .orElse(null);
+    }
 
     public void agregarBoleto(Boleto boleto) {
         boletos.add(boleto);

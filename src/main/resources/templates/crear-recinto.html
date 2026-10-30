@@ -29,52 +29,54 @@
 
     <section>
         <h2>Nuevo recinto</h2>
-        <p class="descripcion">Configura el espacio y su dirección.</p>
+        <p class="descripcion">Configura el espacio, su dirección y las zonas de acceso.</p>
         <form id="form-recinto" class="formulario-crear-editar" th:action="@{/admin/recintos}"
-              th:object="${recintoForm}" method="post">
+              th:object="${recinto}" method="post">
             <div class="campo">
-                <label for="nombre">Nombre del recinto</label>
+                <label for="nombre">Nombre</label>
                 <input id="nombre" type="text" th:field="*{nombre}" maxlength="255" required
                        placeholder="Nombre del recinto">
                 <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
             </div>
             <div class="campo">
-                <label for="capacidad">Capacidad (personas)</label>
+                <label for="capacidad">Capacidad (número)</label>
                 <input id="capacidad" type="number" th:field="*{capacidad}" min="1" required placeholder="Ej. 1200">
                 <small class="error" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></small>
             </div>
             <div class="caja">
                 <h3>Dirección</h3>
-                <div class="campo">
-                    <label for="nombreLugar">Nombre del lugar (opcional)</label>
-                    <input id="nombreLugar" type="text" th:field="*{nombreLugar}" maxlength="255" placeholder="Nombre del lugar">
-                    <small class="error" th:if="${#fields.hasErrors('nombreLugar')}" th:errors="*{nombreLugar}"></small>
-                </div>
-                <div class="campo">
-                    <label for="calle">Calle</label>
-                    <input id="calle" type="text" th:field="*{calle}" maxlength="255" required placeholder="Nombre de la calle">
-                    <small class="error" th:if="${#fields.hasErrors('calle')}" th:errors="*{calle}"></small>
-                </div>
-                <div class="campo">
-                    <label for="numero">Número</label>
-                    <input id="numero" type="text" th:field="*{numero}" maxlength="255" required placeholder="Número exterior">
-                    <small class="error" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></small>
-                </div>
-                <div class="campo">
-                    <label for="colonia">Colonia</label>
-                    <input id="colonia" type="text" th:field="*{colonia}" maxlength="255" required placeholder="Nombre de la colonia">
-                    <small class="error" th:if="${#fields.hasErrors('colonia')}" th:errors="*{colonia}"></small>
-                </div>
-                <div class="campo">
-                    <label for="codigoPostal">Código postal</label>
-                    <input id="codigoPostal" type="text" th:field="*{codigoPostal}" inputmode="numeric"
-                           pattern="[0-9]{5}" maxlength="5" required placeholder="Ej. 85000">
-                    <small class="error" th:if="${#fields.hasErrors('codigoPostal')}" th:errors="*{codigoPostal}"></small>
-                </div>
-                <div class="campo">
-                    <label for="ciudad">Ciudad</label>
-                    <input id="ciudad" type="text" th:field="*{ciudad}" maxlength="255" required placeholder="Ciudad">
-                    <small class="error" th:if="${#fields.hasErrors('ciudad')}" th:errors="*{ciudad}"></small>
+                <div class="campos">
+                    <div class="campo">
+                        <label for="nombreLugar">Nombre del lugar (opcional)</label>
+                        <input id="nombreLugar" type="text" th:field="*{direccion.nombreLugar}" maxlength="255" placeholder="Nombre del lugar">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.nombreLugar')}" th:errors="*{direccion.nombreLugar}"></small>
+                    </div>
+                    <div class="campo">
+                        <label for="calle">Calle</label>
+                        <input id="calle" type="text" th:field="*{direccion.calle}" maxlength="255" required placeholder="Nombre de la calle">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.calle')}" th:errors="*{direccion.calle}"></small>
+                    </div>
+                    <div class="campo">
+                        <label for="numero">Número</label>
+                        <input id="numero" type="text" th:field="*{direccion.numero}" maxlength="255" required placeholder="Número exterior">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.numero')}" th:errors="*{direccion.numero}"></small>
+                    </div>
+                    <div class="campo">
+                        <label for="colonia">Colonia</label>
+                        <input id="colonia" type="text" th:field="*{direccion.colonia}" maxlength="255" required placeholder="Nombre de la colonia">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.colonia')}" th:errors="*{direccion.colonia}"></small>
+                    </div>
+                    <div class="campo">
+                        <label for="codigoPostal">Código postal</label>
+                        <input id="codigoPostal" type="text" th:field="*{direccion.codigoPostal}" inputmode="numeric"
+                               pattern="[0-9]{5}" maxlength="5" required placeholder="Ej. 85000">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.codigoPostal')}" th:errors="*{direccion.codigoPostal}"></small>
+                    </div>
+                    <div class="campo">
+                        <label for="ciudad">Ciudad</label>
+                        <input id="ciudad" type="text" th:field="*{direccion.ciudad}" maxlength="255" required placeholder="Ciudad">
+                        <small class="error" th:if="${#fields.hasErrors('direccion.ciudad')}" th:errors="*{direccion.ciudad}"></small>
+                    </div>
                 </div>
             </div>
         </form>

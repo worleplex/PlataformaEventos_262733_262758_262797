@@ -1,9 +1,11 @@
 package com.example.EventYunks.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,16 +24,19 @@ public class Recinto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(max = 255, message = "El nombre no puede pasar de 255 caracteres")
     @Column(nullable = false)
     private String nombre;
 
+    @Valid
     @NotNull
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     @JoinColumn(name = "direccion_id", nullable = false)
     private Direccion direccion;
 
-    @Positive
+    @NotNull(message = "La capacidad es obligatoria")
+    @Positive(message = "La capacidad debe ser un número mayor a 0")
     private Integer capacidad;
 
     @Column(length = 500)

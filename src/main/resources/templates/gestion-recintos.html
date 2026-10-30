@@ -40,11 +40,8 @@
             <input id="buscar" name="buscar" type="search" placeholder="Buscar por recinto o ciudad..."
                    th:value="${busquedaActual}">
         </div>
-        <button class="boton secundario" type="submit">Buscar</button>
-        <a class="boton secundario" th:href="@{/admin/recintos}">Limpiar</a>
     </form>
-    <p><a class="boton" th:href="@{/admin/recintos/nuevo}">+ Nuevo recinto</a></p>
-
+    <a class="boton" th:href="@{/admin/recintos/nuevo}">+ Nuevo</a>
     <p th:if="${#lists.isEmpty(recintos)}">No se encontraron recintos.</p>
     <section class="rejilla" th:unless="${#lists.isEmpty(recintos)}">
         <article class="tarjeta" th:each="recinto : ${recintos}">

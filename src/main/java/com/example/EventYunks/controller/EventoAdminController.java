@@ -1,7 +1,6 @@
 package com.example.EventYunks.controller;
 
-import com.example.EventYunks.dto.EventoDetalle;
-import com.example.EventYunks.dto.EventoTarjeta;
+import com.example.EventYunks.model.Evento;
 import com.example.EventYunks.model.Organizador;
 import com.example.EventYunks.service.EventoService;
 import com.example.EventYunks.service.OrganizadorService;
@@ -40,7 +39,7 @@ public class EventoAdminController {
                         @RequestParam(name = "fecha", required = false) String fecha,
                         @RequestParam(name = "precio", required = false) String precio,
                         Model model) {
-        List<EventoTarjeta> eventos = eventoService.catalogoAdmin(buscar, categoria, fecha, precio);
+        List<Evento> eventos = eventoService.catalogoAdmin(buscar, categoria, fecha, precio);
         model.addAttribute("eventos", eventos);
         model.addAttribute("categorias", eventoService.categorias());
         model.addAttribute("busquedaActual", buscar);
@@ -53,12 +52,16 @@ public class EventoAdminController {
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model, RedirectAttributes flash) {
-        Optional<EventoDetalle> detalle = eventoService.detalleAdmin(id);
+        Optional<Evento> detalle = eventoService.detalleAdmin(id);
         if (detalle.isEmpty()) {
             flash.addFlashAttribute("mensajeError", "El evento que intentas consultar ya no existe");
             return REDIRECT_PANEL;
         }
-        model.addAttribute("evento", detalle.get());
+        Evento evento = detalle.get();
+        model.addAttribute("evento", evento);
+        model.addAttribute("eventosRealizados", eventoService.eventosRealizados(evento));
+        model.addAttribute("puedeDesactivar", eventoService.puedeDesactivar(evento));
+        model.addAttribute("puedeReactivar", eventoService.puedeReactivar(evento));
         return VISTA_DETALLE;
     }
 
