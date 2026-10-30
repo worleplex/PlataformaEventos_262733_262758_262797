@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title,content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title th:replace="${title}">EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Layout base: el nav cambia según el rol que guardó AuthController en la sesión (session.rol):
+     ADMIN, ORGANIZADOR, ASISTENTE. Sin sesión (login y registro) solo se muestra el logo. -->
+<header th:with="inicio=${session.rol == 'ADMIN' ? '/admin/eventos' : (session.rol == 'ORGANIZADOR' ? '/panel-organizador.html' : (session.rol == 'ASISTENTE' ? '/catalogo.html' : '/'))}">
+    <div class="contenedor barra">
+        <a class="logo" th:href="@{${inicio}}">
+            <picture>
+                <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/logo-oscuro.png}">
+                <img th:src="@{/img/logo.png}" alt="Logo de EventYunks">
+            </picture>
+            EventYunks
+        </a>
+        <nav th:if="${session.rol != null}" th:switch="${session.rol}">
+            <th:block th:case="'ADMIN'">
+                <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
+                <a th:href="@{/admin/organizadores}">Gestión General</a>
+            </th:block>
+            <th:block th:case="'ORGANIZADOR'">
+                <a th:href="@{/panel-organizador.html}">Catálogo</a>
+            </th:block>
+            <th:block th:case="'ASISTENTE'">
+                <a th:href="@{/catalogo.html}">Catálogo</a>
+                <a th:href="@{/mis-tickets.html}">Mis tickets</a>
+            </th:block>
+            <a th:href="@{/logout}">cerrar sesión</a>
+        </nav>
+    </div>
+</header>
+
+<main th:replace="${content}">
+</main>
+</body>
+</html>

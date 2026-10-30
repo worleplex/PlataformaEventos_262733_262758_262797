@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Editar artista - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-</head>
-<body>
-<header>
-    <div class="contenedor barra">
-        <a class="logo" th:href="@{/admin/eventos}"><img th:src="@{/img/logo.png}" alt="Logo">EventYunks</a>
-        <nav>
-            <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
-            <a th:href="@{/admin/organizadores}">Gestión General</a>
-            <a th:href="@{/logout}">cerrar sesión</a>
-        </nav>
-    </div>
-</header>
-<main class="contenedor admin">
+    <main class="contenedor admin">
     <h1>Panel de Administrador</h1>
     <p><strong>Selección de categoría</strong></p>
     <nav class="tabs" aria-label="Categorías de gestión">
@@ -65,5 +47,4 @@
         </div>
     </section>
 </main>
-</body>
-</html>
+</th:block>

@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
+<th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Registro - EventYunks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <div class="contenedor barra">
-            <a class="logo" href="index.html">
-                <picture>
-                    <source media="(prefers-color-scheme: dark)" srcset="img/logo-oscuro.png">
-                    <img src="img/logo.png" alt="Logo de EventYunks">
-                </picture>
-                EventYunks
-            </a>
-        </div>
-    </header>
-
     <main class="contenedor">
         <div class="formulario">
             <h1>Crear una cuenta</h1>
@@ -56,9 +35,8 @@
                 <button class="boton" type="submit">Crear cuenta</button>
             </form>
         </div>
-    </main>
 
-    <script>
+        <script>
         var form = document.getElementById("registro");
 
         form.addEventListener("submit", function (e) {
@@ -75,5 +53,5 @@
             }
         });
     </script>
-</body>
-</html>
+    </main>
+</th:block>
