@@ -46,7 +46,6 @@ public class ArtistaController {
         nuevo.setNombre(nombre);
         nuevo.setGeneroMusical(generoMusical);
         nuevo.setBiografia(biografia);
-        //Falta recuperar al administrador del objeto de sesión (que aún no existe)
         artistaService.guardarArtista(nuevo, imagen);
         return "redirect:/admin/artistas";
     }

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface AdministradorRepository extends JpaRepository<Administrador, Long> {
-    Optional<Administrador> findFirstByOrderByIdAsc();
+    Optional<Administrador> findByCorreoIgnoreCase(String mensaje);
 }

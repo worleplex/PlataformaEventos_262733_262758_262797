@@ -1,11 +1,7 @@
 package com.example.EventYunks.service;
 
-import com.example.EventYunks.model.Administrador;
 import com.example.EventYunks.model.Organizador;
-import com.example.EventYunks.repository.AdministradorRepository;
 import com.example.EventYunks.repository.OrganizadorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +10,18 @@ import java.util.List;
 @Service
 public class OrganizadorService {
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final OrganizadorRepository organizadorRepository;
+    private final AdministradorService administradorService;
+    // Es el mismo bean BCrypt que define SecurityConfig, así el hash se genera igual en todo el proyecto
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private OrganizadorRepository organizadorRepository;
-
-    @Autowired
-    private AdministradorRepository administradorRepository;
+    public OrganizadorService(OrganizadorRepository organizadorRepository,
+                              AdministradorService administradorService,
+                              PasswordEncoder passwordEncoder) {
+        this.organizadorRepository = organizadorRepository;
+        this.administradorService = administradorService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<Organizador> listarTodos() {
         return organizadorRepository.findAllByOrderByNombreAsc();
@@ -44,12 +45,16 @@ public class OrganizadorService {
         return organizadorRepository.existsByCorreoIgnoreCaseAndIdNot(correo, idExcluido);
     }
 
+    /**
+     * Guarda un organizador. Si viene contraseña se cifra con BCrypt (al editar, si viene vacía se conserva la anterior).
+     * Si es nuevo, se registra como creado por el administrador que tiene la sesión activa.
+     */
     public void guardarOrganizador(Organizador organizador, String contrasenia) {
         if (contrasenia != null && !contrasenia.isBlank()) {
             organizador.setHashContrasenia(passwordEncoder.encode(contrasenia));
         }
         if (organizador.getCreadoPor() == null) {
-            organizador.setCreadoPor(obtenerAdministradorActual());
+            organizador.setCreadoPor(administradorService.obtenerAdministradorActual());
         }
         organizadorRepository.save(organizador);
     }
@@ -71,9 +76,5 @@ public class OrganizadorService {
             organizador.setActivo(!Boolean.TRUE.equals(organizador.getActivo()));
             organizadorRepository.save(organizador);
         }
-    }
-
-    private Administrador obtenerAdministradorActual() {
-        return administradorRepository.findFirstByOrderByIdAsc().orElseThrow(() -> new IllegalStateException("No hay ningún administrador en la base de datos."));
     }
 }

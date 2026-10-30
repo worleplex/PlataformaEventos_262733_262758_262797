@@ -2,9 +2,7 @@ package com.example.EventYunks.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.EventYunks.model.Administrador;
 import com.example.EventYunks.model.Artista;
-import com.example.EventYunks.repository.AdministradorRepository;
 import com.example.EventYunks.repository.ArtistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class ArtistaService {
     private ArtistaRepository artistaRepository;
 
     @Autowired
-    private AdministradorRepository administradorRepository;
+    private AdministradorService administradorService;
 
     @Autowired(required = false)
     private Cloudinary cloudinary;
@@ -69,9 +67,9 @@ public class ArtistaService {
             }
         }
         artista.setUrlImagen(urlImagen);
-        // Esto se quita luego cuando ya exista el Login (que no se te olvide menchaca)
+        // Si es un artista nuevo se registra con el administrador de la sesión activa
         if (artista.getAdministrador() == null) {
-            artista.setAdministrador(obtenerAdministradorActual());
+            artista.setAdministrador(administradorService.obtenerAdministradorActual());
         }
         artistaRepository.save(artista);
     }
@@ -91,11 +89,6 @@ public class ArtistaService {
             artistaRepository.deleteById(id);
         }
         return true;
-    }
-
-    //Aún no existe manejo de sesiones, cuando eso pase este método tendrá que ser cambiado cuando ya exista una sesión de administrador.
-    private Administrador obtenerAdministradorActual() {
-        return administradorRepository.findFirstByOrderByIdAsc().orElseThrow(() -> new IllegalStateException("No hay ningún administrador en la base de datos."));
     }
 
     /**

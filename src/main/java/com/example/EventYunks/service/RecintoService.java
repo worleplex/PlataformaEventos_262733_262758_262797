@@ -1,10 +1,8 @@
 package com.example.EventYunks.service;
 
 import com.example.EventYunks.dto.RecintoForm;
-import com.example.EventYunks.model.Administrador;
 import com.example.EventYunks.model.Direccion;
 import com.example.EventYunks.model.Recinto;
-import com.example.EventYunks.repository.AdministradorRepository;
 import com.example.EventYunks.repository.RecintoRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +15,16 @@ import java.util.Optional;
 public class RecintoService {
 
     private final RecintoRepository recintoRepository;
-    private final AdministradorRepository administradorRepository;
+    private final AdministradorService administradorService;
 
     /**
      * constructor con inyeccion de dependencias
      * @param recintoRepository el repositorio de recintos
-     * @param administradorRepository el repositorio de administradores
+     * @param administradorService el servicio que da el administrador de la sesión activa
      */
-    public RecintoService(RecintoRepository recintoRepository, AdministradorRepository administradorRepository) {
+    public RecintoService(RecintoRepository recintoRepository, AdministradorService administradorService) {
         this.recintoRepository = recintoRepository;
-        this.administradorRepository = administradorRepository;
+        this.administradorService = administradorService;
     }
 
     /**
@@ -80,7 +78,7 @@ public class RecintoService {
         if (form.getId() == null) {
             recinto = new Recinto();
             recinto.setDireccion(new Direccion());
-            recinto.setAdministrador(obtenerAdministradorActual());
+            recinto.setAdministrador(administradorService.obtenerAdministradorActual());
         } else {
             recinto = recintoRepository.findById(form.getId())
                     .orElseThrow(() -> new NoSuchElementException("No existe el recinto con id " + form.getId()));
@@ -143,15 +141,5 @@ public class RecintoService {
      */
     private String limpiarOpcional(String valor) {
         return (valor == null || valor.isBlank()) ? null : valor.trim();
-    }
-
-    /**
-     * Método que obtiene el administrador que se le asigna a los recintos nuevos eh por ahora el primero de la BD
-     * aún no existe manejo de sesiones tolano, pero ahorita queda
-     * @return el administrador actual
-     */
-    private Administrador obtenerAdministradorActual() {
-        return administradorRepository.findFirstByOrderByIdAsc()
-                .orElseThrow(() -> new IllegalStateException("No hay ningún administrador en la base de datos."));
     }
 }
