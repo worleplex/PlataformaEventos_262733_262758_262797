@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <base th:href="@{/}" href="/">
+    <title>Panel de administrador - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" th:href="@{/admin/eventos}">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/logo-oscuro.png}">
+                    <img th:src="@{/img/logo.png}" alt="Logo de EventYunks">
+                </picture>
+                EventYunks
+            </a>
+            <nav>
+                <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
+                <a th:href="@{/admin/organizadores}">Gestión General</a>
+                <a th:href="@{/logout}">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor admin">
+        <h1>Panel de Administrador</h1>
+
+        <section class="aviso exito" th:if="${mensajeBien != null}">
+            <p th:text="${mensajeBien}"></p>
+        </section>
+        <section class="aviso fallo" th:if="${mensajeError != null}">
+            <p th:text="${mensajeError}"></p>
+        </section>
+
+        <form th:action="@{/admin/eventos}" method="get">
+            <div class="campo">
+                <label for="buscar">Buscar</label>
+                <input id="buscar" name="buscar" type="search" placeholder="Buscar por evento, recinto u organizador..." th:value="${busquedaActual}">
+            </div>
+
+            <h2>Filtros</h2>
+            <section class="rejilla">
+                <div>
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" onchange="this.form.submit()">
+                        <option value="">Todas las categorías</option>
+                        <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}" th:selected="${c == categoriaActual}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="fecha">Fecha</label>
+                    <select id="fecha" name="fecha" onchange="this.form.submit()">
+                        <option value="">Todas las fechas</option>
+                        <option value="proximos" th:selected="${fechaActual == 'proximos'}">Próximos eventos</option>
+                        <option value="semana" th:selected="${fechaActual == 'semana'}">Próximos 7 días</option>
+                        <option value="mes" th:selected="${fechaActual == 'mes'}">Próximos 30 días</option>
+                        <option value="pasados" th:selected="${fechaActual == 'pasados'}">Eventos pasados</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="precio">Rango de Precio</label>
+                    <select id="precio" name="precio" onchange="this.form.submit()">
+                        <option value="">Todos los precios</option>
+                        <option value="bajo" th:selected="${precioActual == 'bajo'}">Hasta $500</option>
+                        <option value="medio" th:selected="${precioActual == 'medio'}">De $500 a $1,000</option>
+                        <option value="alto" th:selected="${precioActual == 'alto'}">Más de $1,000</option>
+                    </select>
+                </div>
+            </section>
+
+            <div class="acciones" th:if="${hayFiltros}">
+                <a class="boton secundario" th:href="@{/admin/eventos}">Limpiar filtros</a>
+            </div>
+        </form>
+
+        <div class="titulo-lista">
+            <h2>Catálogo de eventos</h2>
+            <small th:text="${#lists.size(eventos)} + ' eventos'"> eventos</small>
+        </div>
+
+        <p th:if="${#lists.isEmpty(eventos)}">No se encontraron eventos.</p>
+
+        <section class="rejilla" th:unless="${#lists.isEmpty(eventos)}">
+            <a class="tarjeta" th:each="e : ${eventos}" th:href="@{/admin/eventos/{id}(id=${e.id})}">
+                <div class="portada" th:classappend="${e.cancelado} ? 'cancelado-img'">
+                    <picture th:if="${e.imagen == null}">
+                        <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/evento-musica-oscuro.jpg}">
+                        <img th:src="@{/img/evento-musica.jpg}" th:alt="${e.nombre}">
+                    </picture>
+                    <img th:unless="${e.imagen == null}" th:src="${e.imagen}" th:alt="${e.nombre}">
+                    <span class="etiqueta" th:classappend="${e.claseEtiqueta}" th:text="${e.etiqueta}"></span>
+                </div>
+                <div class="info">
+                    <h3 th:text="${e.nombre}"></h3>
+                    <p th:text="${e.fecha}"></p>
+                    <p th:text="${e.recinto}"></p>
+                    <p><small th:text="'Organiza: ' + ${e.organizador}"></small></p>
+                    <p class="precio" th:text="${e.precio}"></p>
+                </div>
+            </a>
+        </section>
+    </main>
+</body>
+</html>

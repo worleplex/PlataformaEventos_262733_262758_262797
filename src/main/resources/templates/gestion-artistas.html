@@ -11,13 +11,14 @@
 <body>
 <header>
     <div class="contenedor barra">
-        <a class="logo" th:href="@{/}">
+        <a class="logo" th:href="@{/admin/eventos}">
             <img th:src="@{/img/logo.png}" alt="Logo">
             EventYunks
         </a>
         <nav>
-            <a th:href="@{/admin/artistas}">Gestión de Artistas</a>
-            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
+            <a th:href="@{/admin/organizadores}">Gestión General</a>
+            <a th:href="@{/logout}">cerrar sesión</a>
         </nav>
     </div>
 </header>
@@ -26,10 +27,8 @@
     <h1>Panel de Administrador</h1>
     <p><strong>Selección de categoría</strong></p>
     <nav class="tabs" aria-label="Categorías de gestión">
-        <!-- Este todavía no sirve-->
         <a th:href="@{/admin/organizadores}">Gestión de Organizadores</a>
         <a class="activa" th:href="@{/admin/artistas}">Gestión de Artistas</a>
-        <!-- Este tampocop -->
         <a th:href="@{/admin/recintos}">Gestión de Recintos</a>
     </nav>
 
@@ -51,7 +50,7 @@
             <div class="info">
                 <div class="item-cabecera">
                         <span class="avatar grande" aria-hidden="true">
-                            <img th:src="${artista.urlImagen != null and !#strings.isEmpty(artista.urlImagen)}? ${artista.urlImagen}: @{/img/avatar-artista.jpg}" alt="">
+                            <img th:src="${artista.urlImagen != null and !#strings.isEmpty(artista.urlImagen)}? ${artista.urlImagen}: @{/img/avatar-artista.png}" alt="">
                         </span>
                     <div>
                         <h3 th:text="${artista.nombre}"></h3>

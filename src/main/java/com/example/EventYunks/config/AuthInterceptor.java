@@ -17,7 +17,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String uri = request.getRequestURI();
-        boolean rutaAdmin = uri.startsWith("/admin") || uri.equals("/panel-administrador.html");
+        boolean rutaAdmin = uri.startsWith("/admin");
         if (rutaAdmin && !"ADMIN".equals(session.getAttribute("rol"))) {
             response.sendRedirect("/login");
             return false;

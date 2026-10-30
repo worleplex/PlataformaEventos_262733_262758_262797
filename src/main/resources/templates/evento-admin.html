@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <base th:href="@{/}" href="/">
+    <title>Detalle de evento (admin) - EventYunks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <div class="contenedor barra">
+            <a class="logo" th:href="@{/admin/eventos}">
+                <picture>
+                    <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/logo-oscuro.png}">
+                    <img th:src="@{/img/logo.png}" alt="Logo de EventYunks">
+                </picture>
+                EventYunks
+            </a>
+            <nav>
+                <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
+                <a th:href="@{/admin/organizadores}">Gestión General</a>
+                <a th:href="@{/logout}">cerrar sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor admin">
+        <a class="volver" th:href="@{/admin/eventos}">← Regresar</a>
+
+        <section class="aviso exito" th:if="${mensajeBien != null}">
+            <p th:text="${mensajeBien}"></p>
+        </section>
+        <section class="aviso fallo" th:if="${mensajeError != null}">
+            <p th:text="${mensajeError}"></p>
+        </section>
+
+        <div class="portada" th:classappend="${evento.cancelado} ? 'cancelado-img'">
+            <picture th:if="${evento.imagen == null}">
+                <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/evento-musica-oscuro.jpg}">
+                <img th:src="@{/img/evento-musica.jpg}" th:alt="${evento.nombre}">
+            </picture>
+            <img th:unless="${evento.imagen == null}" th:src="${evento.imagen}" th:alt="${evento.nombre}">
+            <span class="etiqueta" th:classappend="${evento.claseEtiqueta}" th:text="${evento.etiqueta}"></span>
+        </div>
+
+        <p th:if="${evento.categoria != null}"><span class="etiqueta" th:text="${evento.categoria}"></span></p>
+        <h1 th:text="${evento.nombre}"></h1>
+        <p><strong th:text="${evento.fechaLarga}"></strong></p>
+        <p th:text="${evento.recinto}"></p>
+        <p th:if="${evento.direccion != null}" th:text="${evento.direccion}"></p>
+
+        <h2>Descripción</h2>
+        <p th:text="${evento.descripcion}"></p>
+
+        <div class="caja">
+            <small>Organizador</small>
+            <h3 th:text="${evento.organizadorNombre}"></h3>
+            <small th:text="${evento.eventosRealizados} + ' eventos realizados · ' + ${evento.organizadorCorreo}"></small>
+            <p th:unless="${evento.organizadorActivo}"><span class="etiqueta cancelado">Cuenta suspendida</span></p>
+        </div>
+
+        <h2>Lineup</h2>
+        <p th:if="${#lists.isEmpty(evento.artistas)}">Este evento aún no tiene artistas asignados.</p>
+        <section class="rejilla" th:unless="${#lists.isEmpty(evento.artistas)}">
+            <div class="tarjeta fila" th:each="a : ${evento.artistas}">
+                <img class="avatar" th:if="${a.imagen != null}" th:src="${a.imagen}" alt="">
+                <span class="avatar" aria-hidden="true" th:unless="${a.imagen != null}" th:text="${a.iniciales}"></span>
+                <div>
+                    <strong th:text="${a.nombre}"></strong>
+                    <small th:text="${a.genero}"></small>
+                </div>
+            </div>
+        </section>
+
+        <h2>Zonas y precios</h2>
+        <p th:if="${#lists.isEmpty(evento.boletos)}">Este evento aún no tiene boletos registrados.</p>
+        <section class="rejilla" th:unless="${#lists.isEmpty(evento.boletos)}">
+            <div class="tarjeta zona" th:each="b : ${evento.boletos}">
+                <div>
+                    <h3 th:text="${b.tipo}"></h3>
+                    <p th:text="${b.descripcion}"></p>
+                    <p th:if="${b.disponibilidad != null}"><small th:text="${b.disponibilidad}"></small></p>
+                </div>
+                <span class="precio" th:text="${b.precio}"></span>
+            </div>
+        </section>
+
+        <div class="acciones columna">
+            <form th:if="${evento.puedeDesactivar}" th:action="@{/admin/eventos/{id}/desactivar(id=${evento.id})}" method="post"
+                  onsubmit="return confirm('¿Estás seguro de que deseas desactivar este evento? Se suspenderá la venta de boletos.');">
+                <button type="submit" class="boton">Desactivar Evento</button>
+            </form>
+            <form th:if="${evento.puedeReactivar}" th:action="@{/admin/eventos/{id}/reactivar(id=${evento.id})}" method="post"
+                  onsubmit="return confirm('¿Estás seguro de que deseas reactivar este evento? Volverá a estar en venta.');">
+                <button type="submit" class="boton">Reactivar Evento</button>
+            </form>
+            <form th:action="@{/admin/eventos/{id}/organizador/estado(id=${evento.id})}" method="post"
+                  onsubmit="return confirm('¿Estás seguro de que deseas cambiar el estado de la cuenta de este organizador?');">
+                <button type="submit" class="boton secundario" th:text="${evento.organizadorActivo} ? 'Suspender Cuenta' : 'Reactivar Cuenta'">Suspender Cuenta</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

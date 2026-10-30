@@ -10,10 +10,11 @@
 <body>
 <header>
     <div class="contenedor barra">
-        <a class="logo" th:href="@{/}"><img th:src="@{/img/logo.png}" alt="Logo">EventYunks</a>
+        <a class="logo" th:href="@{/admin/eventos}"><img th:src="@{/img/logo.png}" alt="Logo">EventYunks</a>
         <nav>
-            <a th:href="@{/admin/recintos}">Gestión de Recintos</a>
-            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/admin/eventos}">Catálogo de Eventos</a>
+            <a th:href="@{/admin/organizadores}">Gestión General</a>
+            <a th:href="@{/logout}">cerrar sesión</a>
         </nav>
     </div>
 </header>

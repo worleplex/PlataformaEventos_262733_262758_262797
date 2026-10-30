@@ -35,7 +35,7 @@ public class AuthController {
             session.setAttribute("usuario_id", usuario.getId());
             if (usuario instanceof Administrador) {
                 session.setAttribute("rol", "ADMIN");
-                return "redirect:/panel-administrador.html";
+                return "redirect:/admin/eventos";
             }
             if (usuario instanceof Organizador) {
                 session.setAttribute("rol", "ORGANIZADOR");
@@ -62,6 +62,6 @@ public class AuthController {
 
     @GetMapping("/admin")
     public String inicioAdmin() {
-        return "redirect:/admin/organizadores";
+        return "redirect:/admin/eventos";
     }
 }
