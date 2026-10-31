@@ -25,8 +25,8 @@ public class Zona {
     private String nombre;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "recinto_id", nullable = false)
-    private Recinto recinto;
+    @JoinColumn(name = "croquis_id", nullable = false)
+    private Croquis croquis;
 
     @OneToMany(mappedBy = "zona", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Asiento> asientos = new ArrayList<>();

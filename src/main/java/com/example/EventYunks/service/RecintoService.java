@@ -1,5 +1,6 @@
 package com.example.EventYunks.service;
 
+import com.example.EventYunks.model.Croquis;
 import com.example.EventYunks.model.Direccion;
 import com.example.EventYunks.model.Recinto;
 import com.example.EventYunks.repository.RecintoRepository;
@@ -15,15 +16,19 @@ public class RecintoService {
 
     private final RecintoRepository recintoRepository;
     private final AdministradorService administradorService;
+    private final CroquisService croquisService;
 
     /**
      * constructor con inyeccion de dependencias
      * @param recintoRepository el repositorio de recintos
      * @param administradorService el servicio que da el administrador de la sesión activa
+     * @param croquisService el servicio que consulta los croquis prehechos
      */
-    public RecintoService(RecintoRepository recintoRepository, AdministradorService administradorService) {
+    public RecintoService(RecintoRepository recintoRepository, AdministradorService administradorService,
+                          CroquisService croquisService) {
         this.recintoRepository = recintoRepository;
         this.administradorService = administradorService;
+        this.croquisService = croquisService;
     }
 
     /**
@@ -66,26 +71,47 @@ public class RecintoService {
     }
 
     /**
-     * Método que guarda un recinto nuevo en la BD y le asigna el administrador de la sesión activa
-     * @param recinto el recinto (con su dirección) capturado en el formulario
-     * @return el recinto ya persistido
+     * Método que regresa los croquis disponibles para el select del formulario de recintos
+     * @return una lista de croquis ordenados por nombre
      */
-    public Recinto crear(Recinto recinto) {
+    public List<Croquis> listarCroquis() {
+        return croquisService.listarTodos();
+    }
+
+    /**
+     * Método que revisa si el id de croquis que llegó del formulario corresponde a un croquis existente
+     * @param croquisId el id capturado en el select (puede venir null si no eligieron nada)
+     * @return true si el croquis existe, false si viene null o no existe
+     */
+    public boolean existeCroquis(Long croquisId) {
+        return croquisId != null && croquisService.buscarPorId(croquisId).isPresent();
+    }
+
+    /**
+     * Método que guarda un recinto nuevo en la BD, le asigna el croquis elegido y el administrador de la sesión activa
+     * @param recinto el recinto (con su dirección) capturado en el formulario
+     * @param croquisId el id del croquis elegido en el formulario
+     * @return el recinto ya persistido
+     * @throws NoSuchElementException si el croquis no existe
+     */
+    public Recinto crear(Recinto recinto, Long croquisId) {
         recinto.setId(null);
         limpiarDatos(recinto);
+        recinto.setCroquis(obtenerCroquis(croquisId));
         recinto.setAdministrador(administradorService.obtenerAdministradorActual());
         return recintoRepository.save(recinto);
     }
 
     /**
      * Método que actualiza un recinto existente con los datos capturados en el formulario. Solo se copian
-     * los datos del formulario (nombre, capacidad y dirección) para no perder zonas, croquis ni administrador
+     * los datos del formulario (nombre, dirección y croquis) para no perder el administrador ni los eventos
      * @param id el id del recinto a actualizar
      * @param datos el recinto (con su dirección) capturado en el formulario
+     * @param croquisId el id del croquis elegido en el formulario
      * @return el recinto ya persistido
-     * @throws NoSuchElementException si se intenta editar un recinto que ya no existe
+     * @throws NoSuchElementException si se intenta editar un recinto que ya no existe, o el croquis no existe
      */
-    public Recinto actualizar(Long id, Recinto datos) {
+    public Recinto actualizar(Long id, Recinto datos, Long croquisId) {
         Recinto recinto = recintoRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No existe el recinto con id " + id));
         if (recinto.getDireccion() == null) {
@@ -94,7 +120,7 @@ public class RecintoService {
         limpiarDatos(datos);
 
         recinto.setNombre(datos.getNombre());
-        recinto.setCapacidad(datos.getCapacidad());
+        recinto.setCroquis(obtenerCroquis(croquisId));
 
         Direccion direccion = recinto.getDireccion();
         Direccion nueva = datos.getDireccion();
@@ -139,6 +165,20 @@ public class RecintoService {
         recintoRepository.delete(recinto.get());
         recintoRepository.flush();
         return true;
+    }
+
+    /**
+     * Método que busca el croquis elegido en el formulario
+     * @param croquisId el id del croquis
+     * @return el croquis encontrado
+     * @throws NoSuchElementException si el id es null o no existe un croquis con ese id
+     */
+    private Croquis obtenerCroquis(Long croquisId) {
+        if (croquisId == null) {
+            throw new NoSuchElementException("No se eligió ningún croquis");
+        }
+        return croquisService.buscarPorId(croquisId)
+                .orElseThrow(() -> new NoSuchElementException("No existe el croquis con id " + croquisId));
     }
 
     /**

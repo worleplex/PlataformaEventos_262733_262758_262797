@@ -11,7 +11,7 @@
 
     <section>
         <h2>Nuevo recinto</h2>
-        <p class="descripcion">Configura el espacio, su dirección y las zonas de acceso.</p>
+        <p class="descripcion">Configura el espacio, su dirección y elige el croquis que define su capacidad y zonas.</p>
         <form id="form-recinto" class="formulario-crear-editar" th:action="@{/admin/recintos}"
               th:object="${recinto}" method="post">
             <div class="campo">
@@ -21,9 +21,14 @@
                 <small class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
             </div>
             <div class="campo">
-                <label for="capacidad">Capacidad (número)</label>
-                <input id="capacidad" type="number" th:field="*{capacidad}" min="1" required placeholder="Ej. 1200">
-                <small class="error" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></small>
+                <label for="croquisId">Croquis</label>
+                <select id="croquisId" name="croquisId" required>
+                    <option value="">Selecciona un croquis</option>
+                    <option th:each="c : ${croquisDisponibles}" th:value="${c.id}"
+                            th:selected="${croquisIdSeleccionado != null and c.id == croquisIdSeleccionado}"
+                            th:text="${c.nombre + ' (' + #numbers.formatInteger(c.capacidad, 1, 'COMMA') + ' personas)'}">Teatro Grande (1,200 personas)</option>
+                </select>
+                <small class="error" th:if="${#fields.hasErrors('croquis')}" th:errors="*{croquis}"></small>
             </div>
             <div class="caja">
                 <h3>Dirección</h3>

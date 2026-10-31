@@ -31,20 +31,20 @@
                 <h3 th:text="${recinto.nombre}">Nombre del recinto</h3>
                 <p th:if="${recinto.direccion != null}"
                    th:text="${recinto.direccion.ciudad}">Ciudad</p>
-                <p th:text="${recinto.capacidad != null ? #numbers.formatInteger(recinto.capacidad, 1, 'COMMA') + ' personas de capacidad' : 'Capacidad no especificada'}">
+                <p th:text="${recinto.croquis != null ? #numbers.formatInteger(recinto.croquis.capacidad, 1, 'COMMA') + ' personas de capacidad' : 'Capacidad no especificada'}">
                     Capacidad
                 </p>
                 <p th:if="${recinto.direccion != null and recinto.direccion.calle != null}"
                    th:text="${recinto.direccion.calle + ' ' + (recinto.direccion.numero != null ? recinto.direccion.numero : '')}">
                     Dirección
                 </p>
-                <p th:if="${recinto.zonas != null and !#lists.isEmpty(recinto.zonas)}">
-                    Zonas registradas: <span th:text="${#lists.size(recinto.zonas)}">0</span>
+                <p th:if="${recinto.croquis != null and !#lists.isEmpty(recinto.croquis.zonas)}">
+                    Zonas registradas: <span th:text="${#lists.size(recinto.croquis.zonas)}">0</span>
                 </p>
                 <div class="acciones envolver">
                     <a class="boton secundario"
                        th:href="@{/admin/recintos/editar/{id}(id=${recinto.id})}">Editar</a>
-                    <form th:action="@{/admin/recintos/eliminar/{id}(id=${recinto.id})}" method="post"
+                    <form th:action="@{/admin/recintos/eliminar/{id}(id=${recinto.id})}" method="post" style="flex: 1;"
                           onsubmit="return confirm('¿Estás seguro de que deseas eliminar este recinto?');">
                         <button type="submit" class="boton secundario peligro">Eliminar</button>
                     </form>

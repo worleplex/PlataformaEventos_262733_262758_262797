@@ -35,13 +35,9 @@ public class RecintoController {
         this.recintoService = recintoService;
     }
 
-    /**
-     * Limita los campos que se pueden llenar desde el formulario, así nadie puede mandar por la petición
-     * datos como el administrador, las zonas o el id del recinto
-     */
     @InitBinder("recinto")
     public void limitarCampos(WebDataBinder binder) {
-        binder.setAllowedFields("nombre", "capacidad",
+        binder.setAllowedFields("nombre",
                 "direccion.nombreLugar", "direccion.calle", "direccion.numero",
                 "direccion.colonia", "direccion.codigoPostal", "direccion.ciudad");
     }
@@ -59,18 +55,23 @@ public class RecintoController {
         Recinto recinto = new Recinto();
         recinto.setDireccion(new Direccion());
         model.addAttribute("recinto", recinto);
+        prepararSelectorCroquis(model, null);
         return VISTA_CREAR;
     }
 
     @PostMapping
     public String crear(@Valid @ModelAttribute("recinto") Recinto recinto,
                         BindingResult resultado,
+                        @RequestParam(name = "croquisId", required = false) Long croquisId,
+                        Model model,
                         RedirectAttributes flash) {
         validarDuplicado(recinto, resultado);
+        validarCroquis(croquisId, resultado);
         if (resultado.hasErrors()) {
+            prepararSelectorCroquis(model, croquisId);
             return VISTA_CREAR;
         }
-        Recinto guardado = recintoService.crear(recinto);
+        Recinto guardado = recintoService.crear(recinto, croquisId);
         flash.addFlashAttribute("mensajeBien", "El recinto " + guardado.getNombre() + " se creó correctamente");
         return REDIRECT_LISTA;
     }
@@ -87,6 +88,8 @@ public class RecintoController {
             existente.setDireccion(new Direccion());
         }
         model.addAttribute("recinto", existente);
+        Long croquisActual = existente.getCroquis() != null ? existente.getCroquis().getId() : null;
+        prepararSelectorCroquis(model, croquisActual);
         return VISTA_EDITAR;
     }
 
@@ -94,6 +97,8 @@ public class RecintoController {
     public String actualizar(@PathVariable Long id,
                              @Valid @ModelAttribute("recinto") Recinto recinto,
                              BindingResult resultado,
+                             @RequestParam(name = "croquisId", required = false) Long croquisId,
+                             Model model,
                              RedirectAttributes flash) {
         recinto.setId(id);
         if (recintoService.buscarPorId(id).isEmpty()) {
@@ -101,10 +106,12 @@ public class RecintoController {
             return REDIRECT_LISTA;
         }
         validarDuplicado(recinto, resultado);
+        validarCroquis(croquisId, resultado);
         if (resultado.hasErrors()) {
+            prepararSelectorCroquis(model, croquisId);
             return VISTA_EDITAR;
         }
-        Recinto guardado = recintoService.actualizar(id, recinto);
+        Recinto guardado = recintoService.actualizar(id, recinto, croquisId);
         flash.addFlashAttribute("mensajeBien", "El recinto " + guardado.getNombre() + " se actualizó correctamente");
         return REDIRECT_LISTA;
     }
@@ -129,6 +136,17 @@ public class RecintoController {
                     "No se pudo eliminar el recinto " + nombre + " porque otros registros dependen de él");
         }
         return REDIRECT_LISTA;
+    }
+
+    private void prepararSelectorCroquis(Model model, Long croquisId) {
+        model.addAttribute("croquisDisponibles", recintoService.listarCroquis());
+        model.addAttribute("croquisIdSeleccionado", croquisId);
+    }
+
+    private void validarCroquis(Long croquisId, BindingResult resultado) {
+        if (!recintoService.existeCroquis(croquisId)) {
+            resultado.rejectValue("croquis", "recinto.croquis", "Selecciona un croquis válido");
+        }
     }
 
     private void validarDuplicado(Recinto recinto, BindingResult resultado) {
