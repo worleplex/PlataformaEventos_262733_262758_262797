@@ -39,7 +39,7 @@ public class AuthController {
             }
             if (usuario instanceof Organizador) {
                 session.setAttribute("rol", "ORGANIZADOR");
-                return "redirect:/panel-organizador.html";
+                return "redirect:/organizador/eventos";
             }
             session.setAttribute("rol", "ASISTENTE");
             return "redirect:/catalogo.html";

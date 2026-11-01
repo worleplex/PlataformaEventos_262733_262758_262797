@@ -21,4 +21,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     List<String> categoriasDeEventosExcepto(@Param("estado") EstadoEvento estado);
 
     long countByOrganizador_IdAndEstado(Long organizadorId, EstadoEvento estado);
+
+    @EntityGraph(attributePaths = {"recinto", "recinto.croquis", "boletos"})
+    List<Evento> findByOrganizador_IdOrderByFechaDesc(Long organizadorId);
 }

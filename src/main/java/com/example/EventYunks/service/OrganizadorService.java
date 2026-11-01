@@ -2,6 +2,7 @@ package com.example.EventYunks.service;
 
 import com.example.EventYunks.model.Organizador;
 import com.example.EventYunks.repository.OrganizadorRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,24 @@ public class OrganizadorService {
     // Es el mismo bean BCrypt que define SecurityConfig, así el hash se genera igual en todo el proyecto
     private final PasswordEncoder passwordEncoder;
 
+    private final HttpSession session;
+
     public OrganizadorService(OrganizadorRepository organizadorRepository,
                               AdministradorService administradorService,
-                              PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder,
+                              HttpSession session) {
         this.organizadorRepository = organizadorRepository;
         this.administradorService = administradorService;
         this.passwordEncoder = passwordEncoder;
+        this.session = session;
     }
-
+    public Organizador obtenerOrganizadorActual() {
+        Long id = (Long) session.getAttribute("usuario_id");
+        if (id == null) {
+            throw new IllegalStateException("no hay una sesion de organizador activa");
+        }
+        return organizadorRepository.findById(id).orElseThrow(() -> new IllegalStateException("No hay un organizador logeado"));
+    }
     public List<Organizador> listarTodos() {
         return organizadorRepository.findAllByOrderByNombreAsc();
     }

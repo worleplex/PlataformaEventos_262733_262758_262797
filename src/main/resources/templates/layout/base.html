@@ -11,7 +11,7 @@
 <body>
 <!-- Layout base: el nav cambia según el rol que guardó AuthController en la sesión (session.rol):
      ADMIN, ORGANIZADOR, ASISTENTE. Sin sesión (login y registro) solo se muestra el logo. -->
-<header th:with="inicio=${session.rol == 'ADMIN' ? '/admin/eventos' : (session.rol == 'ORGANIZADOR' ? '/panel-organizador.html' : (session.rol == 'ASISTENTE' ? '/catalogo.html' : '/'))}">
+<header th:with="inicio=${session.rol == 'ADMIN' ? '/admin/eventos' : (session.rol == 'ORGANIZADOR' ? '/organizador/eventos' : (session.rol == 'ASISTENTE' ? '/catalogo.html' : '/'))}">
     <div class="contenedor barra">
         <a class="logo" th:href="@{${inicio}}">
             <picture>
@@ -26,7 +26,7 @@
                 <a th:href="@{/admin/organizadores}">Gestión General</a>
             </th:block>
             <th:block th:case="'ORGANIZADOR'">
-                <a th:href="@{/panel-organizador.html}">Catálogo</a>
+                <a th:href="@{/organizador/eventos}">Catálogo</a>
             </th:block>
             <th:block th:case="'ASISTENTE'">
                 <a th:href="@{/catalogo.html}">Catálogo</a>

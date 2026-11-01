@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-public class ArtistaController {
+public class ArtistaAdminController {
     @Autowired
     private ArtistaService artistaService;
 

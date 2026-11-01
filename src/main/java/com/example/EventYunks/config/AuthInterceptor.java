@@ -22,6 +22,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             response.sendRedirect("/login");
             return false;
         }
+        boolean rutaOrganizador = uri.startsWith("/organizador");
+        if (rutaOrganizador && !"ORGANIZADOR".equals(session.getAttribute("rol"))) {
+            response.sendRedirect("/login");
+            return false;
+        }
         return true;
     }
 }

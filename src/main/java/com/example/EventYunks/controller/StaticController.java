@@ -64,11 +64,9 @@ public class StaticController {
     public String eventoFinalizado() {
         return "evento-finalizado";
     }
-
+    //Quitar esto al final
     @GetMapping("/panel-organizador.html")
-    public String panelOrganizador() {
-        return "panel-organizador";
-    }
+    public String panelOrganizador() {return "redirect:/organizador/eventos";}
 
     @GetMapping("/crear-evento.html")
     public String crearEvento() {

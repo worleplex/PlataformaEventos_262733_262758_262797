@@ -61,6 +61,9 @@ public class EventoService {
         return eventoRepository.categoriasDeEventosExcepto(EstadoEvento.BORRADOR);
     }
 
+    public List<Evento> eventosDelOrganizador(Long organizadorId) {
+        return eventoRepository.findByOrganizador_IdOrderByFechaDesc(organizadorId);
+    }
     @Transactional(readOnly = true)
     public Optional<Evento> detalleAdmin(Long id) {
         return eventoRepository.findById(id)

@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/recintos")
-public class RecintoController {
+public class RecintoAdminController {
 
     private static final String VISTA_LISTA = "gestion-recintos";
     private static final String VISTA_CREAR = "crear-recinto";
@@ -31,7 +31,7 @@ public class RecintoController {
 
     private final RecintoService recintoService;
 
-    public RecintoController(RecintoService recintoService) {
+    public RecintoAdminController(RecintoService recintoService) {
         this.recintoService = recintoService;
     }
 

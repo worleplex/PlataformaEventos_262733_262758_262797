@@ -1,77 +1,51 @@
 <th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Panel del organizador - EventYunks</title>
     <main class="contenedor organizador">
-    <h1>Panel de Control del Organizador</h1>
-    <dl class="metricas">
-        <div class="caja completa">
-            <dt>Total de Eventos</dt>
-            <dd>1</dd>
-        </div>
-        <div class="caja">
-            <dt>Boletos Vendidos</dt>
-            <dd>2</dd>
-        </div>
-        <div class="caja">
-            <dt>Ingresos Totales</dt>
-            <dd>$700</dd>
-        </div>
-    </dl>
-
-    <a class="boton" href="crear-evento.html">+ Crear Nuevo Evento</a>
-
-    <h2>Mis Eventos Creados</h2>
-    <section class="rejilla">
-        <article class="tarjeta">
-            <div class="portada">
-                <img src="img/evento-bailey.jpg" alt="Bailey Fest">
+        <h1>Panel de Control del Organizador</h1>
+        <section class="aviso exito" th:if="${mensajeBien != null}">
+            <p th:text="${mensajeBien}"></p>
+        </section>
+        <section class="aviso fallo" th:if="${mensajeError != null}">
+            <p th:text="${mensajeError}"></p>
+        </section>
+        <dl class="metricas">
+            <div class="caja completa">
+                <dt>Total de Eventos</dt>
+                <dd th:text="${totalEventos}">1</dd>
             </div>
-            <div class="info">
-                <h3>Bailey Fest</h3>
-                <p><time datetime="2026-11-20T19:00">20 nov 2026 · 19:00 h</time></p>
-                <p>67 de Capacidad</p>
-                <p>La casa de la Noelia</p>
-                <p><span class="etiqueta">Borrador</span></p>
-                <div class="acciones">
-                    <a class="boton" href="editar-evento.html">editar</a>
-                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
+            <div class="caja">
+                <dt>Boletos Vendidos</dt>
+                <dd th:text="${boletosVendidos}">2</dd>
+            </div>
+            <div class="caja">
+                <dt>Ingresos Totales</dt>
+                <dd th:text="'$' + ${#numbers.formatDecimal(ingresosTotales, 1, 'COMMA', 2, 'POINT')}">$700</dd>
+            </div>
+        </dl>
+        <a class="boton" th:href="@{/crear-evento.html}">+ Crear Nuevo Evento</a>
+        <h2>Mis Eventos Creados</h2>
+        <p th:if="${#lists.isEmpty(eventos)}">Aún no has creado ningún evento.</p>
+        <section class="rejilla" th:unless="${#lists.isEmpty(eventos)}">
+            <article class="tarjeta" th:each="e : ${eventos}">
+                <div class="portada" th:classappend="${e.estado.name() == 'CANCELADO'} ? 'cancelado-img'">
+                    <picture th:if="${#strings.isEmpty(e.urlImagen)}">
+                        <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/evento-musica-oscuro.jpg}">
+                        <img th:src="@{/img/evento-musica.jpg}" th:alt="${e.nombre}">
+                    </picture>
+                    <img th:unless="${#strings.isEmpty(e.urlImagen)}" th:src="${e.urlImagen}" th:alt="${e.nombre}">
                 </div>
-            </div>
-        </article>
-        <article class="tarjeta">
-            <div class="portada">
-                <picture>
-                    <source media="(prefers-color-scheme: dark)" srcset="img/evento-musica-oscuro.jpg">
-                    <img src="img/evento-musica.jpg" alt="Urogallo festival">
-                </picture>
-            </div>
-            <div class="info">
-                <h3>Urogallo festival</h3>
-                <p><time datetime="2026-11-20T19:00">20 nov 2026 · 19:00 h</time></p>
-                <p>60 de Capacidad</p>
-                <p>Foro Centro</p>
-                <p><span class="etiqueta">Pausado</span></p>
-                <div class="acciones">
-                    <a class="boton" href="editar-evento.html">editar</a>
-                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
+                <div class="info">
+                    <h3 th:text="${e.nombre}">Bailey Fest</h3>
+                    <p><time th:datetime="${e.fecha}" th:text="${#temporals.format(e.fecha, 'd MMM yyyy · HH:mm') + ' h'}">20 nov 2026 · 19:00 h</time></p>
+                    <p th:text="${#numbers.formatInteger(e.recinto.croquis.capacidad, 1, 'COMMA') + ' de Capacidad'}">67 de Capacidad</p>
+                    <p th:text="${e.recinto.nombre}">La casa de la Noelia</p>
+                    <p><span class="etiqueta" th:classappend="${e.estado.claseEtiqueta}" th:text="${e.estado.etiqueta}">Borrador</span></p>
+                    <div class="acciones">
+                        <a class="boton" th:href="@{/editar-evento.html}">editar</a>
+                        <a class="boton secundario" th:href="@{/estadisticas.html}">ver estadísticas</a>
+                    </div>
                 </div>
-            </div>
-        </article>
-        <article class="tarjeta">
-            <div class="portada">
-                <img src="img/evento-menchaca.jpg" alt="Menchaca’s Tour">
-            </div>
-            <div class="info">
-                <h3>Menchaca’s Tour</h3>
-                <p><time datetime="2026-08-24T18:07">24 agosto 2026 · 18:07 h</time></p>
-                <p>67 de Capacidad</p>
-                <p>La casa del Tolano</p>
-                <p><span class="etiqueta">publicado</span></p>
-                <div class="acciones">
-                    <a class="boton" href="editar-evento.html">editar</a>
-                    <a class="boton secundario" href="estadisticas.html">ver estadísticas</a>
-                </div>
-            </div>
-        </article>
-    </section>
-</main>
+            </article>
+        </section>
+    </main>
 </th:block>
