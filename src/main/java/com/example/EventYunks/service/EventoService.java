@@ -1,5 +1,7 @@
 package com.example.EventYunks.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.EventYunks.dto.BoletoBorradorDTO;
 import com.example.EventYunks.dto.EventoBorradorDTO;
 import com.example.EventYunks.model.*;
@@ -8,8 +10,10 @@ import com.example.EventYunks.repository.ArtistaRepository;
 import com.example.EventYunks.repository.CambioEventoRepository;
 import com.example.EventYunks.repository.EventoRepository;
 import com.example.EventYunks.repository.RecintoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,6 +30,9 @@ public class EventoService {
     private final RecintoRepository recintoRepository;
     private final ArtistaRepository artistaRepository;
     private final CambioEventoRepository cambioEventoRepository;
+
+    @Autowired(required = false)
+    private Cloudinary cloudinary;
 
     public EventoService(EventoRepository eventoRepository, RecintoRepository recintoRepository, ArtistaRepository artistaRepository, CambioEventoRepository cambioEventoRepository) {
         this.eventoRepository = eventoRepository;
@@ -125,7 +132,7 @@ public class EventoService {
     }
     //Por fín después de mucho tiempo ahora si se pueden crear eventos
     @Transactional
-    public Evento crearEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento estado) {
+    public Evento crearEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento estado, MultipartFile imagen) {
         List<String> errores = validarBorrador(borrador, estado == EstadoEvento.PUBLICADO);
         if (!errores.isEmpty()) {
             throw new IllegalArgumentException(String.join(" ", errores));
@@ -135,7 +142,14 @@ public class EventoService {
         evento.setDescripcion(borrador.getDescripcion());
         evento.setCategoria(borrador.getCategoria());
         evento.setFecha(LocalDateTime.of(borrador.getFecha(), borrador.getHora()));
-        evento.setUrlImagen(borrador.getUrlImagen());
+        String urlImagen = borrador.getUrlImagen();
+        if (imagen != null && !imagen.isEmpty()) {
+            String nueva = guardarImagenCloudinary(imagen);
+            if (nueva != null) {
+                urlImagen = nueva;
+            }
+        }
+        evento.setUrlImagen(urlImagen);
         evento.setEstado(estado);
         evento.setOrganizador(organizador);
         evento.setRecinto(recintoRepository.findById(borrador.getRecintoId()).orElseThrow());
@@ -168,7 +182,8 @@ public class EventoService {
         return detalleOrganizador(eventoId, organizadorId).filter(this::puedeEditar).map(EventoBorradorDTO::desde);
     }
     @Transactional
-    public Evento actualizarEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento nuevoEstado) {
+    public Evento actualizarEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento nuevoEstado,  MultipartFile imagen) {
+
         Evento evento = detalleOrganizador(borrador.getEventoId(), organizador.getId()).filter(this::puedeEditar).orElseThrow(() -> new IllegalArgumentException("El evento ya no existe o no se puede editar."));
         EstadoEvento estadoFinal = nuevoEstado != null ? nuevoEstado : evento.getEstado();
         List<String> errores = validarBorrador(borrador, estadoFinal != EstadoEvento.BORRADOR);
@@ -184,7 +199,14 @@ public class EventoService {
         evento.setDescripcion(borrador.getDescripcion());
         evento.setCategoria(borrador.getCategoria());
         evento.setFecha(fechaNueva);
-        evento.setUrlImagen(borrador.getUrlImagen());
+        String urlImagen = borrador.getUrlImagen();
+        if (imagen != null && !imagen.isEmpty()) {
+            String nueva = guardarImagenCloudinary(imagen);
+            if (nueva != null) {
+                urlImagen = nueva;
+            }
+        }
+        evento.setUrlImagen(urlImagen);
         evento.setRecinto(recintoNuevo);
         evento.setEstado(estadoFinal);
         evento.getArtistas().clear();
@@ -367,5 +389,23 @@ public class EventoService {
             case "alto" -> desde.compareTo(LIMITE_MEDIO) > 0;
             default -> true;
         };
+    }
+
+    private String guardarImagenCloudinary(MultipartFile imagen) {
+        try {
+            Map uploadResult = cloudinary.uploader().upload(imagen.getBytes(), ObjectUtils.emptyMap());
+            return uploadResult.get("secure_url").toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void guardarImagenBorrador(EventoBorradorDTO borrador, MultipartFile imagen) {
+        if (imagen != null && !imagen.isEmpty()) {
+            String nueva = guardarImagenCloudinary(imagen);
+            if (nueva != null) {
+                borrador.setUrlImagen(nueva);
+            }
+        }
     }
 }

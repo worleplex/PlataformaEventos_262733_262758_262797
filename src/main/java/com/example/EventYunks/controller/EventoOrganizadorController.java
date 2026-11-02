@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URLEncoder;
@@ -98,8 +99,11 @@ public class EventoOrganizadorController {
         return VISTA_CREAR;
     }
     @PostMapping("/organizador/eventos/nuevo/datos")
-    public String guardarDatosGenerales(@ModelAttribute("borrador") EventoBorradorDTO borrador, @RequestParam("accion") String accion, Model model, SessionStatus sessionStatus, RedirectAttributes flash) {
+    public String guardarDatosGenerales(@ModelAttribute("borrador") EventoBorradorDTO borrador, @RequestParam("accion") String accion,
+                                        @RequestParam(name = "imagen", required = false) MultipartFile imagen,
+                                        Model model, SessionStatus sessionStatus, RedirectAttributes flash) {
         if (accion.equals("recinto")) {
+            eventoService.guardarImagenBorrador(borrador, imagen);
             return REDIRECT_PASO_RECINTO;
         }
         boolean editando = borrador.getEventoId() != null;
@@ -114,9 +118,9 @@ public class EventoOrganizadorController {
             try {
                 Organizador organizador = organizadorService.obtenerOrganizadorActual();
                 if (editando) {
-                    eventoService.actualizarEvento(borrador, organizador, estado);
+                    eventoService.actualizarEvento(borrador, organizador, estado, imagen);
                 } else {
-                    eventoService.crearEvento(borrador, organizador, estado);
+                    eventoService.crearEvento(borrador, organizador, estado, imagen);
                 }
             } catch (IllegalArgumentException e) {
                 errores = List.of(e.getMessage());
