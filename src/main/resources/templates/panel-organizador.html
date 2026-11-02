@@ -22,7 +22,7 @@
                 <dd th:text="'$' + ${#numbers.formatDecimal(ingresosTotales, 1, 'COMMA', 2, 'POINT')}">$700</dd>
             </div>
         </dl>
-        <a class="boton" th:href="@{/crear-evento.html}">+ Crear Nuevo Evento</a>
+        <a class="boton" th:href="@{/organizador/eventos/nuevo}">+ Crear Nuevo Evento</a>
         <h2>Mis Eventos Creados</h2>
         <p th:if="${#lists.isEmpty(eventos)}">Aún no has creado ningún evento.</p>
         <section class="rejilla" th:unless="${#lists.isEmpty(eventos)}">
@@ -41,8 +41,8 @@
                     <p th:text="${e.recinto.nombre}">La casa de la Noelia</p>
                     <p><span class="etiqueta" th:classappend="${e.estado.claseEtiqueta}" th:text="${e.estado.etiqueta}">Borrador</span></p>
                     <div class="acciones">
-                        <a class="boton" th:href="@{/editar-evento.html}">editar</a>
-                        <a class="boton secundario" th:href="@{/estadisticas.html}">ver estadísticas</a>
+                        <a class="boton" th:if="${e.estado.name() != 'CANCELADO' and e.estado.name() != 'FINALIZADO'}" th:href="@{/organizador/eventos/{id}/editar(id=${e.id})}">editar</a>
+                        <a class="boton secundario" th:href="@{/organizador/eventos/{id}/estadisticas(id=${e.id})}">ver estadísticas</a>
                     </div>
                 </div>
             </article>

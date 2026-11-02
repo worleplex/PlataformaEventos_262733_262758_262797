@@ -1,5 +1,6 @@
 package com.example.EventYunks.model;
 
+import com.example.EventYunks.model.enums.EstadoPago;
 import com.example.EventYunks.model.enums.EstadoTicket;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,4 +40,8 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asiento_id")
     private Asiento asiento;
+
+    public boolean esVendido() {
+        return estado != EstadoTicket.CANCELADO && compra != null && compra.getPago() != null  && compra.getPago().getEstado() == EstadoPago.APROBADO;
+    }
 }

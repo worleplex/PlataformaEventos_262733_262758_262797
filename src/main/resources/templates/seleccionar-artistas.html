@@ -1,90 +1,37 @@
 <th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Seleccionar artistas - EventYunks</title>
     <main class="contenedor organizador">
-    <h1>Seleccionar artistas</h1>
-    <form action="panel-organizador.html">
-        <h2>Catálogo de artistas</h2>
-        <div class="campo">
-            <label for="buscar">Buscar</label>
-            <input id="buscar" type="search" placeholder="Buscar artistas...">
-        </div>
-        <ul class="rejilla">
-            <li>
-                <label class="tarjeta fila">
-                    <input type="checkbox" name="artistas" value="the-weeknd" checked>
-                    <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
-                        <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
-                    </picture>
-                    <span>
-                        <strong>The Weeknd</strong>
-                        <small>Electropop</small>
+        <h1>Seleccionar artistas</h1>
+        <form th:action="@{/organizador/eventos/nuevo/artistas}" method="post">
+            <h2>Catálogo de artistas</h2>
+            <div class="campo">
+                <label for="buscar">Buscar</label>
+                <input id="buscar" name="buscar" type="search" placeholder="Buscar artistas..." th:value="${busquedaActual}">
+                <button class="boton secundario" type="submit" name="accion" value="buscar">Buscar</button>
+            </div>
+            <p th:if="${#lists.isEmpty(artistas)}">No se encontraron artistas.</p>
+            <ul class="rejilla" th:unless="${#lists.isEmpty(artistas)}">
+                <li th:each="a : ${artistas}">
+                    <input type="hidden" name="visibles" th:value="${a.id}">
+                    <label class="tarjeta fila">
+                        <input type="checkbox" name="artistaIds" th:value="${a.id}" th:checked="${borrador.artistaIds.contains(a.id)}">
+                        <img class="avatar" th:if="${a.urlImagen != null}" th:src="${a.urlImagen}" th:alt="|Foto de ${a.nombre}|">
+                        <picture th:unless="${a.urlImagen != null}">
+                            <source media="(prefers-color-scheme: dark)" th:srcset="@{/img/avatar-artista-oscuro.png}">
+                            <img class="avatar" th:src="@{/img/avatar-artista.png}" alt="Foto de artista">
+                        </picture>
+                        <span>
+                        <strong th:text="${a.nombre}"></strong>
+                        <small th:text="${a.generoMusical ?: 'Sin género'}"></small>
                     </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-            <li>
-                <label class="tarjeta fila">
-                    <input type="checkbox" name="artistas" value="Erick" checked>
-                    <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
-                        <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
-                    </picture>
-                    <span>
-                        <strong>Kurt Cobain</strong>
-                        <small>Rock</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-            <li>
-                <label class="tarjeta fila">
-                    <input type="checkbox" name="artistas" value="Julian Menchaca" checked>
-                    <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
-                        <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
-                    </picture>
-                    <span>
-                        <strong>Angela Aguilar</strong>
-                        <small>Regional Mexicano</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-            <li>
-                <label class="tarjeta fila">
-                    <input type="checkbox" name="artistas" value="artista">
-                    <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
-                        <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
-                    </picture>
-                    <span>
-                        <strong>The Weeknd</strong>
-                        <small>Electropop</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-            <li>
-                <label class="tarjeta fila">
-                    <input type="checkbox" name="artistas" value="artista-2">
-                    <picture>
-                        <source media="(prefers-color-scheme: dark)" srcset="img/avatar-artista-oscuro.png">
-                        <img class="avatar" src="img/avatar-artista.png" alt="Foto de artista">
-                    </picture>
-                    <span>
-                        <strong>Kurt Cobain</strong>
-                        <small>Rock</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-        </ul>
-
-        <div class="acciones">
-            <a class="boton secundario" href="seleccionar-recinto.html">Cancelar</a>
-            <button class="boton" type="submit">Guardar selección</button>
-        </div>
-    </form>
-</main>
+                        <span class="etiqueta">Seleccionado</span>
+                    </label>
+                </li>
+            </ul>
+            <div class="acciones">
+                <a class="boton secundario" th:href="@{/organizador/eventos/nuevo/recinto}">Volver</a>
+                <button class="boton" type="submit" name="accion" value="guardar">Guardar selección</button>
+            </div>
+        </form>
+    </main>
 </th:block>

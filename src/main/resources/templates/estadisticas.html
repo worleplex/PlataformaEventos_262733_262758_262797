@@ -1,61 +1,55 @@
 <th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <title>Estadísticas y asistentes - EventYunks</title>
     <main class="contenedor organizador">
-    <h1>Estadísticas y Asistentes</h1>
-    <h2>Encuentro de música</h2>
-
-    <h2>Boletos vendidos por tipo</h2>
-    <dl class="metricas">
-        <div class="caja">
-            <dt>General</dt>
-            <dd>1</dd>
+        <h1>Estadísticas y Asistentes</h1>
+        <h2 th:text="${evento.nombre}">Encuentro de música</h2>
+        <h2>Boletos vendidos por tipo</h2>
+        <p th:if="${#lists.isEmpty(evento.boletos)}">Este evento aún no tiene boletos registrados.</p>
+        <dl class="metricas" th:unless="${#lists.isEmpty(evento.boletos)}">
+            <div class="caja" th:each="b : ${evento.boletos}">
+                <dt th:text="${b.tipo}">General</dt>
+                <dd th:text="${b.vendidos}">1</dd>
+            </div>
+        </dl>
+        <section class="tarjeta" th:with="capacidad=${evento.recinto.croquis.capacidad}, restante=${evento.recinto.croquis.capacidad - evento.boletosVendidos}">
+            <div class="info">
+                <h3>Capacidad restante</h3>
+                <p class="cifra" th:text="|${restante} de ${capacidad}|">58 de 60</p>
+                <meter min="0" th:max="${capacidad}" th:value="${restante}" aria-label="Capacidad restante" th:text="|${restante} de ${capacidad}|">58 de 60</meter>
+                <p th:each="b : ${evento.boletos}" th:if="${b.disponibles != null}">
+                    <small th:text="|${b.disponibles} ${b.tipo} disponibles|">49 General disponibles</small>
+                </p>
+            </div>
+        </section>
+        <dl class="metricas">
+            <div class="caja completa">
+                <dt>Ingresos totales generados</dt>
+                <dd th:text="'$' + ${#numbers.formatDecimal(evento.ingresos, 1, 'COMMA', 2, 'POINT')}">$700</dd>
+            </div>
+        </dl>
+        <h2>Asistentes Confirmados</h2>
+        <p th:if="${#lists.isEmpty(asistentes)}">Todavía no hay asistentes confirmados.</p>
+        <div class="tarjeta" th:unless="${#lists.isEmpty(asistentes)}">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Nombre del asistente</th>
+                    <th scope="col">Tipo de boleto adquirido</th>
+                    <th scope="col">Estado del ticket</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t : ${asistentes}">
+                    <td th:text="${t.compra.asistente.nombre}">Ana López</td>
+                    <td th:text="${t.boleto.tipo}">General</td>
+                    <td th:switch="${t.estado.name()}">
+                        <span th:case="'USADO'" class="etiqueta usado">Escaneado</span>
+                        <span th:case="*" class="etiqueta vigente">Válido / No escaneado</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="caja">
-            <dt>VIP</dt>
-            <dd>1</dd>
-        </div>
-    </dl>
-
-    <section class="tarjeta">
-        <div class="info">
-            <h3>Capacidad restante</h3>
-            <p class="cifra">58 de 60</p>
-            <meter min="0" max="60" value="58" aria-label="Capacidad restante">58 de 60</meter>
-            <p><small>49 General · 9 VIP disponibles</small></p>
-        </div>
-    </section>
-
-    <dl class="metricas">
-        <div class="caja completa">
-            <dt>Ingresos totales generados</dt>
-            <dd>$700</dd>
-        </div>
-    </dl>
-
-    <h2>Asistentes Confirmados</h2>
-    <div class="tarjeta">
-        <table>
-            <thead>
-            <tr>
-                <th scope="col">Nombre del asistente</th>
-                <th scope="col">Tipo de boleto adquirido</th>
-                <th scope="col">Estado del ticket</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Ana López</td>
-                <td>General</td>
-                <td><span class="etiqueta vigente">Válido / No escaneado</span></td>
-            </tr>
-            <tr>
-                <td>Ana López</td>
-                <td>VIP</td>
-                <td><span class="etiqueta vigente">Válido / No escaneado</span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <a class="boton secundario" href="panel-organizador.html">Volver al Panel</a>
-</main>
+        <a class="boton secundario" th:href="@{/organizador/eventos}">Volver al Panel</a>
+    </main>
 </th:block>

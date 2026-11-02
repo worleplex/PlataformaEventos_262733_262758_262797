@@ -79,6 +79,13 @@ public class Evento {
                 .orElse(null);
     }
 
+    public int getBoletosVendidos() {
+        return boletos.stream().mapToInt(Boleto::getVendidos).sum();
+    }
+    public BigDecimal getIngresos() {
+        return boletos.stream().filter(b -> b.getPrecio() != null).map(b -> b.getPrecio().multiply(BigDecimal.valueOf(b.getVendidos()))).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
     public void agregarBoleto(Boleto boleto) {
         boletos.add(boleto);
         boleto.setEvento(this);

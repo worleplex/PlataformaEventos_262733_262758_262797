@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "zonas")
@@ -34,5 +33,14 @@ public class Zona {
     public void agregarAsiento(Asiento asiento) {
         asientos.add(asiento);
         asiento.setZona(this);
+    }
+
+    public Map<String, List<Asiento>> getAsientosPorFila() {
+        Map<String, List<Asiento>> filas = new TreeMap<>(Comparator.comparing(String::length).thenComparing(Comparator.naturalOrder()));
+        for (Asiento asiento : asientos) {
+            filas.computeIfAbsent(asiento.getFila(), f -> new ArrayList<>()).add(asiento);
+        }
+        filas.values().forEach(lista -> lista.sort(Comparator.comparing(Asiento::getNumero)));
+        return filas;
     }
 }

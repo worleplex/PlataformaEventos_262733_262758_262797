@@ -47,4 +47,15 @@ public class Boleto {
 
     @OneToMany(mappedBy = "boleto")
     private List<Ticket> tickets = new ArrayList<>();
+
+    public int getVendidos() {
+        return (int) tickets.stream().filter(Ticket::esVendido).count();
+    }
+
+    public Integer getDisponibles() {
+        if (cantidadTotal == null) {
+            return null;
+        }
+        return Math.max(0, cantidadTotal - getVendidos());
+    }
 }

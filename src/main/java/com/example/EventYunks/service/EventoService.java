@@ -1,18 +1,19 @@
 package com.example.EventYunks.service;
 
-import com.example.EventYunks.model.Evento;
+import com.example.EventYunks.dto.BoletoBorradorDTO;
+import com.example.EventYunks.dto.EventoBorradorDTO;
+import com.example.EventYunks.model.*;
 import com.example.EventYunks.model.enums.EstadoEvento;
+import com.example.EventYunks.repository.ArtistaRepository;
+import com.example.EventYunks.repository.CambioEventoRepository;
 import com.example.EventYunks.repository.EventoRepository;
+import com.example.EventYunks.repository.RecintoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,9 +23,15 @@ public class EventoService {
     private static final BigDecimal LIMITE_MEDIO = new BigDecimal("1000");
 
     private final EventoRepository eventoRepository;
+    private final RecintoRepository recintoRepository;
+    private final ArtistaRepository artistaRepository;
+    private final CambioEventoRepository cambioEventoRepository;
 
-    public EventoService(EventoRepository eventoRepository) {
+    public EventoService(EventoRepository eventoRepository, RecintoRepository recintoRepository, ArtistaRepository artistaRepository, CambioEventoRepository cambioEventoRepository) {
         this.eventoRepository = eventoRepository;
+        this.recintoRepository = recintoRepository;
+        this.artistaRepository = artistaRepository;
+        this.cambioEventoRepository = cambioEventoRepository;
     }
 
     /**
@@ -64,6 +71,210 @@ public class EventoService {
     public List<Evento> eventosDelOrganizador(Long organizadorId) {
         return eventoRepository.findByOrganizador_IdOrderByFechaDesc(organizadorId);
     }
+
+    @Transactional(readOnly = true)
+    public List<String> validarBorrador(EventoBorradorDTO borrador, boolean publicar) {
+        List<String> errores = new ArrayList<>();
+        if (borrador.getNombre() == null) {
+            errores.add("El nombre del evento es obligatorio.");
+        }
+        if (borrador.getFecha() == null || borrador.getHora() == null) {
+            errores.add("La fecha y la hora del evento son obligatorias.");
+        } else if (publicar && !LocalDateTime.of(borrador.getFecha(), borrador.getHora()).isAfter(LocalDateTime.now())) {
+            errores.add("Para publicar el evento, su fecha debe ser futura.");
+        }
+        Recinto recinto = borrador.getRecintoId() == null ? null : recintoRepository.findById(borrador.getRecintoId()).orElse(null);
+        if (recinto == null) {
+            errores.add("Selecciona un recinto para el evento.");
+        }
+        int capturados = 0;
+        int totalLugares = 0;
+        List<BoletoBorradorDTO> boletos = borrador.getBoletos();
+        for (int i = 0; i < boletos.size(); i++) {
+            BoletoBorradorDTO b = boletos.get(i);
+            if (!tieneDatos(b)) {
+                continue;
+            }
+            capturados++;
+            if (b.getTipo() == null || b.getPrecio() == null || b.getCantidad() == null) {
+                errores.add("El boleto  necesita nombre, precio y cantidad.");
+            } else if (b.getPrecio().signum() < 0 || b.getCantidad() < 0) {
+                errores.add("El precio y la cantidad del boleto no pueden ser negativos.");
+            } else {
+                totalLugares += b.getCantidad();
+            }
+        }
+        if (recinto != null) {
+            Integer capacidad = recinto.getCroquis().getCapacidad();
+            if (capacidad != null && totalLugares > capacidad) {
+                errores.add("Su superó la capacidad máxima del recinto.");
+            }
+        }
+        if (publicar) {
+            if (borrador.getCategoria() == null) {
+                errores.add("Selecciona una categoría para publicar el evento.");
+            }
+            if (capturados == 0) {
+                errores.add("Agrega al menos un tipo de boleto para publicar el evento.");
+            }
+        }
+        if (borrador.getEventoId() != null) {
+            eventoRepository.findById(borrador.getEventoId()).ifPresent(evento -> errores.addAll(erroresDeEdicion(evento, borrador)));
+        }
+        return errores;
+    }
+    //Por fín después de mucho tiempo ahora si se pueden crear eventos
+    @Transactional
+    public Evento crearEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento estado) {
+        List<String> errores = validarBorrador(borrador, estado == EstadoEvento.PUBLICADO);
+        if (!errores.isEmpty()) {
+            throw new IllegalArgumentException(String.join(" ", errores));
+        }
+        Evento evento = new Evento();
+        evento.setNombre(borrador.getNombre());
+        evento.setDescripcion(borrador.getDescripcion());
+        evento.setCategoria(borrador.getCategoria());
+        evento.setFecha(LocalDateTime.of(borrador.getFecha(), borrador.getHora()));
+        evento.setUrlImagen(borrador.getUrlImagen());
+        evento.setEstado(estado);
+        evento.setOrganizador(organizador);
+        evento.setRecinto(recintoRepository.findById(borrador.getRecintoId()).orElseThrow());
+        evento.setArtistas(new ArrayList<>(artistaRepository.findAllById(borrador.getArtistaIds())));
+        for (BoletoBorradorDTO b : borrador.getBoletos()) {
+            if (!tieneDatos(b)) {
+                continue;
+            }
+            Boleto boleto = new Boleto();
+            boleto.setTipo(b.getTipo());
+            boleto.setPrecio(b.getPrecio());
+            boleto.setCantidadTotal(b.getCantidad());
+            boleto.setCantidadDisponibles(b.getCantidad());
+            boleto.setDescripcion(b.getDescripcion());
+            evento.agregarBoleto(boleto);
+        }
+        return eventoRepository.save(evento);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Evento> detalleOrganizador(Long eventoId, Long organizadorId) {
+        return eventoRepository.findById(eventoId)
+                .filter(e -> e.getOrganizador().getId().equals(organizadorId));
+    }
+    public boolean puedeEditar(Evento evento) {
+        return evento.getEstado() != EstadoEvento.CANCELADO && evento.getEstado() != EstadoEvento.FINALIZADO;
+    }
+    @Transactional(readOnly = true)
+    public Optional<EventoBorradorDTO> borradorParaEditar(Long eventoId, Long organizadorId) {
+        return detalleOrganizador(eventoId, organizadorId).filter(this::puedeEditar).map(EventoBorradorDTO::desde);
+    }
+    @Transactional
+    public Evento actualizarEvento(EventoBorradorDTO borrador, Organizador organizador, EstadoEvento nuevoEstado) {
+        Evento evento = detalleOrganizador(borrador.getEventoId(), organizador.getId()).filter(this::puedeEditar).orElseThrow(() -> new IllegalArgumentException("El evento ya no existe o no se puede editar."));
+        EstadoEvento estadoFinal = nuevoEstado != null ? nuevoEstado : evento.getEstado();
+        List<String> errores = validarBorrador(borrador, estadoFinal != EstadoEvento.BORRADOR);
+        if (!errores.isEmpty()) {
+            throw new IllegalArgumentException(String.join(" ", errores));
+        }
+        Recinto recintoNuevo = recintoRepository.findById(borrador.getRecintoId()).orElseThrow();
+        LocalDateTime fechaNueva = LocalDateTime.of(borrador.getFecha(), borrador.getHora());
+
+        registrarCambios(evento, organizador, fechaNueva, recintoNuevo, borrador.getDescripcion());
+
+        evento.setNombre(borrador.getNombre());
+        evento.setDescripcion(borrador.getDescripcion());
+        evento.setCategoria(borrador.getCategoria());
+        evento.setFecha(fechaNueva);
+        evento.setUrlImagen(borrador.getUrlImagen());
+        evento.setRecinto(recintoNuevo);
+        evento.setEstado(estadoFinal);
+        evento.getArtistas().clear();
+        evento.getArtistas().addAll(artistaRepository.findAllById(borrador.getArtistaIds()));
+        sincronizarBoletos(evento, borrador.getBoletos());
+
+        return eventoRepository.save(evento);
+    }
+
+    private void registrarCambios(Evento evento, Organizador organizador, LocalDateTime fechaNueva, Recinto recintoNuevo, String descripcionNueva) {
+        if (!evento.getFecha().equals(fechaNueva)) {
+            FechaCambioEvento cambio = new FechaCambioEvento();
+            cambio.setEvento(evento);
+            cambio.setOrganizador(organizador);
+            cambio.setValorAnterior(evento.getFecha());
+            cambio.setValorNuevo(fechaNueva);
+            cambioEventoRepository.save(cambio);
+        }
+        if (!evento.getRecinto().getId().equals(recintoNuevo.getId())) {
+            LugarCambioEvento cambio = new LugarCambioEvento();
+            cambio.setEvento(evento);
+            cambio.setOrganizador(organizador);
+            cambio.setValorAnterior(evento.getRecinto());
+            cambio.setValorNuevo(recintoNuevo);
+            cambioEventoRepository.save(cambio);
+        }
+        if (!Objects.equals(evento.getDescripcion(), descripcionNueva)) {
+            DescripcionCambioEvento cambio = new DescripcionCambioEvento();
+            cambio.setEvento(evento);
+            cambio.setOrganizador(organizador);
+            cambio.setValorAnterior(evento.getDescripcion());
+            cambio.setValorNuevo(descripcionNueva);
+            cambioEventoRepository.save(cambio);
+        }
+    }
+    private void sincronizarBoletos(Evento evento, List<BoletoBorradorDTO> filas) {
+        Map<Long, Boleto> existentes = evento.getBoletos().stream().collect(Collectors.toMap(Boleto::getId, b -> b));
+        Set<Long> conservados = new HashSet<>();
+        for (BoletoBorradorDTO fila : filas) {
+            if (!tieneDatos(fila)) {
+                continue;
+            }
+            Boleto boleto = fila.getBoletoId() == null ? null : existentes.get(fila.getBoletoId());
+            if (boleto == null) {
+                boleto = new Boleto();
+                boleto.setCantidadDisponibles(fila.getCantidad());
+                evento.agregarBoleto(boleto);
+            } else {
+                conservados.add(boleto.getId());
+                boleto.setCantidadDisponibles(Math.max(0, fila.getCantidad() - boleto.getVendidos()));
+            }
+            boleto.setTipo(fila.getTipo());
+            boleto.setPrecio(fila.getPrecio());
+            boleto.setCantidadTotal(fila.getCantidad());
+            boleto.setDescripcion(fila.getDescripcion());
+        }
+        evento.getBoletos().removeIf(b -> b.getId() != null && !conservados.contains(b.getId()));
+    }
+
+    private List<String> erroresDeEdicion(Evento evento, EventoBorradorDTO borrador) {
+        List<String> errores = new ArrayList<>();
+        boolean hayTickets = evento.getBoletos().stream().anyMatch(b -> !b.getTickets().isEmpty());
+        if (hayTickets && borrador.getRecintoId() != null && !evento.getRecinto().getId().equals(borrador.getRecintoId())) {
+            errores.add("No se puede modificar el recinto, el evento ya cuenta con boletos vendidos");
+        }
+        Map<Long, BoletoBorradorDTO> filas = borrador.getBoletos().stream().filter(f -> f.getBoletoId() != null && tieneDatos(f))
+                .collect(Collectors.toMap(BoletoBorradorDTO::getBoletoId, f -> f, (a, b) -> a));
+        for (Boleto boleto : evento.getBoletos()) {
+            BoletoBorradorDTO fila = filas.get(boleto.getId());
+            if (fila == null) {
+                if (!boleto.getTickets().isEmpty()) {
+                    errores.add("El boleto ya tiene ventas registradas");
+                }
+            } else if (fila.getCantidad() != null && fila.getCantidad() < boleto.getVendidos()) {
+                errores.add("El número de ventas del boleto sobrepasa la capacidad máxima seleccionada");
+            }
+        }
+        return errores;
+    }
+    private boolean tieneDatos(BoletoBorradorDTO b) {
+        return b.getTipo() != null || b.getPrecio() != null || b.getCantidad() != null || b.getDescripcion() != null;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Ticket> asistentesDelEvento(Evento evento) {
+        return evento.getBoletos().stream().flatMap(b -> b.getTickets().stream()).filter(Ticket::esVendido)
+                .sorted(Comparator.comparing((Ticket t) -> t.getCompra().getAsistente().getNombre(),
+                        String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList());
+    }
+
     @Transactional(readOnly = true)
     public Optional<Evento> detalleAdmin(Long id) {
         return eventoRepository.findById(id)

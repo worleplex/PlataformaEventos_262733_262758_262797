@@ -1,55 +1,62 @@
 <th:block th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
-    <title>Crear evento - EventYunks</title>
+    <title>Crear/editar evento - EventYunks</title>
     <main class="contenedor organizador">
-    <h1>Crear evento</h1>
+        <h1 th:text="${borrador.eventoId != null} ? 'Editar evento' : 'Crear evento'">Crear evento</h1>
+        <section class="aviso fallo" th:if="${errores != null}">
+            <ul>
+                <li th:each="e : ${errores}" th:text="${e}"></li>
+            </ul>
+        </section>
+        <form th:action="@{/organizador/eventos/nuevo/datos}" method="post">
+            <div class="formulario-crear-editar">
+                <div class="campo" id="campo1">
+                    <label for="nombre">Nombre del evento</label>
+                    <input id="nombre" name="nombre" type="text" placeholder="Nombre del evento"
+                           th:value="${borrador.nombre}" required>
+                </div>
+                <div class="campo" id="campo2">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Concierto" th:selected="${borrador.categoria == 'Concierto'}">Concierto</option>
+                        <option value="Festival" th:selected="${borrador.categoria == 'Festival'}">Festival</option>
+                        <option value="Gira" th:selected="${borrador.categoria == 'Gira'}">Gira</option>
+                    </select>
+                </div>
 
-    <form action="panel-organizador.html">
-        <div class="formulario-crear-editar">
-            <div class="campo" id="campo1">
-                <label for="nombre">Nombre del evento</label>
-                <input id="nombre" name="nombre" type="text" placeholder="Nombre del evento">
+                <div class="campo" id="campo3">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento" th:text="${borrador.descripcion}"></textarea>
+                </div>
+                <div class="campo" id="campo4">
+                    <span>Seleccionar recinto y asignar artistas</span>
+                    <button class="boton secundario" type="submit" name="accion" value="recinto" formnovalidate>Seleccionar recinto</button>
+                </div>
+                <div class="campo" id="campo5">
+                    <label for="fecha">Fecha del evento</label>
+                    <input id="fecha" name="fecha" type="date" th:value="${borrador.fecha}" required>
+                </div>
+                <div class="campo" id="campo6">
+                    <label for="hora">Hora de inicio</label>
+                    <input id="hora" name="hora" type="time" th:value="${borrador.hora}" required>
+                </div>
+                <div class="campo" id="campo7">
+                    <span>Imagen</span>
+                    <div class="zona-imagen">
+                        <strong>Sin archivo seleccionado</strong>
+                        <small>JPG o PNG</small>
+                    </div>
+                    <input id="imagen" name="imagen" type="file" accept="image/*">
+                </div>
             </div>
-
-            <div class="campo" id="campo2">
-                <label for="categoria">Categoría</label>
-                <select id="categoria" name="categoria">
-                    <option value="" selected>Selecciona una categoría</option>
-                    <option>Música</option>
-                    <option>Teatro</option>
-                    <option>Deportes</option>
-                </select>
+            <div class="acciones">
+                <th:block th:if="${borrador.eventoId == null or borrador.estadoEvento.name() == 'BORRADOR'}">
+                    <button class="boton secundario" type="submit" name="accion" value="borrador">Guardar como Borrador</button>
+                    <button class="boton" type="submit" name="accion" value="publicar">Publicar Evento</button>
+                </th:block>
+                <button class="boton" type="submit" name="accion" value="guardar" th:unless="${borrador.eventoId == null or borrador.estadoEvento.name() == 'BORRADOR'}">Guardar cambios</button>
+                <a class="boton secundario" th:href="@{/organizador/eventos/nuevo/cancelar}">Cancelar</a>
             </div>
-
-            <div class="campo" id="campo3">
-                <label for="descripcion">Descripción</label>
-                <textarea id="descripcion" name="descripcion" placeholder="Descripción completa del evento"></textarea>
-            </div>
-
-            <div class="campo" id="campo4">
-                <span>Seleccionar recinto y asignar artistas</span>
-                <a class="boton secundario" href="seleccionar-recinto.html">Seleccionar recinto</a>
-            </div>
-
-            <div class="campo" id="campo5">
-                <label for="fecha">Fecha del evento</label>
-                <input id="fecha" name="fecha" type="date">
-            </div>
-
-            <div class="campo" id="campo6">
-                <label for="hora">Hora de inicio</label>
-                <input id="hora" name="hora" type="time">
-            </div>
-
-            <div class="campo" id="campo7">
-                <label for="portada">URL de la imagen de portada</label>
-                <input id="portada" name="portada" type="url" placeholder="https://ejemplo.com/portada.jpg">
-            </div>
-        </div>
-        <div class="acciones">
-            <button class="boton secundario" type="submit">Guardar como Borrador</button>
-            <button class="boton" type="submit">Publicar Evento</button>
-            <a class="boton secundario" href="panel-organizador.html">Cancelar</a>
-        </div>
-    </form>
-</main>
+        </form>
+    </main>
 </th:block>

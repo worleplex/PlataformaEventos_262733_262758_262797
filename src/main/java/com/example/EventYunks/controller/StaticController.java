@@ -69,24 +69,13 @@ public class StaticController {
     public String panelOrganizador() {return "redirect:/organizador/eventos";}
 
     @GetMapping("/crear-evento.html")
-    public String crearEvento() {
-        return "crear-evento";
-    }
-
-    @GetMapping("/editar-evento.html")
-    public String editarEvento() {
-        return "editar-evento";
-    }
+    public String crearEvento() {return "redirect:/organizador/eventos/nuevo/datos";}
 
     @GetMapping("/seleccionar-recinto.html")
-    public String seleccionarRecinto() {
-        return "seleccionar-recinto";
-    }
+    public String seleccionarRecinto() {return "redirect:/organizador/eventos/nuevo/recinto";}
 
     @GetMapping("/seleccionar-artistas.html")
-    public String seleccionarArtistas() {
-        return "seleccionar-artistas";
-    }
+    public String seleccionarArtistas() {return "redirect:/organizador/eventos/nuevo/artistas";}
 
     @GetMapping("/asignar-asientos.html")
     public String asignarAsientos() {
@@ -94,9 +83,7 @@ public class StaticController {
     }
 
     @GetMapping("/estadisticas.html")
-    public String estadisticas() {
-        return "estadisticas";
-    }
+    public String estadisticas() {return "redirect:/organizador/eventos";}
 
     @GetMapping({"/registro", "/registro.html"})
     public String registro() {

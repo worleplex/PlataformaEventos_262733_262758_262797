@@ -2,190 +2,82 @@
     <title>Seleccionar recinto y asientos - EventYunks</title>
     <main class="contenedor organizador">
     <h1>Seleccionar recinto y asientos</h1>
-    <form action="seleccionar-artistas.html">
-        <div class="recinto-columnas">
-            <div>
-                <h2>Recintos disponibles</h2>
+    <section class="aviso fallo" th:if="${param.error != null}">
+        <p>Selecciona un recinto antes de continuar.</p>
+    </section>
+    <div class="recinto-columnas">
+        <div>
+            <h2>Recintos disponibles</h2>
+            <p th:if="${#lists.isEmpty(recintos)}">No hay recintos registrados.</p>
+            <form th:action="@{/organizador/eventos/nuevo/recinto/seleccionar}" method="post" th:unless="${#lists.isEmpty(recintos)}">
                 <ul class="lista-vertical">
-            <li>
-                <label class="tarjeta fila">
-                    <input type="radio" name="recinto" value="foro-centro" checked>
-                    <span class="avatar">FC</span>
-                    <span>
-                        <strong>Foro Centro</strong>
-                        <small>Calle Reforma 123, Ciudad de México</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
-            <li>
-                <label class="tarjeta fila">
-                    <input type="radio" name="recinto" value="parque-alameda">
-                    <span class="avatar">PA</span>
-                    <span>
-                        <strong>Parque Alameda</strong>
-                        <small>Av. Juárez 50, Ciudad de México</small>
-                    </span>
-                    <span class="etiqueta">Seleccionado</span>
-                </label>
-            </li>
+                    <li th:each="r : ${recintos}">
+                        <label class="tarjeta fila">
+                            <input type="radio" name="recintoId" th:value="${r.id}"
+                                   th:checked="${borrador.recintoId == r.id}" required>
+                            <span class="avatar" th:text="${#strings.toUpperCase(#strings.substring(r.nombre, 0, 1))}">FC</span>
+                            <span>
+                                <strong th:text="${r.nombre}">Foro Centro</strong>
+                                <small th:text="${r.direccion.resumen}">Calle Reforma 123, Ciudad de México</small>
+                            </span>
+                            <span class="etiqueta">Seleccionado</span>
+                        </label>
+                    </li>
                 </ul>
-            </div>
-            <div>
-                <h2>Croquis del recinto</h2>
-            <section class="caja blanca croquis">
-                <p class="caja escenario centrado suave">ESCENARIO</p>
-                <h4 class="zona-titulo vip">Sección 1</h4>
-                <div class="fila-asientos">
-                    <span class="letra">A</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                </div>
-                <div class="fila-asientos">
-                    <span class="letra">B</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                </div>
-                <h4 class="zona-titulo">Sección 2</h4>
-                <div class="fila-asientos">
-                    <span class="letra">A</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                    <span class="asiento">6</span>
-                    <span class="asiento">7</span>
-                    <span class="asiento">8</span>
-                    <span class="asiento">9</span>
-                    <span class="asiento">10</span>
-                </div>
-                <div class="fila-asientos">
-                    <span class="letra">B</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                    <span class="asiento">6</span>
-                    <span class="asiento">7</span>
-                    <span class="asiento">8</span>
-                    <span class="asiento">9</span>
-                    <span class="asiento">10</span>
-                </div>
-                <div class="fila-asientos">
-                    <span class="letra">C</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                    <span class="asiento">6</span>
-                    <span class="asiento">7</span>
-                    <span class="asiento">8</span>
-                    <span class="asiento">9</span>
-                    <span class="asiento">10</span>
-                </div>
-                <div class="fila-asientos">
-                    <span class="letra">D</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                    <span class="asiento">6</span>
-                    <span class="asiento">7</span>
-                    <span class="asiento">8</span>
-                    <span class="asiento">9</span>
-                    <span class="asiento">10</span>
-                </div>
-                <div class="fila-asientos">
-                    <span class="letra">E</span>
-                    <span class="asiento">1</span>
-                    <span class="asiento">2</span>
-                    <span class="asiento">3</span>
-                    <span class="asiento">4</span>
-                    <span class="asiento">5</span>
-                    <span class="asiento">6</span>
-                    <span class="asiento">7</span>
-                    <span class="asiento">8</span>
-                    <span class="asiento">9</span>
-                    <span class="asiento">10</span>
-                </div>
-            </section>
-            </div>
+                <button class="boton secundario" type="submit">Seleccionar recinto</button>
+            </form>
         </div>
 
+        <div>
+            <h2>Croquis del recinto</h2>
+            <p th:if="${recintoSeleccionado == null}">Selecciona un recinto para ver su croquis.</p>
+            <th:block th:if="${recintoSeleccionado != null}">
+                <p th:if="${#lists.isEmpty(recintoSeleccionado.croquis.zonas)}">Este croquis todavía no tiene zonas ni asientos registrados.</p>
+                <section class="caja blanca croquis" th:unless="${#lists.isEmpty(recintoSeleccionado.croquis.zonas)}">
+                    <p class="caja escenario centrado suave">ESCENARIO</p>
+                    <th:block th:each="zona : ${recintoSeleccionado.croquis.zonas}">
+                        <h4 class="zona-titulo" th:classappend="${#strings.containsIgnoreCase(zona.nombre, 'vip')} ? 'vip'" th:text="${zona.nombre}">Sección 1</h4>
+                        <div class="fila-asientos" th:each="fila : ${zona.asientosPorFila}">
+                            <span class="letra" th:text="${fila.key}">A</span>
+                            <span class="asiento" th:each="a : ${fila.value}" th:text="${a.numero}">1</span>
+                        </div>
+                    </th:block>
+                </section>
+            </th:block>
+        </div>
+    </div>
+
+    <form th:if="${recintoSeleccionado != null}" th:action="@{/organizador/eventos/nuevo/recinto}" method="post">
         <div class="rejilla">
-            <details open>
-                <summary>Sección 1</summary>
+            <details th:each="zona, i : ${recintoSeleccionado.croquis.zonas}" th:open="${i.first}">
+                <summary th:text="${zona.nombre}">Sección 1</summary>
+                <input type="hidden" th:name="|boletos[${i.index}].boletoId|" th:value="${borrador.boletos.size() > i.index ? borrador.boletos[i.index].boletoId : null}">
                 <div class="campo">
-                    <label for="boleto-1">Nombre del boleto</label>
-                    <input id="boleto-1" name="boleto-1" type="text" placeholder="Ej. VIP">
+                    <label th:for="|boleto-${i.index}|">Nombre del boleto</label>
+                    <input th:id="|boleto-${i.index}|" th:name="|boletos[${i.index}].tipo|" type="text" placeholder="Ej. VIP" th:value="${borrador.boletos.size() > i.index ? borrador.boletos[i.index].tipo : null}">
                 </div>
                 <div class="campo">
-                    <label for="precio-1">Precio ($)</label>
-                    <input id="precio-1" name="precio-1" type="number" min="0" placeholder="Ej. 500">
+                    <label th:for="|precio-${i.index}|">Precio ($)</label>
+                    <input th:id="|precio-${i.index}|" th:name="|boletos[${i.index}].precio|" type="number" min="0" step="0.01" placeholder="Ej. 500" th:value="${borrador.boletos.size() > i.index ? borrador.boletos[i.index].precio : null}">
                 </div>
                 <div class="campo">
-                    <label for="capacidad-1">Capacidad máxima de ese tipo</label>
-                    <input id="capacidad-1" name="capacidad-1" type="number" min="0" placeholder="Ej. 10">
+                    <label th:for="|cantidad-${i.index}|">Capacidad máxima de ese tipo</label>
+                    <input th:id="|cantidad-${i.index}|" th:name="|boletos[${i.index}].cantidad|" type="number" min="0" placeholder="Ej. 10" th:value="${borrador.boletos.size() > i.index ? borrador.boletos[i.index].cantidad : null}">
                 </div>
                 <div class="campo">
-                    <label for="beneficios-1">Descripción de beneficios</label>
-                    <textarea id="beneficios-1" name="beneficios-1" placeholder="Descripción de beneficios"></textarea>
-                </div>
-            </details>
-            <details>
-                <summary>Sección 2</summary>
-                <div class="campo">
-                    <label for="boleto-2">Nombre del boleto</label>
-                    <input id="boleto-2" name="boleto-2" type="text" placeholder="Ej. VIP">
-                </div>
-                <div class="campo">
-                    <label for="precio-2">Precio ($)</label>
-                    <input id="precio-2" name="precio-2" type="number" min="0" placeholder="Ej. 500">
-                </div>
-                <div class="campo">
-                    <label for="capacidad-2">Capacidad máxima de ese tipo</label>
-                    <input id="capacidad-2" name="capacidad-2" type="number" min="0" placeholder="Ej. 10">
-                </div>
-                <div class="campo">
-                    <label for="beneficios-2">Descripción de beneficios</label>
-                    <textarea id="beneficios-2" name="beneficios-2" placeholder="Descripción de beneficios"></textarea>
-                </div>
-            </details>
-            <details>
-                <summary>En caso de haber sección 3</summary>
-                <div class="campo">
-                    <label for="boleto-3">Nombre del boleto</label>
-                    <input id="boleto-3" name="boleto-3" type="text" placeholder="Ej. VIP">
-                </div>
-                <div class="campo">
-                    <label for="precio-3">Precio ($)</label>
-                    <input id="precio-3" name="precio-3" type="number" min="0" placeholder="Ej. 500">
-                </div>
-                <div class="campo">
-                    <label for="capacidad-3">Capacidad máxima de ese tipo</label>
-                    <input id="capacidad-3" name="capacidad-3" type="number" min="0" placeholder="Ej. 10">
-                </div>
-                <div class="campo">
-                    <label for="beneficios-3">Descripción de beneficios</label>
-                    <textarea id="beneficios-3" name="beneficios-3" placeholder="Descripción de beneficios"></textarea>
+                    <label th:for="|beneficios-${i.index}|">Descripción de beneficios</label>
+                    <textarea th:id="|beneficios-${i.index}|" th:name="|boletos[${i.index}].descripcion|" placeholder="Descripción de beneficios" th:text="${borrador.boletos.size() > i.index ? borrador.boletos[i.index].descripcion : null}"></textarea>
                 </div>
             </details>
         </div>
-
         <div class="acciones">
             <button class="boton" type="submit">Continuar con los artistas</button>
-            <a class="boton secundario" href="editar-evento.html">Cancelar</a>
+            <a class="boton secundario" th:href="@{/organizador/eventos/nuevo/datos}">Volver</a>
         </div>
     </form>
-</main>
+
+    <div class="acciones" th:if="${recintoSeleccionado == null}">
+        <a class="boton secundario" th:href="@{/organizador/eventos/nuevo/datos}">Volver</a>
+    </div>
+    </main>
 </th:block>
