@@ -27,10 +27,10 @@ public class Asiento {
     @NotNull
     @Column(nullable = false)
     private Integer numero;
-
-    private Double posicionX;
-
-    private Double posicionY;
+    @Column(nullable = false)
+    private Double posicion_x;
+    @Column(nullable = false)
+    private Double posicion_y;
 
     @NotNull
     @Enumerated(EnumType.STRING)
