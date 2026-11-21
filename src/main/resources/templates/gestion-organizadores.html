@@ -31,10 +31,10 @@
                 <span class="etiqueta vigente" th:if="${organizador.activo}">Activo</span>
                 <span class="etiqueta" th:unless="${organizador.activo}">Suspendido</span>
                 <div class="acciones envolver">
-                    <a class="boton secundario" th:href="@{/admin/organizadores/editar/{id}(id=${organizador.id})}">Editar</a>
+                    <a class="boton" th:href="@{/admin/organizadores/editar/{id}(id=${organizador.id})}">Editar</a>
                     <form th:action="@{/admin/organizadores/eliminar/{id}(id=${organizador.id})}" method="post" style="flex: 1;"
                           onsubmit="return confirm('¿Estás seguro de que deseas eliminar este organizador?');">
-                        <button type="submit" class="boton secundario peligro">Eliminar</button>
+                        <button type="submit" class="boton secundario">Eliminar</button>
                     </form>
                     <form th:action="@{/admin/organizadores/estado/{id}(id=${organizador.id})}" method="post" style="flex: 1;">
                         <button type="submit" class="boton secundario completo" th:text="${organizador.activo} ? 'Suspender cuenta' : 'Reactivar cuenta'">Suspender cuenta</button>

@@ -4,6 +4,7 @@ import com.example.EventYunks.model.Administrador;
 import com.example.EventYunks.model.Organizador;
 import com.example.EventYunks.model.Usuario;
 import com.example.EventYunks.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +28,13 @@ public class AuthController {
     public String procesarLogin(@RequestParam("correo") String correo,
                                 @RequestParam("contrasenia") String contrasenia,
                                 Model model,
-                                HttpSession session) {
+                                HttpSession session,
+                                HttpServletRequest request) {
 
         Usuario usuario = usuarioService.autenticarUsuario(correo, contrasenia);
 
         if (usuario != null) {
+            request.changeSessionId();
             session.setAttribute("usuario_id", usuario.getId());
             if (usuario instanceof Administrador) {
                 session.setAttribute("rol", "ADMIN");

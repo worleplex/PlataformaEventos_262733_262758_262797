@@ -10,6 +10,58 @@
             <p th:text="${mensajeError}"></p>
         </section>
 
+        <section class="estadisticas-admin">
+            <h2>Resumen general de la plataforma</h2>
+            <dl class="metricas">
+                <div class="caja">
+                    <dt>Ingresos de los últimos 30 días</dt>
+                    <dd th:text="'$' + ${#numbers.formatDecimal(ingresosTotales, 1, 'COMMA', 2, 'POINT')}">$0.00</dd>
+                </div>
+                <div class="caja">
+                    <dt>Boletos vendidos / ofertados</dt>
+                    <dd th:text="${boletosVendidos} + ' / ' + ${capacidadOfertada}">0 / 0 </dd>
+                </div>
+                <div class="caja">
+                    <dt>Eventos en venta</dt>
+                    <dd th:text="${eventosActivos}">0</dd>
+                </div>
+                <div class="caja">
+                    <dt>Eventos pausados</dt>
+                    <dd th:text="${eventosPausados}">0</dd>
+                </div>
+                <div class="caja">
+                    <dt>Eventos cancelados</dt>
+                    <dd th:text="${eventosCancelados}">0</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="rankings-admin">
+            <h2>Estadísticas de eventos</h2>
+            <div class="rejilla">
+                <div class="caja">
+                    <h3>Eventos más vendidos</h3>
+                    <p th:if="${#lists.isEmpty(eventosMasVendidos)}">Todavía no hay eventos con ventas registradas.</p>
+                    <ol th:unless="${#lists.isEmpty(eventosMasVendidos)}">
+                        <li th:each="e : ${eventosMasVendidos}">
+                            <a th:href="@{/admin/eventos/{id}(id=${e.id})}" th:text="${e.nombre}">Nombre del evento</a>
+                            <span th:text="${e.boletosVendidos} + ' boletos vendidos'">0 boletos vendidos</span>
+                        </li>
+                    </ol>
+                </div>
+                <div class="caja">
+                    <h3>Eventos por llenarse</h3>
+                    <p th:if="${#lists.isEmpty(eventosPorLlenarse)}">No hay eventos con al menos el 80% de ocupación.</p>
+                    <ol th:unless="${#lists.isEmpty(eventosPorLlenarse)}">
+                        <li th:each="e : ${eventosPorLlenarse}">
+                            <a th:href="@{/admin/eventos/{id}(id=${e.id})}" th:text="${e.nombre}">Nombre del evento</a>
+                            <span th:text="${#numbers.formatDecimal(porcentajesOcupacion[e.id], 1, 1)} + '% de ocupación'">0% de ocupación</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
         <form th:action="@{/admin/eventos}" method="get">
             <div class="campo">
                 <label for="buscar">Buscar</label>

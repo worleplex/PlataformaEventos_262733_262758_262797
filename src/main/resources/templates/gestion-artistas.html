@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="acciones envolver">
-                    <a class="boton secundario" th:href="@{/admin/artistas/editar/{id}(id=${artista.id})}">Editar</a>
+                    <a class="boton" th:href="@{/admin/artistas/editar/{id}(id=${artista.id})}">Editar</a>
                     <form th:action="@{/admin/artistas/eliminar/{id}(id=${artista.id})}" method="post" style="flex: 1;"
                           onsubmit="return confirm('¿Estás seguro de que deseas eliminar este artista?');">
-                        <button type="submit" class="boton secundario peligro">Eliminar</button>
+                        <button type="submit" class="boton secundario">Eliminar</button>
                     </form>
                 </div>
             </div>

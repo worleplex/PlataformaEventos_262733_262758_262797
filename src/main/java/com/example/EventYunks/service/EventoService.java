@@ -94,6 +94,15 @@ public class EventoService {
         if (recinto == null) {
             errores.add("Selecciona un recinto para el evento.");
         }
+        //la nueva validación valida que el evento a crear o editar no se empalme con otro ya existente, es decir
+        // que no te permita persistir un evento que tenga la misma fecha y el mismo recinto que otro ya existente.
+        if (publicar && recinto != null && borrador.getFecha() != null && borrador.getHora() != null) {
+            LocalDateTime fechaEvento = LocalDateTime.of(borrador.getFecha(), borrador.getHora());
+            boolean existeEmpalme = eventoRepository.existeEmpalmeEventos(recinto.getId(), fechaEvento, List.of(EstadoEvento.PUBLICADO, EstadoEvento.PAUSADO), borrador.getEventoId());
+            if (existeEmpalme) {
+                errores.add("Ya existe un evento programado en este recinto para la fecha y hora seleccionadas.");
+            }
+        }
         int capturados = 0;
         int totalLugares = 0;
         List<BoletoBorradorDTO> boletos = borrador.getBoletos();
@@ -407,5 +416,55 @@ public class EventoService {
                 borrador.setUrlImagen(nueva);
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public long contarEventosPorEstado(EstadoEvento estado) {
+        return eventoRepository.countByEstado(estado);
+    }
+
+    @Transactional(readOnly = true)
+    public long capacidadOfertadaGlobal() {
+        return eventoRepository.findByEstadoNot(EstadoEvento.BORRADOR)
+                .stream()
+                .flatMap(evento -> evento.getBoletos().stream())
+                .map(Boleto::getCantidadTotal)
+                .filter(Objects::nonNull)
+                .mapToLong(Integer::longValue)
+                .sum();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Evento> eventosMasVendidos() {
+        List<Evento> eventos = eventoRepository.findByEstadoNot(EstadoEvento.BORRADOR);
+        return eventos.stream().filter(evento -> evento.getBoletosVendidos() > 0)
+                .sorted(Comparator.comparingInt(Evento::getBoletosVendidos).reversed())
+                .limit(5)
+                .toList();
+    }
+
+    private double calcularOcupacion(Evento evento) {
+        long capacidad = evento.getBoletos().stream().map(Boleto::getCantidadTotal).filter(Objects::nonNull).mapToLong(Integer::longValue).sum();
+        if (capacidad == 0) {
+            return 0;
+        }
+        //Para que el resultado sea un porcentaje
+        return evento.getBoletosVendidos() * 100.0 / capacidad;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Evento> eventosPorLlenarse() {
+        List<Evento> eventos = eventoRepository.findByEstadoNot(EstadoEvento.BORRADOR);
+        //Aquí se filtran los eventos con ocupación mayor a 80%, se ordenan y solo se muestran los 5 más llenos
+        return eventos.stream().filter(evento -> evento.getEstado() == EstadoEvento.PUBLICADO)
+                .filter(evento -> calcularOcupacion(evento) >= 80)
+                .sorted(Comparator.comparingDouble(this::calcularOcupacion).reversed())
+                .limit(5)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Map<Long, Double> obtenerPorcentajesOcupacion(List<Evento> eventos) {
+        return eventos.stream().collect(Collectors.toMap(Evento::getId, this::calcularOcupacion));
     }
 }

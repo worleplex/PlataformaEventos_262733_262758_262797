@@ -2,8 +2,10 @@ package com.example.EventYunks.controller;
 
 import com.example.EventYunks.model.Evento;
 import com.example.EventYunks.model.Organizador;
+import com.example.EventYunks.model.enums.EstadoEvento;
 import com.example.EventYunks.service.EventoService;
 import com.example.EventYunks.service.OrganizadorService;
+import com.example.EventYunks.service.TicketService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +29,12 @@ public class EventoAdminController {
 
     private final EventoService eventoService;
     private final OrganizadorService organizadorService;
+    private final TicketService ticketService;
 
-    public EventoAdminController(EventoService eventoService, OrganizadorService organizadorService) {
+    public EventoAdminController(EventoService eventoService, OrganizadorService organizadorService,  TicketService ticketService) {
         this.eventoService = eventoService;
         this.organizadorService = organizadorService;
+        this.ticketService = ticketService;
     }
 
     @GetMapping
@@ -39,6 +43,19 @@ public class EventoAdminController {
                         @RequestParam(name = "fecha", required = false) String fecha,
                         @RequestParam(name = "precio", required = false) String precio,
                         Model model) {
+        model.addAttribute("ingresosTotales", ticketService.ingresosUltimos30Dias());
+        model.addAttribute("boletosVendidos", ticketService.boletosVendidosGlobales());
+        model.addAttribute("capacidadOfertada", eventoService.capacidadOfertadaGlobal());
+        // Eventos por estado
+        model.addAttribute("eventosActivos", eventoService.contarEventosPorEstado(EstadoEvento.PUBLICADO));
+        model.addAttribute("eventosPausados", eventoService.contarEventosPorEstado(EstadoEvento.PAUSADO));
+        model.addAttribute("eventosCancelados", eventoService.contarEventosPorEstado(EstadoEvento.CANCELADO));
+        // Rankings de eventos
+        List<Evento> eventosMasVendidos = eventoService.eventosMasVendidos();
+        List<Evento> eventosPorLlenarse = eventoService.eventosPorLlenarse();
+        model.addAttribute("eventosMasVendidos", eventosMasVendidos);
+        model.addAttribute("eventosPorLlenarse", eventosPorLlenarse);
+        model.addAttribute("porcentajesOcupacion", eventoService.obtenerPorcentajesOcupacion(eventosPorLlenarse));
         List<Evento> eventos = eventoService.catalogoAdmin(buscar, categoria, fecha, precio);
         model.addAttribute("eventos", eventos);
         model.addAttribute("categorias", eventoService.categorias());
@@ -49,6 +66,7 @@ public class EventoAdminController {
         model.addAttribute("hayFiltros", hayTexto(buscar) || hayTexto(categoria) || hayTexto(fecha) || hayTexto(precio));
         return VISTA_PANEL;
     }
+
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model, RedirectAttributes flash) {

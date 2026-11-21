@@ -19,7 +19,7 @@
             </div>
             <div class="caja">
                 <dt>Ingresos Totales</dt>
-                <dd th:text="'$' + ${#numbers.formatDecimal(ingresosTotales, 1, 'COMMA', 2, 'POINT')}">$700</dd>
+                <dd th:text="'$' + ${#numbers.formatDecimal(ingresosTotales, 1, 'COMMA', 2, 'POINT')}">$0</dd>
             </div>
         </dl>
         <a class="boton" th:href="@{/organizador/eventos/nuevo}">+ Crear Nuevo Evento</a>
