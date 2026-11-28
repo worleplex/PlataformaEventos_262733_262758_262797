@@ -1,4 +1,3 @@
-USE eventyunks;
 SET NAMES utf8mb4;
 -- Contraseña de prueba para TODOS los usuarios sembrados (admin, organizadores y asistentes): Prueba2026!
 SET @hash := '$2b$12$Ds6Ybcdztwd5c40NWmTYgeSUfEaWnYGmnjgqmEc510jDkyVfJmdGO';
@@ -62,36 +61,39 @@ FROM (
      ) d
 WHERE NOT EXISTS (SELECT 1 FROM croquis c WHERE c.nombre = d.nombre);
 
+-- La API empareja cada zona con su boleto por NOMBRE (zona.nombre = boleto.tipo, sin importar mayúsculas ni acentos),
+-- así que las zonas se llaman como los tipos de boleto de los eventos que usan ese croquis.
+-- "ord" fija el orden de inserción (y por lo tanto de los ids) para que los asientos de Foro Centro sean:
+--   VIP: 1-10 (A1-A5 = 1-5, B1-B5 = 6-10)   General: 11-60 (A1-A10 = 11-20, ...)
 INSERT INTO zonas (nombre, croquis_id)
 SELECT d.zona, c.id
 FROM (
-         SELECT 'Foro Centro'    AS croquis, 'Sección 1' AS zona UNION ALL
-         SELECT 'Foro Centro'    AS croquis, 'Sección 2' AS zona UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 1' AS zona UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 2' AS zona UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 3' AS zona UNION ALL
-         SELECT 'Sala Pequeña'   AS croquis, 'Sección 1' AS zona UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 1' AS zona UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 2' AS zona UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 3' AS zona UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 4' AS zona
+         SELECT 'Foro Centro'    AS croquis, 'VIP'        AS zona, 1 AS ord UNION ALL
+         SELECT 'Foro Centro'    AS croquis, 'General'    AS zona, 2 AS ord UNION ALL
+         SELECT 'Teatro Mediano' AS croquis, 'Preferente' AS zona, 3 AS ord UNION ALL
+         SELECT 'Teatro Mediano' AS croquis, 'General'    AS zona, 4 AS ord UNION ALL
+         SELECT 'Sala Pequeña'   AS croquis, 'General'    AS zona, 5 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'VIP'        AS zona, 6 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'General'    AS zona, 7 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'Preferente' AS zona, 8 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'Gradas'     AS zona, 9 AS ord
      ) d
          JOIN croquis c ON c.nombre = d.croquis
-WHERE NOT EXISTS (SELECT 1 FROM zonas z WHERE z.croquis_id = c.id AND z.nombre = d.zona);
+WHERE NOT EXISTS (SELECT 1 FROM zonas z WHERE z.croquis_id = c.id AND z.nombre = d.zona)
+ORDER BY d.ord;
 
 INSERT INTO asientos (fila, numero, posicion_x, posicion_y, estado, zona_id)
 SELECT SUBSTRING('ABCDEFGHIJ', f.n, 1), a.n, a.n, f.n, 'DISPONIBLE', z.id
 FROM (
-         SELECT 'Foro Centro'    AS croquis, 'Sección 1' AS zona, 2  AS filas, 5  AS por_fila UNION ALL
-         SELECT 'Foro Centro'    AS croquis, 'Sección 2' AS zona, 5  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 1' AS zona, 4  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 2' AS zona, 6  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Teatro Mediano' AS croquis, 'Sección 3' AS zona, 4  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Sala Pequeña'   AS croquis, 'Sección 1' AS zona, 5  AS filas, 8  AS por_fila UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 1' AS zona, 6  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 2' AS zona, 8  AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 3' AS zona, 10 AS filas, 10 AS por_fila UNION ALL
-         SELECT 'Arena Grande'   AS croquis, 'Sección 4' AS zona, 10 AS filas, 10 AS por_fila
+         SELECT 'Foro Centro'    AS croquis, 'VIP'        AS zona, 2  AS filas, 5  AS por_fila, 1 AS ord UNION ALL
+         SELECT 'Foro Centro'    AS croquis, 'General'    AS zona, 5  AS filas, 10 AS por_fila, 2 AS ord UNION ALL
+         SELECT 'Teatro Mediano' AS croquis, 'Preferente' AS zona, 4  AS filas, 10 AS por_fila, 3 AS ord UNION ALL
+         SELECT 'Teatro Mediano' AS croquis, 'General'    AS zona, 10 AS filas, 10 AS por_fila, 4 AS ord UNION ALL
+         SELECT 'Sala Pequeña'   AS croquis, 'General'    AS zona, 5  AS filas, 8  AS por_fila, 5 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'VIP'        AS zona, 6  AS filas, 10 AS por_fila, 6 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'General'    AS zona, 8  AS filas, 10 AS por_fila, 7 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'Preferente' AS zona, 10 AS filas, 10 AS por_fila, 8 AS ord UNION ALL
+         SELECT 'Arena Grande'   AS croquis, 'Gradas'     AS zona, 10 AS filas, 10 AS por_fila, 9 AS ord
      ) d
          JOIN croquis c ON c.nombre = d.croquis
          JOIN zonas z   ON z.croquis_id = c.id AND z.nombre = d.zona
@@ -101,7 +103,8 @@ FROM (
          JOIN (SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
                UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) a
               ON a.n <= d.por_fila
-WHERE NOT EXISTS (SELECT 1 FROM asientos x WHERE x.zona_id = z.id);
+WHERE NOT EXISTS (SELECT 1 FROM asientos x WHERE x.zona_id = z.id)
+ORDER BY d.ord, f.n, a.n;
 
 INSERT INTO direcciones (calle, colonia, numero, codigo_postal, ciudad, nombre_lugar)
 SELECT d.calle, d.colonia, d.numero, d.cp, d.ciudad, d.lugar
@@ -131,20 +134,21 @@ WHERE NOT EXISTS (SELECT 1 FROM recintos r WHERE r.nombre = d.nombre);
 INSERT INTO eventos (nombre, descripcion, fecha, recinto_id, categoria, url_imagen, estado, organizador_id)
 SELECT d.nombre, d.descripcion, d.fecha, r.id, d.categoria, d.imagen, d.estado, u.id
 FROM (
-         SELECT 'Encuentro de música' AS nombre, 'Encuentro de música en vivo en el Foro Centro con tres artistas invitados.' AS descripcion, TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 20 DAY), '19:00:00') AS fecha, 'Música' AS categoria, '/img/evento-musica.jpg' AS imagen, 'PUBLICADO' AS estado, 'produccionescentro@eventyunks.com' AS organizador, 'Foro Centro' AS recinto UNION ALL
-SELECT 'Noche de Rock en el Valle', 'Una noche de rock con bandas del noroeste del país.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 3 DAY), '21:00:00'), 'Música', '/img/evento-bailey.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Auditorio del Valle' UNION ALL
-SELECT 'Festival Electrónico Norte', 'Festival de música electrónica con escenario principal y zona VIP.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 35 DAY), '20:00:00'), 'Música', '/img/evento-musica.jpg', 'PAUSADO', 'escenanorte@eventyunks.com', 'Arena Norte' UNION ALL
-SELECT 'La casa de los espejos', 'Obra de teatro de suspenso en dos actos.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 10 DAY), '20:00:00'), 'Teatro', '/img/evento-menchaca.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Teatro Sonora' UNION ALL
-SELECT 'Clásico Regional de Fútbol', 'Partido de fútbol entre los equipos regionales más tradicionales.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 40 DAY), '17:00:00'), 'Deportes', '/img/evento-bailey.jpg', 'CANCELADO', 'escenanorte@eventyunks.com', 'Arena Norte' UNION ALL
-SELECT 'Concierto Acústico de Otoño', 'Presentación acústica en un ambiente íntimo.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 25 DAY), '20:00:00'), 'Música', '/img/evento-musica-oscuro.jpg', 'FINALIZADO', 'produccionescentro@eventyunks.com', 'Parque Alameda' UNION ALL
-SELECT 'Festival Indie de Verano', 'Jornada de música indie con artistas emergentes.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 60 DAY), '18:00:00'), 'Música', '/img/evento-menchaca.jpg', 'FINALIZADO', 'produccionescentro@eventyunks.com', 'Foro Centro' UNION ALL
-SELECT 'Taller de Stand-up', 'Taller práctico de comedia en vivo.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 60 DAY), '19:30:00'), 'Teatro', NULL, 'BORRADOR', 'produccionescentro@eventyunks.com', 'Parque Alameda' UNION ALL
-SELECT 'Gran Final de Pop', 'Gran final del certamen regional de música pop.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 10 DAY), '21:00:00'), 'Música', '/img/evento-musica.jpg', 'FINALIZADO', 'eventosdelvalle@eventyunks.com', 'Teatro Sonora' UNION ALL
-SELECT 'Copa Valle de Baloncesto', 'Torneo de baloncesto con equipos de la región.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 14 DAY), '18:00:00'), 'Deportes', '/img/evento-bailey.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Auditorio del Valle'
+         SELECT 'Encuentro de música' AS nombre, 'Encuentro de música en vivo en el Foro Centro con tres artistas invitados.' AS descripcion, TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 20 DAY), '19:00:00') AS fecha, 'Música' AS categoria, '/img/evento-musica.jpg' AS imagen, 'PUBLICADO' AS estado, 'produccionescentro@eventyunks.com' AS organizador, 'Foro Centro' AS recinto, 1 AS ord UNION ALL
+SELECT 'Noche de Rock en el Valle', 'Una noche de rock con bandas del noroeste del país.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 3 DAY), '21:00:00'), 'Música', '/img/evento-bailey.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Auditorio del Valle', 2 UNION ALL
+SELECT 'Festival Electrónico Norte', 'Festival de música electrónica con escenario principal y zona VIP.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 35 DAY), '20:00:00'), 'Música', '/img/evento-musica.jpg', 'PAUSADO', 'escenanorte@eventyunks.com', 'Arena Norte', 3 UNION ALL
+SELECT 'La casa de los espejos', 'Obra de teatro de suspenso en dos actos.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 10 DAY), '20:00:00'), 'Teatro', '/img/evento-menchaca.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Teatro Sonora', 4 UNION ALL
+SELECT 'Clásico Regional de Fútbol', 'Partido de fútbol entre los equipos regionales más tradicionales.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 40 DAY), '17:00:00'), 'Deportes', '/img/evento-bailey.jpg', 'CANCELADO', 'escenanorte@eventyunks.com', 'Arena Norte', 5 UNION ALL
+SELECT 'Concierto Acústico de Otoño', 'Presentación acústica en un ambiente íntimo.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 25 DAY), '20:00:00'), 'Música', '/img/evento-musica-oscuro.jpg', 'FINALIZADO', 'produccionescentro@eventyunks.com', 'Parque Alameda', 6 UNION ALL
+SELECT 'Festival Indie de Verano', 'Jornada de música indie con artistas emergentes.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 60 DAY), '18:00:00'), 'Música', '/img/evento-menchaca.jpg', 'FINALIZADO', 'produccionescentro@eventyunks.com', 'Foro Centro', 7 UNION ALL
+SELECT 'Taller de Stand-up', 'Taller práctico de comedia en vivo.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 60 DAY), '19:30:00'), 'Teatro', NULL, 'BORRADOR', 'produccionescentro@eventyunks.com', 'Parque Alameda', 8 UNION ALL
+SELECT 'Gran Final de Pop', 'Gran final del certamen regional de música pop.', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 10 DAY), '21:00:00'), 'Música', '/img/evento-musica.jpg', 'FINALIZADO', 'eventosdelvalle@eventyunks.com', 'Teatro Sonora', 9 UNION ALL
+SELECT 'Copa Valle de Baloncesto', 'Torneo de baloncesto con equipos de la región.', TIMESTAMP(DATE_ADD(CURDATE(), INTERVAL 14 DAY), '18:00:00'), 'Deportes', '/img/evento-bailey.jpg', 'PUBLICADO', 'eventosdelvalle@eventyunks.com', 'Auditorio del Valle', 10
     ) d
     JOIN recintos r ON r.nombre = d.recinto
     JOIN usuarios u ON u.correo = d.organizador
-WHERE NOT EXISTS (SELECT 1 FROM eventos e WHERE e.nombre = d.nombre);
+WHERE NOT EXISTS (SELECT 1 FROM eventos e WHERE e.nombre = d.nombre)
+ORDER BY d.ord;
 
 INSERT INTO boletos (tipo, precio, cantidad_disponibles, descripcion, cantidad_total, evento_id)
 SELECT d.tipo, d.precio, d.disponibles, d.descripcion, d.total, e.id
@@ -156,7 +160,7 @@ FROM (
          SELECT 'Festival Electrónico Norte', 'General', 1200.00, 200, 200, 'Acceso general al festival.' UNION ALL
          SELECT 'Festival Electrónico Norte', 'VIP', 2500.00, 60, 60, 'Zona VIP con barra libre y vista privilegiada.' UNION ALL
          SELECT 'La casa de los espejos', 'General', 250.00, 100, 100, 'Entrada general.' UNION ALL
-         SELECT 'La casa de los espejos', 'Platea', 450.00, 40, 40, 'Asientos de platea.' UNION ALL
+         SELECT 'La casa de los espejos', 'Preferente', 450.00, 40, 40, 'Asientos de platea.' UNION ALL
          SELECT 'Clásico Regional de Fútbol', 'Gradas', 600.00, 200, 200, 'Acceso a gradas.' UNION ALL
          SELECT 'Clásico Regional de Fútbol', 'Preferente', 900.00, 100, 100, 'Zona preferente.' UNION ALL
          SELECT 'Concierto Acústico de Otoño', 'General', 180.00, 37, 40, 'Entrada general.' UNION ALL
